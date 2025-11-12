@@ -1,4 +1,4 @@
-import { type FittingType, getPlaceholder, ImageTransformOptions, sdk, STATIC_MEDIA_URL } from '@wix/image-kit'
+import { type FittingType, getPlaceholder, sdk, STATIC_MEDIA_URL } from '@wix/image-kit'
 import { forwardRef, type ImgHTMLAttributes, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useSize } from '@/hooks/use-size'
 import './image.css'
@@ -74,7 +74,7 @@ const WixImage = forwardRef<HTMLImageElement, WixImageProps>(
     const scale = fittingType === 'fit' ? sdk.getScaleToFitImageURL : sdk.getScaleToFillImageURL
     const targetHeight = size.height || height * (size.width / width) || height
     const targetWidth = size.width || width * (size.height / height) || width
-    const transformOptions: ImageTransformOptions = focalPoint ? { focalPoint } : undefined
+    const transformOptions = focalPoint ? { focalPoint } : undefined
     const src = scale(data.id, data.width, data.height, targetWidth, targetHeight, transformOptions)
 
     return <img ref={ref} {...imgProps} src={src} />
