@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { BackButton } from '@/components/ui/back-button';
 import { motion } from 'framer-motion';
 import { 
   Brain, 
@@ -137,6 +138,7 @@ export default function RatingsPage() {
         {/* Hero Section */}
         <section className="py-20 px-6">
           <div className="max-w-[120rem] mx-auto">
+            <BackButton className="mb-6 bg-black/20 backdrop-blur-md border-white/10 text-white hover:bg-white/10" />
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { BackButton } from '@/components/ui/back-button';
 import { motion } from 'framer-motion';
 import { Image } from '@/components/ui/image';
 import { 
@@ -185,6 +186,7 @@ export default function GalleryPage() {
         {/* Hero Section */}
         <section className="py-20 px-6">
           <div className="max-w-[120rem] mx-auto">
+            <BackButton className="mb-6 bg-black/20 backdrop-blur-md border-white/10 text-white hover:bg-white/10" />
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}

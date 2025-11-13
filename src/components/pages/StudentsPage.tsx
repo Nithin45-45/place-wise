@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Image } from '@/components/ui/image';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { BackButton } from '@/components/ui/back-button';
 import { GraduationCap, Search, Plus, Mail, Calendar, Award } from 'lucide-react';
 
 export default function StudentsPage() {
@@ -78,6 +79,7 @@ export default function StudentsPage() {
       {/* Header */}
       <div className="px-6 py-12">
         <div className="max-w-[120rem] mx-auto">
+          <BackButton className="mb-6" />
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div>
               <h1 className="font-heading text-4xl font-bold text-secondary mb-2">Student Profiles</h1>
