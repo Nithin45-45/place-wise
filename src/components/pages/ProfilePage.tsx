@@ -43,6 +43,7 @@ export default function ProfilePage() {
     firstName: '',
     middleName: '',
     lastName: '',
+    degreeType: '',
     branch: '',
     cgpa: '',
     tenthPercentage: '',
@@ -370,19 +371,52 @@ export default function ProfilePage() {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
+                            <Label htmlFor="degreeType" className="text-white/90">Degree Type *</Label>
+                            <Select value={profileData.degreeType} onValueChange={(value) => handleInputChange('degreeType', value)}>
+                              <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                                <SelectValue placeholder="Select your degree type" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="B.Tech">B.Tech (Bachelor of Technology)</SelectItem>
+                                <SelectItem value="B.E.">B.E. (Bachelor of Engineering)</SelectItem>
+                                <SelectItem value="B.Sc">B.Sc (Bachelor of Science)</SelectItem>
+                                <SelectItem value="BCA">BCA (Bachelor of Computer Applications)</SelectItem>
+                                <SelectItem value="M.Tech">M.Tech (Master of Technology)</SelectItem>
+                                <SelectItem value="M.E.">M.E. (Master of Engineering)</SelectItem>
+                                <SelectItem value="M.Sc">M.Sc (Master of Science)</SelectItem>
+                                <SelectItem value="MCA">MCA (Master of Computer Applications)</SelectItem>
+                                <SelectItem value="MBA">MBA (Master of Business Administration)</SelectItem>
+                                <SelectItem value="PhD">PhD (Doctor of Philosophy)</SelectItem>
+                                <SelectItem value="Diploma">Diploma</SelectItem>
+                                <SelectItem value="Other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div>
                             <Label htmlFor="branch" className="text-white/90">Branch/Department *</Label>
                             <Select value={profileData.branch} onValueChange={(value) => handleInputChange('branch', value)}>
                               <SelectTrigger className="bg-white/10 border-white/20 text-white">
                                 <SelectValue placeholder="Select your branch" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="Computer Science">Computer Science</SelectItem>
+                                <SelectItem value="Computer Science">Computer Science & Engineering</SelectItem>
                                 <SelectItem value="Information Technology">Information Technology</SelectItem>
-                                <SelectItem value="Electronics">Electronics & Communication</SelectItem>
+                                <SelectItem value="Electronics">Electronics & Communication Engineering</SelectItem>
+                                <SelectItem value="Electrical">Electrical & Electronics Engineering</SelectItem>
                                 <SelectItem value="Mechanical">Mechanical Engineering</SelectItem>
                                 <SelectItem value="Civil">Civil Engineering</SelectItem>
-                                <SelectItem value="Electrical">Electrical Engineering</SelectItem>
                                 <SelectItem value="Chemical">Chemical Engineering</SelectItem>
+                                <SelectItem value="Aerospace">Aerospace Engineering</SelectItem>
+                                <SelectItem value="Biotechnology">Biotechnology</SelectItem>
+                                <SelectItem value="Data Science">Data Science & Analytics</SelectItem>
+                                <SelectItem value="Artificial Intelligence">Artificial Intelligence & Machine Learning</SelectItem>
+                                <SelectItem value="Cybersecurity">Cybersecurity</SelectItem>
+                                <SelectItem value="Software Engineering">Software Engineering</SelectItem>
+                                <SelectItem value="Mathematics">Mathematics</SelectItem>
+                                <SelectItem value="Physics">Physics</SelectItem>
+                                <SelectItem value="Chemistry">Chemistry</SelectItem>
+                                <SelectItem value="Business Administration">Business Administration</SelectItem>
+                                <SelectItem value="Management">Management Studies</SelectItem>
                                 <SelectItem value="Other">Other</SelectItem>
                               </SelectContent>
                             </Select>
@@ -669,7 +703,7 @@ export default function ProfilePage() {
                       
                       <Button
                         onClick={handlePredict}
-                        disabled={isLoading || !profileData.firstName || !profileData.lastName || !profileData.branch || !profileData.cgpa}
+                        disabled={isLoading || !profileData.firstName || !profileData.lastName || !profileData.degreeType || !profileData.branch || !profileData.cgpa}
                         className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-4 text-lg"
                       >
                         {isLoading ? (
