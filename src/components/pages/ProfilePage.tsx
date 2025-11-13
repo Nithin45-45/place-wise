@@ -444,7 +444,7 @@ export default function ProfilePage() {
                             <Label htmlFor="firstName" className="text-white/90">First Name *</Label>
                             <Input
                               id="firstName"
-                              placeholder="John"
+                              placeholder="Yagandla"
                               value={profileData.firstName}
                               onChange={(e) => handleInputChange('firstName', e.target.value)}
                               className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
@@ -454,7 +454,7 @@ export default function ProfilePage() {
                             <Label htmlFor="middleName" className="text-white/90">Middle Name</Label>
                             <Input
                               id="middleName"
-                              placeholder="Michael"
+                              placeholder="Nithin"
                               value={profileData.middleName}
                               onChange={(e) => handleInputChange('middleName', e.target.value)}
                               className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
@@ -464,7 +464,7 @@ export default function ProfilePage() {
                             <Label htmlFor="lastName" className="text-white/90">Last Name *</Label>
                             <Input
                               id="lastName"
-                              placeholder="Doe"
+                              placeholder="Goud"
                               value={profileData.lastName}
                               onChange={(e) => handleInputChange('lastName', e.target.value)}
                               className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
