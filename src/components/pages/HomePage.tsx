@@ -455,6 +455,43 @@ export default function HomePage() {
                       required
                     />
                   </div>
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const returnUrl = encodeURIComponent(window.location.pathname);
+                        const resetPasswordUrl = `/api/auth/reset-password?returnToUrl=${returnUrl}`;
+                        
+                        const insideIframe = window.self !== window.top;
+                        if (!insideIframe) {
+                          window.location.href = resetPasswordUrl;
+                        } else {
+                          // Handle iframe context
+                          navigator.permissions?.query({ name: 'storage-access' as PermissionName })
+                            .then(result => {
+                              if (result.state === 'granted') {
+                                return true;
+                              }
+                              return document.requestStorageAccess().then(() => true).catch(() => false);
+                            })
+                            .then(accessGranted => {
+                              if (accessGranted) {
+                                const resetWindow = window.open(resetPasswordUrl, '_blank', 'width=500,height=600');
+                                const checkClosed = setInterval(() => {
+                                  if (resetWindow?.closed) {
+                                    clearInterval(checkClosed);
+                                    window.location.reload();
+                                  }
+                                }, 1000);
+                              }
+                            });
+                        }
+                      }}
+                      className="text-sm text-cyan-400 hover:text-cyan-300 underline"
+                    >
+                      Forgot Password?
+                    </button>
+                  </div>
                   <Button type="submit" className="w-full bg-cyan-600 hover:bg-cyan-700">
                     Login
                   </Button>
