@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useMember } from '@/integrations';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -26,6 +27,7 @@ import {
 } from 'lucide-react';
 
 export default function HomePage() {
+  const { member, isAuthenticated, actions } = useMember();
   const [formData, setFormData] = useState({
     cgpa: '',
     skills: '',
@@ -147,8 +149,11 @@ export default function HomePage() {
                 <Link to="/profile" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
                   Profile
                 </Link>
-                <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
-                  Login / Register
+                <Button 
+                  className="bg-cyan-500 hover:bg-cyan-600 text-white"
+                  onClick={isAuthenticated ? () => {} : actions.login}
+                >
+                  {isAuthenticated ? `Welcome, ${member?.profile?.nickname || 'User'}` : 'Login / Register'}
                 </Button>
               </div>
               
