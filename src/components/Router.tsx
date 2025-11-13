@@ -2,6 +2,7 @@ import { MemberProvider } from '@/integrations';
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import { ScrollToTop } from '@/lib/scroll-to-top';
 import ErrorPage from '@/integrations/errorHandlers/ErrorPage';
+import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 import HomePage from '@/components/pages/HomePage';
 import WelcomePage from '@/components/pages/WelcomePage';
 import AboutPage from '@/components/pages/AboutPage';
@@ -58,7 +59,11 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <ProfilePage />,
+        element: (
+          <MemberProtectedRoute messageToSignIn="Please sign in to access your profile and enter student information">
+            <ProfilePage />
+          </MemberProtectedRoute>
+        ),
       },
       {
         path: "students",
