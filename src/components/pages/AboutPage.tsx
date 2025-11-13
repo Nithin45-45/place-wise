@@ -320,7 +320,7 @@ export default function AboutPage() {
                 <span className="text-lg font-semibold text-white">AI PlacementPredictor</span>
               </div>
               <div className="text-sm text-white/60">
-                © 2024 AI PlacementPredictor. Powered by advanced machine learning.
+                © 2026 AI PlacementPredictor. Powered by JBREC students.
               </div>
             </div>
           </div>
