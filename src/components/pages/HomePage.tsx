@@ -151,7 +151,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-
       {/* Content */}
       <div className="relative z-10">
         {/* Navigation */}
@@ -459,7 +458,6 @@ export default function HomePage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
                     <Input
                       id="signup-email"
                       type="email"
@@ -469,7 +467,8 @@ export default function HomePage() {
                       className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-400"
                       required
                     />
-                  </div>
+                  <Label htmlFor="signup-email">Email</Label>
+                    </div>
                   <div className="space-y-2">
                     <Label htmlFor="signup-password">Password</Label>
                     <Input
