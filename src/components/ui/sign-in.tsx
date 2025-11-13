@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Image } from '@/components/ui/image';
 import { useMember } from '@/integrations';
 import { Link } from 'react-router-dom';
+import { Brain, Sparkles } from 'lucide-react';
 
 interface SignInProps {
   title?: string;
@@ -17,74 +18,39 @@ export function SignIn({
   title = "Sign In Required",
   message = "Please sign in to access this content.",
   className = "min-h-screen flex items-center justify-center px-4",
-  cardClassName = "w-fit max-w-xl mx-auto text-white",
-  buttonClassName = "w-full h-10 max-w-sm mx-auto bg-cyan-500 hover:bg-cyan-600",
+  cardClassName = "w-fit max-w-xl mx-auto",
+  buttonClassName = "w-full h-12 max-w-sm mx-auto bg-primary hover:bg-primary/90 text-primary-foreground",
   buttonText = "Sign In"
 }: SignInProps) {
   const { actions } = useMember();
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Night Sky Background - matching HomePage */}
-      <div className="fixed inset-0 bg-gradient-to-b from-slate-900 via-blue-900 to-slate-800">
-        {/* Stars */}
-        <div className="absolute inset-0">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${2 + Math.random() * 2}s`
-              }}
-            />
-          ))}
-        </div>
-        
-        {/* Shooting Stars */}
-        <div className="absolute inset-0">
-          {[...Array(3)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-px h-20 bg-gradient-to-b from-white to-transparent opacity-70 animate-pulse"
-              style={{
-                left: `${20 + Math.random() * 60}%`,
-                top: `${Math.random() * 50}%`,
-                transform: `rotate(${30 + Math.random() * 30}deg)`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${3 + Math.random() * 2}s`
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Content */}
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className={className}>
-        <Card className={`${cardClassName} bg-black/20 backdrop-blur-md border-white/10`}>
-          <CardHeader className="text-center space-y-6 py-10 px-10">
-            {/* Large Brain Image */}
+        <Card className={`${cardClassName} bg-white border-2 border-gray-100 shadow-xl`}>
+          <CardHeader className="text-center space-y-6 py-12 px-10">
+            {/* Professional Brain Icon */}
             <div className="flex justify-center mb-6">
-              <Image
-                src="https://static.wixstatic.com/media/52cebc_e0d39c3d5c434f3d8c5a12299105e4a9~mv2.png?originWidth=384&originHeight=384"
-                alt="AI Brain Illustration"
-                width={200}
-                className="w-48 h-48 object-contain"
-              />
+              <div className="relative">
+                <Brain className="h-16 w-16 text-primary" />
+                <Sparkles className="h-8 w-8 text-brandaccent absolute -top-2 -right-2" />
+              </div>
             </div>
-            <CardTitle className="text-white">{title}</CardTitle>
-            <CardDescription className="text-white/80">{message}</CardDescription>
+            <CardTitle className="text-3xl font-bold text-foreground font-heading">
+              {title}
+            </CardTitle>
+            <CardDescription className="text-lg text-muted-foreground font-paragraph">
+              {message}
+            </CardDescription>
           </CardHeader>
-          <CardContent className="text-center px-10 pb-10 space-y-4">
+          <CardContent className="text-center px-10 pb-12 space-y-6">
             <Button onClick={actions.login} className={buttonClassName}>
               {buttonText}
             </Button>
             <div>
               <Link 
                 to="/" 
-                className="text-white/70 hover:text-white transition-colors underline text-sm"
+                className="text-muted-foreground hover:text-foreground transition-colors underline text-sm font-medium"
               >
                 Return to Home
               </Link>
