@@ -420,8 +420,8 @@ export default function HomePage() {
                   <Sparkles className="h-6 w-6 text-brandaccent absolute -top-1 -right-1" />
                 </div>
               </div>
-              <DialogTitle className="text-3xl font-bold text-center font-heading">
-                Welcome Back
+              <DialogTitle className="text-3xl font-bold text-center font-heading text-white">
+                Welcome to AI PlacementPredictor
               </DialogTitle>
               <p className="text-center text-muted-foreground font-paragraph">
                 Sign in to access your personalized placement predictions
