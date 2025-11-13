@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Image } from '@/components/ui/image';
 import { useMember } from '@/integrations';
+import { Link } from 'react-router-dom';
 
 interface SignInProps {
   title?: string;
@@ -76,10 +77,18 @@ export function SignIn({
             <CardTitle className="text-white">{title}</CardTitle>
             <CardDescription className="text-white/80">{message}</CardDescription>
           </CardHeader>
-          <CardContent className="text-center px-10 pb-10">
+          <CardContent className="text-center px-10 pb-10 space-y-4">
             <Button onClick={actions.login} className={buttonClassName}>
               {buttonText}
             </Button>
+            <div>
+              <Link 
+                to="/" 
+                className="text-white/70 hover:text-white transition-colors underline text-sm"
+              >
+                Return to Home
+              </Link>
+            </div>
           </CardContent>
         </Card>
       </div>
