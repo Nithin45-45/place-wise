@@ -30,6 +30,7 @@ import {
   Github,
   LogOut
 } from 'lucide-react';
+import { Image } from '@/components/ui/image';
 
 export default function HomePage() {
   const { member, isAuthenticated, actions } = useMember();
@@ -111,6 +112,11 @@ export default function HomePage() {
     <div className="min-h-screen relative overflow-hidden">
       {/* Animated Night Sky Background */}
       <div className="fixed inset-0 bg-gradient-to-b from-slate-900 via-blue-900 to-slate-800">
+        {/* Moon */}
+        <div className="absolute top-8 right-8 md:top-12 md:right-16">
+          <Image src="https://static.wixstatic.com/media/52cebc_51409367d1a347ec832ffcdf6adcca68~mv2.png?originWidth=128&originHeight=128" alt="Beautiful AI-generated moon in the night sky" className="w-24 h-24 md:w-32 md:h-32 opacity-90 drop-shadow-2xl" />
+        </div>
+
         {/* Stars */}
         <div className="absolute inset-0">
           {[...Array(50)].map((_, i) => (
