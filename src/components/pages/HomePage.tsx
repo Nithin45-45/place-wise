@@ -8,6 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Brain, 
@@ -28,6 +30,14 @@ import {
 
 export default function HomePage() {
   const { member, isAuthenticated, actions } = useMember();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState('login'); // 'login' or 'signup'
+  const [authForm, setAuthForm] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    fullName: ''
+  });
   const [formData, setFormData] = useState({
     cgpa: '',
     skills: '',
@@ -39,6 +49,33 @@ export default function HomePage() {
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleAuthInputChange = (field, value) => {
+    setAuthForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleAuthSubmit = async (e) => {
+    e.preventDefault();
+    if (authMode === 'signup') {
+      if (authForm.password !== authForm.confirmPassword) {
+        alert('Passwords do not match');
+        return;
+      }
+      if (!authForm.fullName || !authForm.email || !authForm.password) {
+        alert('Please fill in all fields');
+        return;
+      }
+    } else {
+      if (!authForm.email || !authForm.password) {
+        alert('Please fill in all fields');
+        return;
+      }
+    }
+    
+    // For now, just redirect to Wix auth - in a real app you'd handle this differently
+    setShowAuthModal(false);
+    actions.login();
   };
 
   const handlePredict = async () => {
@@ -151,7 +188,7 @@ export default function HomePage() {
                 </Link>
                 <Button 
                   className="bg-cyan-500 hover:bg-cyan-600 text-white"
-                  onClick={isAuthenticated ? () => {} : actions.login}
+                  onClick={isAuthenticated ? () => {} : () => setShowAuthModal(true)}
                 >
                   {isAuthenticated ? `Welcome, ${member?.profile?.nickname || 'User'}` : 'Login / Register'}
                 </Button>
@@ -357,6 +394,120 @@ export default function HomePage() {
             </div>
           </div>
         </footer>
+
+        {/* Auth Modal */}
+        <Dialog open={showAuthModal} onOpenChange={setShowAuthModal}>
+          <DialogContent className="sm:max-w-md bg-slate-900 border-slate-700 text-white">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold text-center">
+                Welcome to AI PlacementPredictor
+              </DialogTitle>
+            </DialogHeader>
+            
+            <Tabs value={authMode} onValueChange={setAuthMode} className="w-full">
+              <TabsList className="grid w-full grid-cols-2 bg-slate-800">
+                <TabsTrigger value="login" className="data-[state=active]:bg-cyan-600">
+                  Login
+                </TabsTrigger>
+                <TabsTrigger value="signup" className="data-[state=active]:bg-cyan-600">
+                  Sign Up
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="login" className="space-y-4 mt-6">
+                <form onSubmit={handleAuthSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="login-email">Email</Label>
+                    <Input
+                      id="login-email"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={authForm.email}
+                      onChange={(e) => handleAuthInputChange('email', e.target.value)}
+                      className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-400"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="login-password">Password</Label>
+                    <Input
+                      id="login-password"
+                      type="password"
+                      placeholder="Enter your password"
+                      value={authForm.password}
+                      onChange={(e) => handleAuthInputChange('password', e.target.value)}
+                      className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-400"
+                      required
+                    />
+                  </div>
+                  <Button type="submit" className="w-full bg-cyan-600 hover:bg-cyan-700">
+                    Login
+                  </Button>
+                </form>
+              </TabsContent>
+              
+              <TabsContent value="signup" className="space-y-4 mt-6">
+                <form onSubmit={handleAuthSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-name">Full Name</Label>
+                    <Input
+                      id="signup-name"
+                      type="text"
+                      placeholder="Enter your full name"
+                      value={authForm.fullName}
+                      onChange={(e) => handleAuthInputChange('fullName', e.target.value)}
+                      className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-400"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-email">Email</Label>
+                    <Input
+                      id="signup-email"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={authForm.email}
+                      onChange={(e) => handleAuthInputChange('email', e.target.value)}
+                      className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-400"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-password">Password</Label>
+                    <Input
+                      id="signup-password"
+                      type="password"
+                      placeholder="Create a password"
+                      value={authForm.password}
+                      onChange={(e) => handleAuthInputChange('password', e.target.value)}
+                      className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-400"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-confirm">Confirm Password</Label>
+                    <Input
+                      id="signup-confirm"
+                      type="password"
+                      placeholder="Confirm your password"
+                      value={authForm.confirmPassword}
+                      onChange={(e) => handleAuthInputChange('confirmPassword', e.target.value)}
+                      className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-400"
+                      required
+                    />
+                  </div>
+                  <Button type="submit" className="w-full bg-cyan-600 hover:bg-cyan-700">
+                    Create Account
+                  </Button>
+                </form>
+              </TabsContent>
+            </Tabs>
+            
+            <div className="text-center text-sm text-slate-400 mt-4">
+              By continuing, you agree to our Terms of Service and Privacy Policy
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
