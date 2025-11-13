@@ -45,6 +45,8 @@ export default function ProfilePage() {
     lastName: '',
     degreeType: '',
     branch: '',
+    graduationStatus: '',
+    completionYear: '',
     cgpa: '',
     tenthPercentage: '',
     twelfthPercentage: '',
@@ -422,6 +424,41 @@ export default function ProfilePage() {
                             </Select>
                           </div>
                           <div>
+                            <Label htmlFor="graduationStatus" className="text-white/90">Graduation Status *</Label>
+                            <Select value={profileData.graduationStatus} onValueChange={(value) => handleInputChange('graduationStatus', value)}>
+                              <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                                <SelectValue placeholder="Select graduation status" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Completed">Completed</SelectItem>
+                                <SelectItem value="Pursuing">Pursuing</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div>
+                            <Label htmlFor="completionYear" className="text-white/90">
+                              {profileData.graduationStatus === 'Completed' ? 'Completion Year' : 'Expected Completion Year'} *
+                            </Label>
+                            <Select value={profileData.completionYear} onValueChange={(value) => handleInputChange('completionYear', value)}>
+                              <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                                <SelectValue placeholder={profileData.graduationStatus === 'Completed' ? 'Select completion year' : 'Select expected year'} />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="2020">2020</SelectItem>
+                                <SelectItem value="2021">2021</SelectItem>
+                                <SelectItem value="2022">2022</SelectItem>
+                                <SelectItem value="2023">2023</SelectItem>
+                                <SelectItem value="2024">2024</SelectItem>
+                                <SelectItem value="2025">2025</SelectItem>
+                                <SelectItem value="2026">2026</SelectItem>
+                                <SelectItem value="2027">2027</SelectItem>
+                                <SelectItem value="2028">2028</SelectItem>
+                                <SelectItem value="2029">2029</SelectItem>
+                                <SelectItem value="2030">2030</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div>
                             <Label htmlFor="cgpa" className="text-white/90">CGPA (out of 10) *</Label>
                             <Input
                               id="cgpa"
@@ -703,7 +740,7 @@ export default function ProfilePage() {
                       
                       <Button
                         onClick={handlePredict}
-                        disabled={isLoading || !profileData.firstName || !profileData.lastName || !profileData.degreeType || !profileData.branch || !profileData.cgpa}
+                        disabled={isLoading || !profileData.firstName || !profileData.lastName || !profileData.degreeType || !profileData.branch || !profileData.graduationStatus || !profileData.completionYear || !profileData.cgpa}
                         className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-4 text-lg"
                       >
                         {isLoading ? (
