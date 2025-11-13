@@ -180,8 +180,7 @@ export default function HomePage() {
                 </span>
               </h1>
               <p className="text-xl text-white/80 max-w-4xl mx-auto mb-8 font-paragraph">
-                Harness the power of artificial intelligence to predict your placement success. 
-                Get personalized insights, salary predictions, and career recommendations.
+                Turn your academic data into career success with the help of AI.
               </p>
             </motion.div>
 
