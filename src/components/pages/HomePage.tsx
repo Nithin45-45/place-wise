@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Brain, 
@@ -26,7 +27,8 @@ import {
   ChevronRight,
   Zap,
   User,
-  Github
+  Github,
+  LogOut
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -183,12 +185,28 @@ export default function HomePage() {
                 <Link to="/profile" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
                   Profile
                 </Link>
-                <Button 
-                  className="bg-cyan-500 hover:bg-cyan-600 text-white"
-                  onClick={isAuthenticated ? () => {} : () => setShowAuthModal(true)}
-                >
-                  {isAuthenticated ? 'Account' : 'Login / Register'}
-                </Button>
+                {isAuthenticated ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
+                        Account
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem onClick={actions.logout} className="text-red-600 focus:text-red-600">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Button 
+                    className="bg-cyan-500 hover:bg-cyan-600 text-white"
+                    onClick={() => setShowAuthModal(true)}
+                  >
+                    Login / Register
+                  </Button>
+                )}
               </div>
               
               {/* Mobile Menu Button */}
