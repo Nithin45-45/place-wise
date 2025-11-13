@@ -147,9 +147,14 @@ export default function HomePage() {
                 <Link to="/profile" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
                   Profile
                 </Link>
-                <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
-                  Login / Register
-                </Button>
+                <div className="flex flex-col items-end gap-3">
+                  <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
+                    Login / Register
+                  </Button>
+                  <p className="text-sm text-white/80 max-w-xs text-right leading-relaxed">
+                    Students can create an account with Email & Password. On login, students access their personalized dashboard. Data privacy ensured with encryption and authentication. Each user can update profile info, academic details, and skills anytime.
+                  </p>
+                </div>
               </div>
               
               {/* Mobile Menu Button */}
