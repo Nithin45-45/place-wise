@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -19,6 +19,56 @@ import {
 
 export default function GalleryPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Auto-scrolling slider data for placement photos, events, and success stories
+  const sliderItems = [
+    {
+      id: 1,
+      image: 'https://static.wixstatic.com/media/52cebc_770f9f479d824533a63ac55dbd04438b~mv2.png?originWidth=640&originHeight=448',
+      caption: 'Our Achievers — Students Who Got Placed with AI Insights',
+      type: 'placement'
+    },
+    {
+      id: 2,
+      image: 'https://static.wixstatic.com/media/52cebc_b313fa9027324c928d060e52f7595b3f~mv2.png?originWidth=640&originHeight=448',
+      caption: 'AI Career Summit 2024 — Connecting Future Tech Leaders',
+      type: 'event'
+    },
+    {
+      id: 3,
+      image: 'https://static.wixstatic.com/media/52cebc_40c247e95686466fb4dcba99d65cc464~mv2.png?originWidth=640&originHeight=448',
+      caption: 'Success Story — From Campus to Silicon Valley',
+      type: 'success'
+    },
+    {
+      id: 4,
+      image: 'https://static.wixstatic.com/media/52cebc_b18126af61894c1b94e5437d01f0cbce~mv2.png?originWidth=640&originHeight=448',
+      caption: 'Our Achievers — 95% Placement Rate Through AI Predictions',
+      type: 'placement'
+    },
+    {
+      id: 5,
+      image: 'https://static.wixstatic.com/media/52cebc_8339e63f2a154e08a9a9abcecd07b276~mv2.png?originWidth=640&originHeight=448',
+      caption: 'Machine Learning Workshop — Building Tomorrow\'s Careers',
+      type: 'event'
+    },
+    {
+      id: 6,
+      image: 'https://static.wixstatic.com/media/52cebc_cf743f20154444df97bb90ec5df24881~mv2.png?originWidth=640&originHeight=448',
+      caption: 'Success Story — AI-Powered Career Transformation',
+      type: 'success'
+    }
+  ];
+
+  // Auto-scroll effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % sliderItems.length);
+    }, 4000); // Change slide every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [sliderItems.length]);
 
   const categories = [
     { id: 'all', name: 'All', count: 24 },
@@ -203,6 +253,101 @@ export default function GalleryPage() {
                 Explore our journey of innovation, success stories, and memorable moments in AI-powered career guidance.
               </p>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Auto-Scrolling Slider Section */}
+        <section className="py-16 px-6 bg-black/30 backdrop-blur-sm">
+          <div className="max-w-[120rem] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-heading">
+                Our Journey in
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400"> Pictures</span>
+              </h2>
+              <p className="text-lg text-white/80 max-w-3xl mx-auto font-paragraph">
+                Witness the moments that define our success in AI-powered career guidance
+              </p>
+            </motion.div>
+
+            {/* Slider Container */}
+            <div className="relative overflow-hidden rounded-2xl bg-black/20 backdrop-blur-md border border-white/10">
+              <div className="relative h-96 md:h-[500px]">
+                {sliderItems.map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ 
+                      opacity: index === currentSlide ? 1 : 0,
+                      x: index === currentSlide ? 0 : index < currentSlide ? -100 : 100
+                    }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.caption}
+                      width={1200}
+                      className="w-full h-full object-cover"
+                    />
+                    
+                    {/* Overlay with caption */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                      <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: index === currentSlide ? 1 : 0, y: index === currentSlide ? 0 : 30 }}
+                          transition={{ duration: 0.6, delay: 0.3 }}
+                        >
+                          <Badge className={`mb-4 ${
+                            item.type === 'placement' ? 'bg-green-500' :
+                            item.type === 'event' ? 'bg-blue-500' :
+                            'bg-purple-500'
+                          } text-white`}>
+                            {item.type === 'placement' ? 'Placement Success' :
+                             item.type === 'event' ? 'Event Highlight' :
+                             'Success Story'}
+                          </Badge>
+                          <h3 className="text-2xl md:text-4xl font-bold text-white mb-4 font-heading leading-tight">
+                            {item.caption}
+                          </h3>
+                        </motion.div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Slide Indicators */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                {sliderItems.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === currentSlide 
+                        ? 'bg-cyan-400 scale-125' 
+                        : 'bg-white/30 hover:bg-white/50'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Progress Bar */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-cyan-400 to-blue-400"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 4, ease: "linear" }}
+                  key={currentSlide}
+                />
+              </div>
+            </div>
           </div>
         </section>
 
