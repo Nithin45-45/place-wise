@@ -22,11 +22,11 @@ export default function RatingsPage() {
   const [selectedFilter, setSelectedFilter] = useState('all');
 
   const filters = [
-    { id: 'all', name: 'All Reviews', count: 156 },
-    { id: '5star', name: '5 Stars', count: 89 },
-    { id: '4star', name: '4 Stars', count: 45 },
-    { id: '3star', name: '3 Stars', count: 15 },
-    { id: 'recent', name: 'Recent', count: 25 }
+    { id: 'all', name: 'All Reviews', count: '-' },
+    { id: '5star', name: '5 Stars', count: '-' },
+    { id: '4star', name: '4 Stars', count: '-' },
+    { id: '3star', name: '3 Stars', count: '-' },
+    { id: 'recent', name: 'Recent', count: '-' }
   ];
 
   const reviews = [];
@@ -177,14 +177,14 @@ export default function RatingsPage() {
                   <CardContent>
                     <div className="flex items-center gap-4 mb-6">
                       <div className="text-6xl font-bold text-yellow-400">
-                        {overallStats.averageRating}
+                        -
                       </div>
                       <div>
                         <div className="flex gap-1 mb-2">
-                          {renderStars(Math.round(overallStats.averageRating))}
+                          {renderStars(0)}
                         </div>
                         <div className="text-white/70">
-                          Based on {overallStats.totalReviews} reviews
+                          Based on - reviews
                         </div>
                       </div>
                     </div>
@@ -194,15 +194,15 @@ export default function RatingsPage() {
                       {[5, 4, 3, 2, 1].map((rating) => (
                         <div key={rating} className="flex items-center gap-3">
                           <div className="flex items-center gap-1 w-16">
-                            <span className="text-sm">{rating}</span>
+                            <span className="text-sm">-</span>
                             <Star className="h-3 w-3 text-yellow-400 fill-current" />
                           </div>
                           <Progress 
-                            value={(overallStats.ratingDistribution[rating] / overallStats.totalReviews) * 100} 
+                            value={0} 
                             className="flex-1 h-2 bg-white/20"
                           />
                           <span className="text-sm text-white/70 w-8">
-                            {overallStats.ratingDistribution[rating]}
+                            -
                           </span>
                         </div>
                       ))}
@@ -222,7 +222,7 @@ export default function RatingsPage() {
                 <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white text-center">
                   <CardHeader>
                     <TrendingUp className="h-12 w-12 text-green-400 mx-auto mb-2" />
-                    <CardTitle className="text-3xl">{overallStats.successRate}%</CardTitle>
+                    <CardTitle className="text-3xl">-%</CardTitle>
                     <CardDescription className="text-white/70">Success Rate</CardDescription>
                   </CardHeader>
                 </Card>
@@ -230,7 +230,7 @@ export default function RatingsPage() {
                 <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white text-center">
                   <CardHeader>
                     <Award className="h-12 w-12 text-yellow-400 mx-auto mb-2" />
-                    <CardTitle className="text-3xl">{overallStats.satisfactionRate}%</CardTitle>
+                    <CardTitle className="text-3xl">-%</CardTitle>
                     <CardDescription className="text-white/70">Satisfaction Rate</CardDescription>
                   </CardHeader>
                 </Card>
@@ -238,7 +238,7 @@ export default function RatingsPage() {
                 <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white text-center">
                   <CardHeader>
                     <Users className="h-12 w-12 text-cyan-400 mx-auto mb-2" />
-                    <CardTitle className="text-3xl">10K+</CardTitle>
+                    <CardTitle className="text-3xl">-</CardTitle>
                     <CardDescription className="text-white/70">Students Helped</CardDescription>
                   </CardHeader>
                 </Card>
@@ -246,7 +246,7 @@ export default function RatingsPage() {
                 <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white text-center">
                   <CardHeader>
                     <MessageSquare className="h-12 w-12 text-blue-400 mx-auto mb-2" />
-                    <CardTitle className="text-3xl">{overallStats.totalReviews}</CardTitle>
+                    <CardTitle className="text-3xl">-</CardTitle>
                     <CardDescription className="text-white/70">Total Reviews</CardDescription>
                   </CardHeader>
                 </Card>
