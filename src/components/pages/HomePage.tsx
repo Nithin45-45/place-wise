@@ -530,8 +530,33 @@ export default function HomePage() {
                       variant="outline"
                       className="bg-slate-800 border-slate-600 text-white hover:bg-slate-700"
                       onClick={() => {
-                        // Google OAuth integration would go here
-                        console.log('Google signup clicked');
+                        const returnUrl = encodeURIComponent(window.location.pathname);
+                        const googleOAuthUrl = `/api/auth/oauth/google?returnToUrl=${returnUrl}`;
+                        
+                        const insideIframe = window.self !== window.top;
+                        if (!insideIframe) {
+                          window.location.href = googleOAuthUrl;
+                        } else {
+                          // Handle iframe context
+                          navigator.permissions?.query({ name: 'storage-access' as PermissionName })
+                            .then(result => {
+                              if (result.state === 'granted') {
+                                return true;
+                              }
+                              return document.requestStorageAccess().then(() => true).catch(() => false);
+                            })
+                            .then(accessGranted => {
+                              if (accessGranted) {
+                                const authWindow = window.open(googleOAuthUrl, '_blank', 'width=500,height=600');
+                                const checkClosed = setInterval(() => {
+                                  if (authWindow?.closed) {
+                                    clearInterval(checkClosed);
+                                    window.location.reload();
+                                  }
+                                }, 1000);
+                              }
+                            });
+                        }
                       }}
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -546,8 +571,33 @@ export default function HomePage() {
                       variant="outline"
                       className="bg-slate-800 border-slate-600 text-white hover:bg-slate-700"
                       onClick={() => {
-                        // LinkedIn OAuth integration would go here
-                        console.log('LinkedIn signup clicked');
+                        const returnUrl = encodeURIComponent(window.location.pathname);
+                        const linkedinOAuthUrl = `/api/auth/oauth/linkedin?returnToUrl=${returnUrl}`;
+                        
+                        const insideIframe = window.self !== window.top;
+                        if (!insideIframe) {
+                          window.location.href = linkedinOAuthUrl;
+                        } else {
+                          // Handle iframe context
+                          navigator.permissions?.query({ name: 'storage-access' as PermissionName })
+                            .then(result => {
+                              if (result.state === 'granted') {
+                                return true;
+                              }
+                              return document.requestStorageAccess().then(() => true).catch(() => false);
+                            })
+                            .then(accessGranted => {
+                              if (accessGranted) {
+                                const authWindow = window.open(linkedinOAuthUrl, '_blank', 'width=500,height=600');
+                                const checkClosed = setInterval(() => {
+                                  if (authWindow?.closed) {
+                                    clearInterval(checkClosed);
+                                    window.location.reload();
+                                  }
+                                }, 1000);
+                              }
+                            });
+                        }
                       }}
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -559,8 +609,33 @@ export default function HomePage() {
                       variant="outline"
                       className="bg-slate-800 border-slate-600 text-white hover:bg-slate-700"
                       onClick={() => {
-                        // GitHub OAuth integration would go here
-                        console.log('GitHub signup clicked');
+                        const returnUrl = encodeURIComponent(window.location.pathname);
+                        const githubOAuthUrl = `/api/auth/oauth/github?returnToUrl=${returnUrl}`;
+                        
+                        const insideIframe = window.self !== window.top;
+                        if (!insideIframe) {
+                          window.location.href = githubOAuthUrl;
+                        } else {
+                          // Handle iframe context
+                          navigator.permissions?.query({ name: 'storage-access' as PermissionName })
+                            .then(result => {
+                              if (result.state === 'granted') {
+                                return true;
+                              }
+                              return document.requestStorageAccess().then(() => true).catch(() => false);
+                            })
+                            .then(accessGranted => {
+                              if (accessGranted) {
+                                const authWindow = window.open(githubOAuthUrl, '_blank', 'width=500,height=600');
+                                const checkClosed = setInterval(() => {
+                                  if (authWindow?.closed) {
+                                    clearInterval(checkClosed);
+                                    window.location.reload();
+                                  }
+                                }, 1000);
+                              }
+                            });
+                        }
                       }}
                     >
                       <Github className="w-4 h-4" />
