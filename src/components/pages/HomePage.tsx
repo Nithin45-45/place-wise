@@ -187,7 +187,7 @@ export default function HomePage() {
                   className="bg-cyan-500 hover:bg-cyan-600 text-white"
                   onClick={isAuthenticated ? () => {} : () => setShowAuthModal(true)}
                 >
-                  {isAuthenticated ? `Welcome, ${member?.profile?.nickname || 'User'}` : 'Login / Register'}
+                  {isAuthenticated ? 'Account' : 'Login / Register'}
                 </Button>
               </div>
               
