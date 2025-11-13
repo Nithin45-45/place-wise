@@ -25,38 +25,86 @@ export function SignIn({
   const { actions } = useMember();
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
-      <div className={className}>
-        <Card className={`${cardClassName} bg-white border-2 border-gray-100 shadow-xl`}>
-          <CardHeader className="text-center space-y-6 py-12 px-10">
-            {/* Professional Brain Icon */}
-            <div className="flex justify-center mb-6">
-              <div className="relative">
-                <Brain className="h-16 w-16 text-primary" />
-                <Sparkles className="h-8 w-8 text-brandaccent absolute -top-2 -right-2" />
-              </div>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Animated Night Sky Background - matching home page */}
+      <div className="fixed inset-0 bg-gradient-to-b from-slate-900 via-blue-900 to-slate-800">
+        {/* Stars */}
+        <div className="absolute inset-0">
+          {[...Array(100)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute bg-white rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                width: `${Math.random() * 3 + 1}px`,
+                height: `${Math.random() * 3 + 1}px`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${Math.random() * 2 + 2}s`
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* Water Reflection */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-800/50 to-transparent">
+          <div className="absolute bottom-0 left-1/4 w-32 h-16 bg-black opacity-20 transform scale-y-[-1]">
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              <circle cx="50" cy="50" r="40" fill="currentColor" opacity="0.3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
+        <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+          {/* Laptop Image */}
+          <div className="hidden md:flex justify-center">
+            <div className="relative">
+              <Image 
+                src="https://static.wixstatic.com/media/52cebc_9191e6cd8d65454c850f30c1cb08de30~mv2.png?originWidth=384&originHeight=256"
+                alt="Modern laptop for AI placement prediction"
+                width={400}
+                className="rounded-lg shadow-2xl"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-blue-500/20 to-transparent rounded-lg"></div>
             </div>
-            <CardTitle className="text-3xl font-bold text-foreground font-heading">
-              {title}
-            </CardTitle>
-            <CardDescription className="text-lg text-muted-foreground font-paragraph">
-              {message}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-center px-10 pb-12 space-y-6">
-            <Button onClick={actions.login} className={buttonClassName}>
-              {buttonText}
-            </Button>
-            <div>
-              <Link 
-                to="/" 
-                className="text-muted-foreground hover:text-foreground transition-colors underline text-sm font-medium"
-              >
-                Return to Home
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+          </div>
+
+          {/* Sign In Card */}
+          <div className={className}>
+            <Card className={`${cardClassName} bg-white/95 backdrop-blur-sm border-2 border-gray-100 shadow-2xl`}>
+              <CardHeader className="text-center space-y-6 py-12 px-10">
+                {/* Professional Brain Icon */}
+                <div className="flex justify-center mb-6">
+                  <div className="relative">
+                    <Brain className="h-16 w-16 text-primary" />
+                    <Sparkles className="h-8 w-8 text-brandaccent absolute -top-2 -right-2" />
+                  </div>
+                </div>
+                <CardTitle className="text-3xl font-bold text-foreground font-heading">
+                  {title}
+                </CardTitle>
+                <CardDescription className="text-lg text-muted-foreground font-paragraph">
+                  {message}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center px-10 pb-12 space-y-6">
+                <Button onClick={actions.login} className={buttonClassName}>
+                  {buttonText}
+                </Button>
+                <div>
+                  <Link 
+                    to="/" 
+                    className="text-muted-foreground hover:text-foreground transition-colors underline text-sm font-medium"
+                  >
+                    Return to Home
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
