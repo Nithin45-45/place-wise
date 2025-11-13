@@ -59,16 +59,13 @@ export default function HomePage() {
     e.preventDefault();
     if (authMode === 'signup') {
       if (authForm.password !== authForm.confirmPassword) {
-        alert('Passwords do not match');
         return;
       }
       if (!authForm.fullName || !authForm.email || !authForm.password) {
-        alert('Please fill in all fields');
         return;
       }
     } else {
       if (!authForm.email || !authForm.password) {
-        alert('Please fill in all fields');
         return;
       }
     }
