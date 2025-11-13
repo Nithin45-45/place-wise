@@ -21,7 +21,8 @@ import {
   DollarSign,
   Star,
   ChevronRight,
-  Zap
+  Zap,
+  User
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -184,206 +185,38 @@ export default function HomePage() {
               </p>
             </motion.div>
 
-            {/* Main Prediction Interface */}
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
-              {/* Input Form */}
+            {/* Call to Action */}
+            <div className="text-center">
               <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white max-w-2xl mx-auto">
                   <CardHeader>
-                    <CardTitle className="text-2xl flex items-center gap-2">
-                      <Target className="h-6 w-6 text-cyan-400" />
-                      Enter Your Details
+                    <CardTitle className="text-3xl flex items-center justify-center gap-2">
+                      <Brain className="h-8 w-8 text-cyan-400" />
+                      Get Your Placement Prediction
                     </CardTitle>
-                    <CardDescription className="text-white/70">
-                      Provide your academic and experience details for AI analysis
+                    <CardDescription className="text-white/70 text-lg">
+                      Complete your profile to receive personalized AI-powered placement insights
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div>
-                      <Label htmlFor="cgpa" className="text-white/90">CGPA (out of 10)</Label>
-                      <Input
-                        id="cgpa"
-                        type="number"
-                        step="0.01"
-                        max="10"
-                        placeholder="8.5"
-                        value={formData.cgpa}
-                        onChange={(e) => handleInputChange('cgpa', e.target.value)}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                      />
+                  <CardContent className="text-center">
+                    <div className="mb-6">
+                      <div className="text-6xl mb-4">🎯</div>
+                      <p className="text-white/80 mb-6">
+                        Our advanced AI analyzes your academic performance, skills, and experience to predict your placement success with 95% accuracy.
+                      </p>
                     </div>
-                    
-                    <div>
-                      <Label htmlFor="skills" className="text-white/90">Technical Skills (comma-separated)</Label>
-                      <Textarea
-                        id="skills"
-                        placeholder="React, Python, Machine Learning, SQL, AWS"
-                        value={formData.skills}
-                        onChange={(e) => handleInputChange('skills', e.target.value)}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="internships" className="text-white/90">Internships</Label>
-                        <Input
-                          id="internships"
-                          type="number"
-                          placeholder="2"
-                          value={formData.internships}
-                          onChange={(e) => handleInputChange('internships', e.target.value)}
-                          className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="projects" className="text-white/90">Projects</Label>
-                        <Input
-                          id="projects"
-                          type="number"
-                          placeholder="5"
-                          value={formData.projects}
-                          onChange={(e) => handleInputChange('projects', e.target.value)}
-                          className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                        />
-                      </div>
-                    </div>
-                    
-                    <Button
-                      onClick={handlePredict}
-                      disabled={isLoading}
-                      className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3"
-                    >
-                      {isLoading ? (
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                          className="flex items-center gap-2"
-                        >
-                          <Zap className="h-5 w-5" />
-                          Analyzing...
-                        </motion.div>
-                      ) : (
-                        <span className="flex items-center gap-2">
-                          <Brain className="h-5 w-5" />
-                          Predict My Placement
-                        </span>
-                      )}
-                    </Button>
+                    <Link to="/profile">
+                      <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-4 px-8 text-lg">
+                        <User className="h-5 w-5 mr-2" />
+                        Complete Your Profile
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
-              </motion.div>
-
-              {/* Results */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <AnimatePresence mode="wait">
-                  {prediction ? (
-                    <motion.div
-                      key="results"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.5 }}
-                      className="space-y-6"
-                    >
-                      {/* Main Results Card */}
-                      <Card className="bg-gradient-to-br from-green-500/20 to-blue-500/20 backdrop-blur-md border-white/20 text-white">
-                        <CardHeader>
-                          <CardTitle className="text-2xl flex items-center gap-2">
-                            <Sparkles className="h-6 w-6 text-yellow-400" />
-                            AI Prediction Results
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                          <div className="grid grid-cols-2 gap-6">
-                            <div className="text-center">
-                              <div className="text-4xl font-bold text-green-400 mb-2">
-                                {prediction.placementChance}%
-                              </div>
-                              <div className="text-white/80">Placement Chance</div>
-                              <Progress 
-                                value={prediction.placementChance} 
-                                className="mt-2 h-2 bg-white/20"
-                              />
-                            </div>
-                            <div className="text-center">
-                              <div className="text-4xl font-bold text-cyan-400 mb-2 flex items-center justify-center gap-1">
-                                <DollarSign className="h-8 w-8" />
-                                {(prediction.expectedSalary / 1000).toFixed(0)}K
-                              </div>
-                              <div className="text-white/80">Expected Salary</div>
-                              <div className="text-sm text-green-400 mt-1">
-                                {prediction.confidence}% confidence
-                              </div>
-                            </div>
-                          </div>
-                          
-                          {prediction.topSkills.length > 0 && (
-                            <div>
-                              <div className="text-sm text-white/80 mb-2">Top Skills Detected:</div>
-                              <div className="flex flex-wrap gap-2">
-                                {prediction.topSkills.map((skill, index) => (
-                                  <Badge key={index} className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30">
-                                    {skill}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </CardContent>
-                      </Card>
-
-                      {/* AI Recommendations */}
-                      <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-                        <CardHeader>
-                          <CardTitle className="text-xl flex items-center gap-2">
-                            <Lightbulb className="h-5 w-5 text-yellow-400" />
-                            AI Recommendations
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-3">
-                            {prediction.recommendations.map((rec, index) => (
-                              <motion.div
-                                key={index}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10"
-                              >
-                                <ChevronRight className="h-4 w-4 text-cyan-400 flex-shrink-0" />
-                                <span className="text-white/90">{rec}</span>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="placeholder"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-center py-20"
-                    >
-                      <Brain className="h-24 w-24 text-cyan-400/50 mx-auto mb-6" />
-                      <h3 className="text-2xl font-semibold text-white/80 mb-4">
-                        Ready for AI Analysis
-                      </h3>
-                      <p className="text-white/60">
-                        Fill in your details and click predict to get your personalized placement insights
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </motion.div>
             </div>
           </div>

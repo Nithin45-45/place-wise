@@ -7,7 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
-import { motion } from 'framer-motion';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Brain, 
   Sparkles, 
@@ -24,78 +26,101 @@ import {
   TrendingUp,
   Award,
   Target,
-  Settings
+  Settings,
+  Code,
+  Trophy,
+  MessageSquare,
+  Zap
 } from 'lucide-react';
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
-    name: 'Alex Johnson',
-    email: 'alex.johnson@university.edu',
-    phone: '+1 (555) 123-4567',
-    location: 'San Francisco, CA',
-    university: 'Stanford University',
-    major: 'Computer Science',
-    graduationYear: '2024',
-    gpa: '3.85',
-    bio: 'Passionate computer science student with a focus on artificial intelligence and machine learning. Experienced in full-stack development and data analysis.',
-    skills: ['Python', 'JavaScript', 'React', 'Machine Learning', 'SQL', 'AWS'],
-    experience: [
-      {
-        title: 'Software Engineering Intern',
-        company: 'Google',
-        duration: 'Summer 2023',
-        description: 'Developed machine learning models for search optimization'
-      },
-      {
-        title: 'Research Assistant',
-        company: 'Stanford AI Lab',
-        duration: '2022-2023',
-        description: 'Conducted research on natural language processing applications'
-      }
-    ],
-    projects: [
-      {
-        name: 'AI Career Predictor',
-        description: 'Built a machine learning model to predict career outcomes',
-        technologies: ['Python', 'TensorFlow', 'Flask']
-      },
-      {
-        name: 'Social Media Analytics Dashboard',
-        description: 'Real-time analytics platform for social media insights',
-        technologies: ['React', 'Node.js', 'MongoDB']
-      }
-    ]
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    branch: '',
+    cgpa: '',
+    tenthPercentage: '',
+    twelfthPercentage: '',
+    skills: '',
+    interests: '',
+    internship: '',
+    hackathon: '',
+    majorProjects: '',
+    miniProjects: '',
+    certifications: '',
+    communicationRating: '',
+    backlogs: ''
   });
+  const [prediction, setPrediction] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [predictionHistory] = useState([
-    {
-      date: '2024-03-15',
-      placementChance: 92,
-      expectedSalary: 125000,
-      topSkills: ['Python', 'Machine Learning', 'React']
-    },
-    {
-      date: '2024-02-20',
-      placementChance: 88,
-      expectedSalary: 118000,
-      topSkills: ['JavaScript', 'SQL', 'AWS']
-    },
-    {
-      date: '2024-01-10',
-      placementChance: 85,
-      expectedSalary: 112000,
-      topSkills: ['Python', 'Data Analysis', 'React']
-    }
-  ]);
+  const handleInputChange = (field, value) => {
+    setProfileData(prev => ({ ...prev, [field]: value }));
+  };
 
   const handleSave = () => {
     setIsEditing(false);
     // Here you would typically save to a backend
   };
 
-  const handleInputChange = (field, value) => {
-    setProfileData(prev => ({ ...prev, [field]: value }));
+  const handlePredict = async () => {
+    setIsLoading(true);
+    // Simulate AI prediction with enhanced algorithm
+    setTimeout(() => {
+      const cgpaScore = parseFloat(profileData.cgpa) || 0;
+      const tenthScore = parseFloat(profileData.tenthPercentage) || 0;
+      const twelfthScore = parseFloat(profileData.twelfthPercentage) || 0;
+      const skillsCount = profileData.skills.split(',').filter(s => s.trim()).length;
+      const majorProjectsCount = parseInt(profileData.majorProjects) || 0;
+      const miniProjectsCount = parseInt(profileData.miniProjects) || 0;
+      const certificationsCount = parseInt(profileData.certifications) || 0;
+      const communicationScore = parseInt(profileData.communicationRating) || 0;
+      const backlogsCount = parseInt(profileData.backlogs) || 0;
+      const hasInternship = profileData.internship === 'yes' ? 1 : 0;
+      const hasHackathon = profileData.hackathon === 'yes' ? 1 : 0;
+      
+      // Enhanced scoring algorithm
+      const academicScore = (cgpaScore / 10) * 25 + (tenthScore / 100) * 10 + (twelfthScore / 100) * 10;
+      const experienceScore = hasInternship * 15 + hasHackathon * 10 + majorProjectsCount * 8 + miniProjectsCount * 3;
+      const skillsScore = skillsCount * 3 + certificationsCount * 5;
+      const communicationScore_weighted = communicationScore * 4;
+      const backlogsPenalty = backlogsCount * -5;
+      
+      const totalScore = academicScore + experienceScore + skillsScore + communicationScore_weighted + backlogsPenalty;
+      const placementChance = Math.min(98, Math.max(10, totalScore + Math.random() * 15));
+      
+      // Salary calculation based on branch and performance
+      const branchMultiplier = {
+        'Computer Science': 1.2,
+        'Information Technology': 1.15,
+        'Electronics': 1.1,
+        'Mechanical': 1.0,
+        'Civil': 0.9,
+        'Electrical': 1.05,
+        'Chemical': 1.1,
+        'Other': 1.0
+      };
+      
+      const baseSalary = 400000; // 4 LPA base
+      const expectedSalary = Math.round(baseSalary * (branchMultiplier[profileData.branch] || 1) * (placementChance / 100) * (1 + Math.random() * 0.5));
+      
+      setPrediction({
+        placementChance: Math.round(placementChance),
+        expectedSalary,
+        confidence: Math.round(88 + Math.random() * 10),
+        topSkills: profileData.skills.split(',').slice(0, 3).map(s => s.trim()).filter(Boolean),
+        recommendations: [
+          backlogsCount > 0 ? 'Clear pending backlogs to improve placement chances' : 'Maintain excellent academic record',
+          communicationScore < 4 ? 'Focus on improving communication skills' : 'Leverage strong communication skills',
+          !hasInternship ? 'Consider pursuing internship opportunities' : 'Highlight internship experience in interviews',
+          skillsCount < 5 ? 'Expand technical skill set' : 'Showcase diverse technical expertise',
+          majorProjectsCount < 2 ? 'Work on more substantial projects' : 'Document project achievements effectively'
+        ].slice(0, 4)
+      });
+      setIsLoading(false);
+    }, 2500);
   };
 
   return (
@@ -179,29 +204,24 @@ export default function ProfilePage() {
                   <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                     <div className="flex items-center gap-6">
                       <div className="w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-400 rounded-full flex items-center justify-center text-white text-3xl font-bold">
-                        {profileData.name.split(' ').map(n => n[0]).join('')}
+                        {profileData.firstName && profileData.lastName 
+                          ? `${profileData.firstName[0]}${profileData.lastName[0]}` 
+                          : 'ST'}
                       </div>
                       <div>
-                        <h1 className="text-4xl font-bold text-white mb-2">{profileData.name}</h1>
+                        <h1 className="text-4xl font-bold text-white mb-2">
+                          {profileData.firstName || profileData.lastName 
+                            ? `${profileData.firstName} ${profileData.middleName} ${profileData.lastName}`.trim()
+                            : 'Student Profile'}
+                        </h1>
                         <div className="flex items-center gap-4 text-white/70 mb-2">
                           <div className="flex items-center gap-1">
                             <GraduationCap className="h-4 w-4" />
-                            {profileData.major} • {profileData.university}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Calendar className="h-4 w-4" />
-                            Class of {profileData.graduationYear}
+                            {profileData.branch || 'Select Branch'} • {profileData.cgpa ? `CGPA: ${profileData.cgpa}` : 'Enter CGPA'}
                           </div>
                         </div>
-                        <div className="flex items-center gap-4 text-white/70">
-                          <div className="flex items-center gap-1">
-                            <Mail className="h-4 w-4" />
-                            {profileData.email}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <MapPin className="h-4 w-4" />
-                            {profileData.location}
-                          </div>
+                        <div className="text-white/70">
+                          Complete your profile to get accurate placement predictions
                         </div>
                       </div>
                     </div>
@@ -213,7 +233,7 @@ export default function ProfilePage() {
                         {isEditing ? (
                           <>
                             <Save className="h-4 w-4 mr-2" />
-                            Save Changes
+                            Save Profile
                           </>
                         ) : (
                           <>
@@ -221,10 +241,6 @@ export default function ProfilePage() {
                             Edit Profile
                           </>
                         )}
-                      </Button>
-                      <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                        <Settings className="h-4 w-4 mr-2" />
-                        Settings
                       </Button>
                     </div>
                   </div>
@@ -238,9 +254,8 @@ export default function ProfilePage() {
         <section className="py-10 px-6">
           <div className="max-w-[120rem] mx-auto">
             <div className="grid lg:grid-cols-3 gap-8">
-              {/* Left Column - Personal Info & Bio */}
+              {/* Left Column - Student Information Form */}
               <div className="lg:col-span-2 space-y-8">
-                {/* Personal Information */}
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -248,236 +263,417 @@ export default function ProfilePage() {
                 >
                   <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <User className="h-5 w-5 text-cyan-400" />
-                        Personal Information
+                      <CardTitle className="text-2xl flex items-center gap-2">
+                        <User className="h-6 w-6 text-cyan-400" />
+                        Student Information
                       </CardTitle>
+                      <CardDescription className="text-white/70">
+                        Complete your profile for accurate placement predictions
+                      </CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      {isEditing ? (
-                        <div className="grid md:grid-cols-2 gap-4">
+                    <CardContent className="space-y-6">
+                      {/* Personal Information */}
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <User className="h-5 w-5 text-cyan-400" />
+                          <h3 className="text-lg font-semibold text-white">Personal Information</h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div>
-                            <Label htmlFor="name" className="text-white/90">Full Name</Label>
+                            <Label htmlFor="firstName" className="text-white/90">First Name *</Label>
                             <Input
-                              id="name"
-                              value={profileData.name}
-                              onChange={(e) => handleInputChange('name', e.target.value)}
-                              className="bg-white/10 border-white/20 text-white"
+                              id="firstName"
+                              placeholder="John"
+                              value={profileData.firstName}
+                              onChange={(e) => handleInputChange('firstName', e.target.value)}
+                              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                             />
                           </div>
                           <div>
-                            <Label htmlFor="email" className="text-white/90">Email</Label>
+                            <Label htmlFor="middleName" className="text-white/90">Middle Name</Label>
                             <Input
-                              id="email"
-                              value={profileData.email}
-                              onChange={(e) => handleInputChange('email', e.target.value)}
-                              className="bg-white/10 border-white/20 text-white"
+                              id="middleName"
+                              placeholder="Michael"
+                              value={profileData.middleName}
+                              onChange={(e) => handleInputChange('middleName', e.target.value)}
+                              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                             />
                           </div>
                           <div>
-                            <Label htmlFor="phone" className="text-white/90">Phone</Label>
+                            <Label htmlFor="lastName" className="text-white/90">Last Name *</Label>
                             <Input
-                              id="phone"
-                              value={profileData.phone}
-                              onChange={(e) => handleInputChange('phone', e.target.value)}
-                              className="bg-white/10 border-white/20 text-white"
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="location" className="text-white/90">Location</Label>
-                            <Input
-                              id="location"
-                              value={profileData.location}
-                              onChange={(e) => handleInputChange('location', e.target.value)}
-                              className="bg-white/10 border-white/20 text-white"
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="gpa" className="text-white/90">GPA</Label>
-                            <Input
-                              id="gpa"
-                              value={profileData.gpa}
-                              onChange={(e) => handleInputChange('gpa', e.target.value)}
-                              className="bg-white/10 border-white/20 text-white"
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="graduationYear" className="text-white/90">Graduation Year</Label>
-                            <Input
-                              id="graduationYear"
-                              value={profileData.graduationYear}
-                              onChange={(e) => handleInputChange('graduationYear', e.target.value)}
-                              className="bg-white/10 border-white/20 text-white"
+                              id="lastName"
+                              placeholder="Doe"
+                              value={profileData.lastName}
+                              onChange={(e) => handleInputChange('lastName', e.target.value)}
+                              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                             />
                           </div>
                         </div>
-                      ) : (
-                        <div className="grid md:grid-cols-2 gap-6">
-                          <div className="space-y-3">
-                            <div className="flex items-center gap-2">
-                              <Phone className="h-4 w-4 text-cyan-400" />
-                              <span>{profileData.phone}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Star className="h-4 w-4 text-yellow-400" />
-                              <span>GPA: {profileData.gpa}</span>
-                            </div>
-                          </div>
-                          <div className="space-y-3">
-                            <div className="flex items-center gap-2">
-                              <Award className="h-4 w-4 text-green-400" />
-                              <span>Dean's List (3 semesters)</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Target className="h-4 w-4 text-blue-400" />
-                              <span>Career Focus: AI/ML</span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                </motion.div>
+                      </div>
 
-                {/* Bio Section */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                >
-                  <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-                    <CardHeader>
-                      <CardTitle>About Me</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      {isEditing ? (
-                        <Textarea
-                          value={profileData.bio}
-                          onChange={(e) => handleInputChange('bio', e.target.value)}
-                          className="bg-white/10 border-white/20 text-white min-h-[100px]"
-                          placeholder="Tell us about yourself..."
-                        />
-                      ) : (
-                        <p className="text-white/80 leading-relaxed">{profileData.bio}</p>
-                      )}
-                    </CardContent>
-                  </Card>
-                </motion.div>
-
-                {/* Experience Section */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                >
-                  <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Briefcase className="h-5 w-5 text-cyan-400" />
-                        Experience
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {profileData.experience.map((exp, index) => (
-                        <div key={index} className="border-l-2 border-cyan-400 pl-4">
-                          <h3 className="text-lg font-semibold text-white">{exp.title}</h3>
-                          <div className="text-cyan-400 mb-2">{exp.company} • {exp.duration}</div>
-                          <p className="text-white/70">{exp.description}</p>
+                      {/* Academic Information */}
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <GraduationCap className="h-5 w-5 text-cyan-400" />
+                          <h3 className="text-lg font-semibold text-white">Academic Information</h3>
                         </div>
-                      ))}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label htmlFor="branch" className="text-white/90">Branch/Department *</Label>
+                            <Select value={profileData.branch} onValueChange={(value) => handleInputChange('branch', value)}>
+                              <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                                <SelectValue placeholder="Select your branch" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Computer Science">Computer Science</SelectItem>
+                                <SelectItem value="Information Technology">Information Technology</SelectItem>
+                                <SelectItem value="Electronics">Electronics & Communication</SelectItem>
+                                <SelectItem value="Mechanical">Mechanical Engineering</SelectItem>
+                                <SelectItem value="Civil">Civil Engineering</SelectItem>
+                                <SelectItem value="Electrical">Electrical Engineering</SelectItem>
+                                <SelectItem value="Chemical">Chemical Engineering</SelectItem>
+                                <SelectItem value="Other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div>
+                            <Label htmlFor="cgpa" className="text-white/90">CGPA (out of 10) *</Label>
+                            <Input
+                              id="cgpa"
+                              type="number"
+                              step="0.01"
+                              max="10"
+                              placeholder="8.5"
+                              value={profileData.cgpa}
+                              onChange={(e) => handleInputChange('cgpa', e.target.value)}
+                              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="tenthPercentage" className="text-white/90">10th Percentage *</Label>
+                            <Input
+                              id="tenthPercentage"
+                              type="number"
+                              max="100"
+                              placeholder="85.5"
+                              value={profileData.tenthPercentage}
+                              onChange={(e) => handleInputChange('tenthPercentage', e.target.value)}
+                              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="twelfthPercentage" className="text-white/90">12th Percentage *</Label>
+                            <Input
+                              id="twelfthPercentage"
+                              type="number"
+                              max="100"
+                              placeholder="78.2"
+                              value={profileData.twelfthPercentage}
+                              onChange={(e) => handleInputChange('twelfthPercentage', e.target.value)}
+                              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Skills and Interests */}
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Code className="h-5 w-5 text-cyan-400" />
+                          <h3 className="text-lg font-semibold text-white">Skills & Interests</h3>
+                        </div>
+                        <div>
+                          <Label htmlFor="skills" className="text-white/90">Technical Skills (comma-separated) *</Label>
+                          <Textarea
+                            id="skills"
+                            placeholder="Python, Java, React, Machine Learning, SQL, AWS, Docker"
+                            value={profileData.skills}
+                            onChange={(e) => handleInputChange('skills', e.target.value)}
+                            className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="interests" className="text-white/90">Interests/Career Goals</Label>
+                          <Select value={profileData.interests} onValueChange={(value) => handleInputChange('interests', value)}>
+                            <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                              <SelectValue placeholder="Select your primary interest" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Software Development">Software Development</SelectItem>
+                              <SelectItem value="Data Science">Data Science & Analytics</SelectItem>
+                              <SelectItem value="Machine Learning">Machine Learning/AI</SelectItem>
+                              <SelectItem value="Web Development">Web Development</SelectItem>
+                              <SelectItem value="Mobile Development">Mobile App Development</SelectItem>
+                              <SelectItem value="DevOps">DevOps & Cloud</SelectItem>
+                              <SelectItem value="Cybersecurity">Cybersecurity</SelectItem>
+                              <SelectItem value="Product Management">Product Management</SelectItem>
+                              <SelectItem value="Research">Research & Development</SelectItem>
+                              <SelectItem value="Other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      {/* Experience */}
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Briefcase className="h-5 w-5 text-cyan-400" />
+                          <h3 className="text-lg font-semibold text-white">Experience & Activities</h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label className="text-white/90">Internship Experience *</Label>
+                            <RadioGroup 
+                              value={profileData.internship} 
+                              onValueChange={(value) => handleInputChange('internship', value)}
+                              className="flex gap-6 mt-2"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="yes" id="internship-yes" />
+                                <Label htmlFor="internship-yes" className="text-white/90">Yes</Label>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="no" id="internship-no" />
+                                <Label htmlFor="internship-no" className="text-white/90">No</Label>
+                              </div>
+                            </RadioGroup>
+                          </div>
+                          <div>
+                            <Label className="text-white/90">Hackathon Participation *</Label>
+                            <RadioGroup 
+                              value={profileData.hackathon} 
+                              onValueChange={(value) => handleInputChange('hackathon', value)}
+                              className="flex gap-6 mt-2"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="yes" id="hackathon-yes" />
+                                <Label htmlFor="hackathon-yes" className="text-white/90">Yes</Label>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="no" id="hackathon-no" />
+                                <Label htmlFor="hackathon-no" className="text-white/90">No</Label>
+                              </div>
+                            </RadioGroup>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Projects and Achievements */}
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Trophy className="h-5 w-5 text-cyan-400" />
+                          <h3 className="text-lg font-semibold text-white">Projects & Achievements</h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div>
+                            <Label htmlFor="majorProjects" className="text-white/90">Major Projects</Label>
+                            <Input
+                              id="majorProjects"
+                              type="number"
+                              min="0"
+                              placeholder="2"
+                              value={profileData.majorProjects}
+                              onChange={(e) => handleInputChange('majorProjects', e.target.value)}
+                              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="miniProjects" className="text-white/90">Mini Projects</Label>
+                            <Input
+                              id="miniProjects"
+                              type="number"
+                              min="0"
+                              placeholder="5"
+                              value={profileData.miniProjects}
+                              onChange={(e) => handleInputChange('miniProjects', e.target.value)}
+                              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="certifications" className="text-white/90">Certifications</Label>
+                            <Input
+                              id="certifications"
+                              type="number"
+                              min="0"
+                              placeholder="3"
+                              value={profileData.certifications}
+                              onChange={(e) => handleInputChange('certifications', e.target.value)}
+                              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Additional Information */}
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <MessageSquare className="h-5 w-5 text-cyan-400" />
+                          <h3 className="text-lg font-semibold text-white">Additional Information</h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label htmlFor="communicationRating" className="text-white/90">Communication Rating (1-5) *</Label>
+                            <Select value={profileData.communicationRating} onValueChange={(value) => handleInputChange('communicationRating', value)}>
+                              <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                                <SelectValue placeholder="Rate your communication skills" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="1">1 - Poor</SelectItem>
+                                <SelectItem value="2">2 - Below Average</SelectItem>
+                                <SelectItem value="3">3 - Average</SelectItem>
+                                <SelectItem value="4">4 - Good</SelectItem>
+                                <SelectItem value="5">5 - Excellent</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div>
+                            <Label htmlFor="backlogs" className="text-white/90">Number of Backlogs</Label>
+                            <Input
+                              id="backlogs"
+                              type="number"
+                              min="0"
+                              placeholder="0"
+                              value={profileData.backlogs}
+                              onChange={(e) => handleInputChange('backlogs', e.target.value)}
+                              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <Button
+                        onClick={handlePredict}
+                        disabled={isLoading || !profileData.firstName || !profileData.lastName || !profileData.branch || !profileData.cgpa}
+                        className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-4 text-lg"
+                      >
+                        {isLoading ? (
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            className="flex items-center gap-2"
+                          >
+                            <Zap className="h-5 w-5" />
+                            Analyzing Your Profile...
+                          </motion.div>
+                        ) : (
+                          <span className="flex items-center gap-2">
+                            <Brain className="h-5 w-5" />
+                            Predict My Placement
+                          </span>
+                        )}
+                      </Button>
                     </CardContent>
                   </Card>
                 </motion.div>
               </div>
 
-              {/* Right Column - Skills & Predictions */}
+              {/* Right Column - Prediction Results */}
               <div className="space-y-8">
-                {/* Skills */}
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-                    <CardHeader>
-                      <CardTitle>Skills</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-wrap gap-2">
-                        {profileData.skills.map((skill, index) => (
-                          <Badge key={index} className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30">
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-
-                {/* Latest Prediction */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.5 }}
-                >
-                  <Card className="bg-gradient-to-br from-green-500/20 to-blue-500/20 backdrop-blur-md border-white/20 text-white">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <TrendingUp className="h-5 w-5 text-green-400" />
-                        Latest Prediction
-                      </CardTitle>
-                      <CardDescription className="text-white/70">
-                        {new Date(predictionHistory[0].date).toLocaleDateString()}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="text-center">
-                        <div className="text-3xl font-bold text-green-400 mb-2">
-                          {predictionHistory[0].placementChance}%
-                        </div>
-                        <div className="text-white/80 mb-3">Placement Chance</div>
-                        <Progress 
-                          value={predictionHistory[0].placementChance} 
-                          className="h-2 bg-white/20"
-                        />
-                      </div>
-                      
-                      <div className="text-center pt-4 border-t border-white/10">
-                        <div className="text-2xl font-bold text-cyan-400 mb-1">
-                          ${(predictionHistory[0].expectedSalary / 1000).toFixed(0)}K
-                        </div>
-                        <div className="text-white/80">Expected Salary</div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-
-                {/* Prediction History */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                >
-                  <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-                    <CardHeader>
-                      <CardTitle>Prediction History</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {predictionHistory.slice(1).map((prediction, index) => (
-                        <div key={index} className="flex justify-between items-center p-3 rounded-lg bg-white/5">
-                          <div>
-                            <div className="text-sm text-white/70">
-                              {new Date(prediction.date).toLocaleDateString()}
+                  <AnimatePresence mode="wait">
+                    {prediction ? (
+                      <motion.div
+                        key="results"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.5 }}
+                        className="space-y-6"
+                      >
+                        {/* Main Results Card */}
+                        <Card className="bg-gradient-to-br from-green-500/20 to-blue-500/20 backdrop-blur-md border-white/20 text-white">
+                          <CardHeader>
+                            <CardTitle className="text-2xl flex items-center gap-2">
+                              <Sparkles className="h-6 w-6 text-yellow-400" />
+                              AI Prediction Results
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="space-y-6">
+                            <div className="grid grid-cols-1 gap-6">
+                              <div className="text-center">
+                                <div className="text-4xl font-bold text-green-400 mb-2">
+                                  {prediction.placementChance}%
+                                </div>
+                                <div className="text-white/80">Placement Chance</div>
+                                <Progress 
+                                  value={prediction.placementChance} 
+                                  className="mt-2 h-2 bg-white/20"
+                                />
+                              </div>
+                              <div className="text-center">
+                                <div className="text-4xl font-bold text-cyan-400 mb-2">
+                                  ₹{(prediction.expectedSalary / 100000).toFixed(1)}L
+                                </div>
+                                <div className="text-white/80">Expected Salary (LPA)</div>
+                                <div className="text-sm text-green-400 mt-1">
+                                  {prediction.confidence}% confidence
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-sm text-cyan-400">
-                              {prediction.placementChance}% • ${(prediction.expectedSalary / 1000).toFixed(0)}K
+                            
+                            {prediction.topSkills.length > 0 && (
+                              <div>
+                                <div className="text-sm text-white/80 mb-2">Top Skills Detected:</div>
+                                <div className="flex flex-wrap gap-2">
+                                  {prediction.topSkills.map((skill, index) => (
+                                    <Badge key={index} className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30">
+                                      {skill}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </CardContent>
+                        </Card>
+
+                        {/* AI Recommendations */}
+                        <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
+                          <CardHeader>
+                            <CardTitle className="text-xl flex items-center gap-2">
+                              <Target className="h-5 w-5 text-yellow-400" />
+                              AI Recommendations
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-3">
+                              {prediction.recommendations.map((rec, index) => (
+                                <motion.div
+                                  key={index}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: index * 0.1 }}
+                                  className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10"
+                                >
+                                  <Star className="h-4 w-4 text-cyan-400 flex-shrink-0" />
+                                  <span className="text-white/90">{rec}</span>
+                                </motion.div>
+                              ))}
                             </div>
-                          </div>
-                          <TrendingUp className="h-4 w-4 text-green-400" />
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="placeholder"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center py-20"
+                      >
+                        <Brain className="h-24 w-24 text-cyan-400/50 mx-auto mb-6" />
+                        <h3 className="text-2xl font-semibold text-white/80 mb-4">
+                          Ready for AI Analysis
+                        </h3>
+                        <p className="text-white/60">
+                          Complete your profile and click predict to get personalized placement insights
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               </div>
             </div>
