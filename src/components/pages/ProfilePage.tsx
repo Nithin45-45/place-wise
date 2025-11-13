@@ -30,7 +30,11 @@ import {
   Code,
   Trophy,
   MessageSquare,
-  Zap
+  Zap,
+  Upload,
+  FileText,
+  Download,
+  X
 } from 'lucide-react';
 
 export default function ProfilePage() {
@@ -51,13 +55,59 @@ export default function ProfilePage() {
     miniProjects: '',
     certifications: '',
     communicationRating: '',
-    backlogs: ''
+    backlogs: '',
+    resumeFile: null,
+    resumeFileName: ''
   });
   const [prediction, setPrediction] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (field, value) => {
     setProfileData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Check if file is PDF
+      if (file.type !== 'application/pdf') {
+        alert('Please upload only PDF files');
+        return;
+      }
+      
+      // Check file size (limit to 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size should be less than 5MB');
+        return;
+      }
+      
+      setProfileData(prev => ({
+        ...prev,
+        resumeFile: file,
+        resumeFileName: file.name
+      }));
+    }
+  };
+
+  const handleRemoveResume = () => {
+    setProfileData(prev => ({
+      ...prev,
+      resumeFile: null,
+      resumeFileName: ''
+    }));
+  };
+
+  const handleDownloadResume = () => {
+    if (profileData.resumeFile) {
+      const url = URL.createObjectURL(profileData.resumeFile);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = profileData.resumeFileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
   };
 
   const handleSave = () => {
@@ -538,6 +588,81 @@ export default function ProfilePage() {
                               onChange={(e) => handleInputChange('backlogs', e.target.value)}
                               className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                             />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Resume Upload Section */}
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <FileText className="h-5 w-5 text-cyan-400" />
+                          <h3 className="text-lg font-semibold text-white">Resume Upload</h3>
+                        </div>
+                        <div className="space-y-4">
+                          {!profileData.resumeFile ? (
+                            <div className="border-2 border-dashed border-white/20 rounded-lg p-6 text-center hover:border-cyan-400/50 transition-colors">
+                              <Upload className="h-12 w-12 text-cyan-400 mx-auto mb-4" />
+                              <div className="space-y-2">
+                                <p className="text-white/90 font-medium">Upload your resume</p>
+                                <p className="text-white/60 text-sm">PDF files only, max 5MB</p>
+                              </div>
+                              <input
+                                type="file"
+                                accept=".pdf"
+                                onChange={handleFileUpload}
+                                className="hidden"
+                                id="resume-upload"
+                              />
+                              <Label htmlFor="resume-upload">
+                                <Button 
+                                  type="button" 
+                                  className="mt-4 bg-cyan-500 hover:bg-cyan-600 text-white"
+                                  onClick={() => document.getElementById('resume-upload').click()}
+                                >
+                                  <Upload className="h-4 w-4 mr-2" />
+                                  Choose PDF File
+                                </Button>
+                              </Label>
+                            </div>
+                          ) : (
+                            <div className="bg-white/10 border border-white/20 rounded-lg p-4">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                  <FileText className="h-8 w-8 text-cyan-400" />
+                                  <div>
+                                    <p className="text-white font-medium">{profileData.resumeFileName}</p>
+                                    <p className="text-white/60 text-sm">
+                                      {profileData.resumeFile ? `${(profileData.resumeFile.size / (1024 * 1024)).toFixed(2)} MB` : ''}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={handleDownloadResume}
+                                    className="border-white/20 text-white hover:bg-white/10"
+                                  >
+                                    <Download className="h-4 w-4 mr-1" />
+                                    Download
+                                  </Button>
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={handleRemoveResume}
+                                    className="border-red-500/50 text-red-400 hover:bg-red-500/10"
+                                  >
+                                    <X className="h-4 w-4 mr-1" />
+                                    Remove
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          <div className="text-xs text-white/50">
+                            💡 Tip: A well-formatted resume with relevant keywords can improve your placement predictions
                           </div>
                         </div>
                       </div>
