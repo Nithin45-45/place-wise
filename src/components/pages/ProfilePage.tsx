@@ -34,8 +34,10 @@ import {
   Upload,
   FileText,
   Download,
-  X
+  X,
+  Camera
 } from 'lucide-react';
+import { Image } from '@/components/ui/image';
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
@@ -60,7 +62,11 @@ export default function ProfilePage() {
     communicationRating: '',
     backlogs: '',
     resumeFile: null,
-    resumeFileName: ''
+    resumeFileName: '',
+    profilePicture: null,
+    profilePictureUrl: '',
+    internshipCertification: null,
+    internshipCertificationName: ''
   });
   const [prediction, setPrediction] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -106,6 +112,87 @@ export default function ProfilePage() {
       const a = document.createElement('a');
       a.href = url;
       a.download = profileData.resumeFileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const handleProfilePictureUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Check if file is image (JPG/PNG)
+      if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
+        alert('Please upload only JPG or PNG image files');
+        return;
+      }
+      
+      // Check file size (limit to 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Image size should be less than 2MB');
+        return;
+      }
+      
+      // Create preview URL
+      const imageUrl = URL.createObjectURL(file);
+      
+      setProfileData(prev => ({
+        ...prev,
+        profilePicture: file,
+        profilePictureUrl: imageUrl
+      }));
+    }
+  };
+
+  const handleRemoveProfilePicture = () => {
+    if (profileData.profilePictureUrl) {
+      URL.revokeObjectURL(profileData.profilePictureUrl);
+    }
+    setProfileData(prev => ({
+      ...prev,
+      profilePicture: null,
+      profilePictureUrl: ''
+    }));
+  };
+
+  const handleInternshipCertificationUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Check if file is PDF
+      if (file.type !== 'application/pdf') {
+        alert('Please upload only PDF files');
+        return;
+      }
+      
+      // Check file size (limit to 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size should be less than 5MB');
+        return;
+      }
+      
+      setProfileData(prev => ({
+        ...prev,
+        internshipCertification: file,
+        internshipCertificationName: file.name
+      }));
+    }
+  };
+
+  const handleRemoveInternshipCertification = () => {
+    setProfileData(prev => ({
+      ...prev,
+      internshipCertification: null,
+      internshipCertificationName: ''
+    }));
+  };
+
+  const handleDownloadInternshipCertification = () => {
+    if (profileData.internshipCertification) {
+      const url = URL.createObjectURL(profileData.internshipCertification);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = profileData.internshipCertificationName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -256,10 +343,31 @@ export default function ProfilePage() {
                 <CardHeader>
                   <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                     <div className="flex items-center gap-6">
-                      <div className="w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-400 rounded-full flex items-center justify-center text-white text-3xl font-bold">
-                        {profileData.firstName && profileData.lastName 
-                          ? `${profileData.firstName[0]}${profileData.lastName[0]}` 
-                          : 'ST'}
+                      <div className="relative">
+                        {profileData.profilePictureUrl ? (
+                          <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-cyan-400">
+                            <Image src={profileData.profilePictureUrl} alt="Profile" className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-400 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                            {profileData.firstName && profileData.lastName 
+                              ? `${profileData.firstName[0]}${profileData.lastName[0]}` 
+                              : 'ST'}
+                          </div>
+                        )}
+                        <button
+                          onClick={() => document.getElementById('profile-picture-upload').click()}
+                          className="absolute -bottom-1 -right-1 bg-cyan-500 hover:bg-cyan-600 rounded-full p-2 text-white transition-colors"
+                        >
+                          <Camera className="h-4 w-4" />
+                        </button>
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/jpg,image/png"
+                          onChange={handleProfilePictureUpload}
+                          className="hidden"
+                          id="profile-picture-upload"
+                        />
                       </div>
                       <div>
                         <h1 className="text-4xl font-bold text-white mb-2">
@@ -361,6 +469,81 @@ export default function ProfilePage() {
                               onChange={(e) => handleInputChange('lastName', e.target.value)}
                               className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                             />
+                          </div>
+                        </div>
+
+                        {/* Profile Picture Section */}
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Camera className="h-5 w-5 text-cyan-400" />
+                            <h3 className="text-lg font-semibold text-white">Profile Picture</h3>
+                          </div>
+                          <div className="space-y-4">
+                            {profileData.profilePictureUrl ? (
+                              <div className="bg-white/10 border border-white/20 rounded-lg p-4">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-cyan-400">
+                                      <Image src={profileData.profilePictureUrl} alt="Profile Preview" className="w-full h-full object-cover" />
+                                    </div>
+                                    <div>
+                                      <p className="text-white font-medium">Profile Picture</p>
+                                      <p className="text-white/60 text-sm">
+                                        {profileData.profilePicture ? `${(profileData.profilePicture.size / (1024 * 1024)).toFixed(2)} MB` : ''}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => document.getElementById('profile-picture-upload-2').click()}
+                                      className="border-white/20 text-white hover:bg-white/10"
+                                    >
+                                      <Upload className="h-4 w-4 mr-1" />
+                                      Change
+                                    </Button>
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={handleRemoveProfilePicture}
+                                      className="border-red-500/50 text-red-400 hover:bg-red-500/10"
+                                    >
+                                      <X className="h-4 w-4 mr-1" />
+                                      Remove
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="border-2 border-dashed border-white/20 rounded-lg p-6 text-center hover:border-cyan-400/50 transition-colors">
+                                <Camera className="h-12 w-12 text-cyan-400 mx-auto mb-4" />
+                                <div className="space-y-2">
+                                  <p className="text-white/90 font-medium">Upload your profile picture</p>
+                                  <p className="text-white/60 text-sm">JPG or PNG files only, max 2MB</p>
+                                </div>
+                                <Button 
+                                  type="button" 
+                                  className="mt-4 bg-cyan-500 hover:bg-cyan-600 text-white"
+                                  onClick={() => document.getElementById('profile-picture-upload-2').click()}
+                                >
+                                  <Upload className="h-4 w-4 mr-2" />
+                                  Choose Image File
+                                </Button>
+                              </div>
+                            )}
+                            <input
+                              type="file"
+                              accept="image/jpeg,image/jpg,image/png"
+                              onChange={handleProfilePictureUpload}
+                              className="hidden"
+                              id="profile-picture-upload-2"
+                            />
+                            <div className="text-xs text-white/50">
+                              💡 Tip: A professional profile picture helps recruiters recognize you
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -578,6 +761,81 @@ export default function ProfilePage() {
                             </RadioGroup>
                           </div>
                         </div>
+
+                        {/* Internship Certification Upload */}
+                        {profileData.internship === 'yes' && (
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <FileText className="h-5 w-5 text-cyan-400" />
+                              <h3 className="text-lg font-semibold text-white">Internship Certification</h3>
+                            </div>
+                            <div className="space-y-4">
+                              {!profileData.internshipCertification ? (
+                                <div className="border-2 border-dashed border-white/20 rounded-lg p-6 text-center hover:border-cyan-400/50 transition-colors">
+                                  <Upload className="h-12 w-12 text-cyan-400 mx-auto mb-4" />
+                                  <div className="space-y-2">
+                                    <p className="text-white/90 font-medium">Upload your internship certification</p>
+                                    <p className="text-white/60 text-sm">PDF files only, max 5MB</p>
+                                  </div>
+                                  <input
+                                    type="file"
+                                    accept=".pdf"
+                                    onChange={handleInternshipCertificationUpload}
+                                    className="hidden"
+                                    id="internship-certification-upload"
+                                  />
+                                  <Button 
+                                    type="button" 
+                                    className="mt-4 bg-cyan-500 hover:bg-cyan-600 text-white"
+                                    onClick={() => document.getElementById('internship-certification-upload').click()}
+                                  >
+                                    <Upload className="h-4 w-4 mr-2" />
+                                    Choose PDF File
+                                  </Button>
+                                </div>
+                              ) : (
+                                <div className="bg-white/10 border border-white/20 rounded-lg p-4">
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                      <FileText className="h-8 w-8 text-cyan-400" />
+                                      <div>
+                                        <p className="text-white font-medium">{profileData.internshipCertificationName}</p>
+                                        <p className="text-white/60 text-sm">
+                                          {profileData.internshipCertification ? `${(profileData.internshipCertification.size / (1024 * 1024)).toFixed(2)} MB` : ''}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={handleDownloadInternshipCertification}
+                                        className="border-white/20 text-white hover:bg-white/10"
+                                      >
+                                        <Download className="h-4 w-4 mr-1" />
+                                        Download
+                                      </Button>
+                                      <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={handleRemoveInternshipCertification}
+                                        className="border-red-500/50 text-red-400 hover:bg-red-500/10"
+                                      >
+                                        <X className="h-4 w-4 mr-1" />
+                                        Remove
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                              <div className="text-xs text-white/50">
+                                💡 Tip: Upload your internship completion certificate or offer letter to validate your experience
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* Projects and Achievements */}
