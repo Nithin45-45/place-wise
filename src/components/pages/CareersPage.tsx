@@ -43,6 +43,7 @@ export default function CareersPage() {
   const [selectedType, setSelectedType] = useState('all');
   const [showApplicationModal, setShowApplicationModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [displayedJobsCount, setDisplayedJobsCount] = useState(12);
   const [applicationForm, setApplicationForm] = useState({
     fullName: '',
     email: '',
@@ -118,10 +119,10 @@ export default function CareersPage() {
   };
 
   const jobTypes = [
-    { id: 'all', name: 'All Jobs', count: 12 },
-    { id: 'fulltime', name: 'Full-time', count: 7 },
-    { id: 'internship', name: 'Internship', count: 5 },
-    { id: 'remote', name: 'Remote', count: 5 }
+    { id: 'all', name: 'All Jobs', count: 24 },
+    { id: 'fulltime', name: 'Full-time', count: 17 },
+    { id: 'internship', name: 'Internship', count: 7 },
+    { id: 'remote', name: 'Remote', count: 12 }
   ];
 
   const careers = [
@@ -292,6 +293,174 @@ export default function CareersPage() {
       posted: '4 days ago',
       applicants: 198,
       remote: true
+    },
+    {
+      id: 13,
+      title: 'Frontend Developer',
+      company: 'Flipkart',
+      location: 'Bangalore, Karnataka',
+      type: 'fulltime',
+      salary: '₹6,00,000 - ₹12,00,000',
+      experience: '1-3 years',
+      skills: ['React', 'JavaScript', 'CSS', 'HTML', 'Redux'],
+      description: 'Build engaging user interfaces for millions of customers on India\'s leading e-commerce platform.',
+      posted: '1 day ago',
+      applicants: 87,
+      remote: false
+    },
+    {
+      id: 14,
+      title: 'DevOps Engineer',
+      company: 'Paytm',
+      location: 'Noida, Uttar Pradesh',
+      type: 'fulltime',
+      salary: '₹8,00,000 - ₹15,00,000',
+      experience: '2-4 years',
+      skills: ['AWS', 'Docker', 'Kubernetes', 'Jenkins', 'Terraform'],
+      description: 'Manage and scale infrastructure for India\'s largest digital payments platform.',
+      posted: '3 days ago',
+      applicants: 65,
+      remote: true
+    },
+    {
+      id: 15,
+      title: 'Mobile App Developer',
+      company: 'Swiggy',
+      location: 'Bangalore, Karnataka',
+      type: 'fulltime',
+      salary: '₹7,00,000 - ₹14,00,000',
+      experience: '1-3 years',
+      skills: ['React Native', 'Flutter', 'iOS', 'Android', 'Firebase'],
+      description: 'Develop mobile applications that connect millions of users with their favorite restaurants.',
+      posted: '2 days ago',
+      applicants: 112,
+      remote: false
+    },
+    {
+      id: 16,
+      title: 'Backend Developer Intern',
+      company: 'Zomato',
+      location: 'Gurgaon, Haryana',
+      type: 'internship',
+      salary: '₹25,000 - ₹30,000/month',
+      experience: '0 years',
+      skills: ['Node.js', 'Python', 'MongoDB', 'REST APIs', 'Microservices'],
+      description: 'Work on scalable backend systems for food delivery and restaurant discovery.',
+      posted: '1 week ago',
+      applicants: 156,
+      remote: true
+    },
+    {
+      id: 17,
+      title: 'QA Engineer',
+      company: 'Ola',
+      location: 'Bangalore, Karnataka',
+      type: 'fulltime',
+      salary: '₹5,00,000 - ₹9,00,000',
+      experience: '1-2 years',
+      skills: ['Selenium', 'TestNG', 'API Testing', 'Mobile Testing', 'Automation'],
+      description: 'Ensure quality and reliability of mobility solutions used by millions of riders.',
+      posted: '5 days ago',
+      applicants: 78,
+      remote: false
+    },
+    {
+      id: 18,
+      title: 'Product Manager Intern',
+      company: 'Razorpay',
+      location: 'Bangalore, Karnataka',
+      type: 'internship',
+      salary: '₹35,000/month',
+      experience: '0 years',
+      skills: ['Product Strategy', 'Analytics', 'User Research', 'SQL', 'Communication'],
+      description: 'Drive product initiatives for India\'s leading fintech payment gateway.',
+      posted: '6 days ago',
+      applicants: 89,
+      remote: true
+    },
+    {
+      id: 19,
+      title: 'Machine Learning Engineer',
+      company: 'Myntra',
+      location: 'Bangalore, Karnataka',
+      type: 'fulltime',
+      salary: '₹12,00,000 - ₹20,00,000',
+      experience: '2-4 years',
+      skills: ['Python', 'TensorFlow', 'PyTorch', 'Computer Vision', 'NLP'],
+      description: 'Build AI-powered recommendation systems and computer vision solutions for fashion e-commerce.',
+      posted: '1 week ago',
+      applicants: 134,
+      remote: false
+    },
+    {
+      id: 20,
+      title: 'Cybersecurity Analyst',
+      company: 'PhonePe',
+      location: 'Bangalore, Karnataka',
+      type: 'fulltime',
+      salary: '₹9,00,000 - ₹16,00,000',
+      experience: '2-3 years',
+      skills: ['Network Security', 'Incident Response', 'SIEM', 'Penetration Testing', 'Compliance'],
+      description: 'Protect digital payment infrastructure and ensure security compliance.',
+      posted: '4 days ago',
+      applicants: 45,
+      remote: true
+    },
+    {
+      id: 21,
+      title: 'UI/UX Designer',
+      company: 'BYJU\'S',
+      location: 'Bangalore, Karnataka',
+      type: 'fulltime',
+      salary: '₹6,00,000 - ₹11,00,000',
+      experience: '1-3 years',
+      skills: ['Figma', 'Adobe XD', 'Sketch', 'Prototyping', 'User Research'],
+      description: 'Design engaging educational experiences for millions of students worldwide.',
+      posted: '3 days ago',
+      applicants: 92,
+      remote: false
+    },
+    {
+      id: 22,
+      title: 'Data Analyst Intern',
+      company: 'Nykaa',
+      location: 'Mumbai, Maharashtra',
+      type: 'internship',
+      salary: '₹20,000 - ₹25,000/month',
+      experience: '0 years',
+      skills: ['SQL', 'Python', 'Excel', 'Tableau', 'Statistics'],
+      description: 'Analyze customer behavior and market trends in the beauty and fashion industry.',
+      posted: '1 week ago',
+      applicants: 167,
+      remote: true
+    },
+    {
+      id: 23,
+      title: 'Cloud Architect',
+      company: 'Freshworks',
+      location: 'Chennai, Tamil Nadu',
+      type: 'fulltime',
+      salary: '₹15,00,000 - ₹25,00,000',
+      experience: '4-6 years',
+      skills: ['AWS', 'Azure', 'GCP', 'Microservices', 'Serverless'],
+      description: 'Design and implement cloud infrastructure for SaaS products serving global customers.',
+      posted: '2 days ago',
+      applicants: 56,
+      remote: true
+    },
+    {
+      id: 24,
+      title: 'Software Test Engineer',
+      company: 'Zoho',
+      location: 'Chennai, Tamil Nadu',
+      type: 'fulltime',
+      salary: '₹4,50,000 - ₹8,00,000',
+      experience: '0-2 years',
+      skills: ['Manual Testing', 'Automation Testing', 'Selenium', 'Java', 'API Testing'],
+      description: 'Ensure quality of business software solutions used by millions of organizations.',
+      posted: '5 days ago',
+      applicants: 103,
+      remote: false
     }
   ];
 
@@ -302,6 +471,13 @@ export default function CareersPage() {
     const matchesType = selectedType === 'all' || career.type === selectedType;
     return matchesSearch && matchesType;
   });
+
+  const displayedCareers = filteredCareers.slice(0, displayedJobsCount);
+  const hasMoreJobs = displayedJobsCount < filteredCareers.length;
+
+  const handleLoadMore = () => {
+    setDisplayedJobsCount(prev => Math.min(prev + 6, filteredCareers.length));
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -476,7 +652,7 @@ export default function CareersPage() {
         <section className="py-20 px-6">
           <div className="max-w-[120rem] mx-auto">
             <div className="grid gap-6">
-              {filteredCareers.map((job, index) => (
+              {displayedCareers.map((job, index) => (
                 <motion.div
                   key={job.id}
                   initial={{ opacity: 0, y: 30 }}
@@ -561,6 +737,24 @@ export default function CareersPage() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Load More Button */}
+            {hasMoreJobs && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-center mt-12"
+              >
+                <Button
+                  onClick={handleLoadMore}
+                  className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-8 py-3 text-lg font-semibold"
+                  size="lg"
+                >
+                  Load More Jobs ({filteredCareers.length - displayedJobsCount} remaining)
+                </Button>
+              </motion.div>
+            )}
 
             {filteredCareers.length === 0 && (
               <motion.div
