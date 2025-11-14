@@ -745,20 +745,45 @@ export default function CareersPage() {
           </div>
         </section>
 
-        {/* Job Listings */}
+        {/* Full-Time Jobs Section */}
         <section className="py-20 px-6">
           <div className="max-w-[120rem] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold text-white mb-4 font-heading">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">
+                  Full-Time Jobs
+                </span>
+              </h2>
+              <p className="text-xl text-white/70 max-w-3xl mx-auto font-paragraph">
+                Permanent positions with comprehensive benefits and career growth opportunities
+              </p>
+            </motion.div>
+
             <div className="grid gap-6">
               {isLoadingJobs ? (
                 <div className="text-center py-12">
                   <div className="text-white/60">Loading job opportunities...</div>
                 </div>
-              ) : displayedCareers.length === 0 ? (
+              ) : allJobs.filter(job => job.type === 'fulltime' && (
+                  job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+                )).length === 0 ? (
                 <div className="text-center py-12">
-                  <div className="text-white/60">No jobs found matching your criteria.</div>
+                  <div className="text-white/60">No full-time jobs found matching your criteria.</div>
                 </div>
               ) : (
-                displayedCareers.map((job, index) => (
+                allJobs.filter(job => job.type === 'fulltime' && (
+                  job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+                )).slice(0, 6).map((job, index) => (
                   <motion.div
                     key={job.id}
                     initial={{ opacity: 0, y: 30 }}
@@ -779,17 +804,8 @@ export default function CareersPage() {
                                 />
                               )}
                               <CardTitle className="text-2xl text-white">{job.title}</CardTitle>
-                              <Badge className={`${
-                                job.type === 'fulltime' ? 'bg-green-500' :
-                                job.type === 'internship' ? 'bg-blue-500' :
-                                job.type === 'parttime' ? 'bg-orange-500' :
-                                job.type === 'contract' ? 'bg-purple-500' :
-                                'bg-cyan-500'
-                              } text-white`}>
-                                {job.type === 'fulltime' ? 'Full-time' : 
-                                 job.type === 'parttime' ? 'Part-time' :
-                                 job.type === 'internship' ? 'Internship' : 
-                                 job.type === 'contract' ? 'Contract' : 'Remote'}
+                              <Badge className="bg-green-500 text-white">
+                                Full-time
                               </Badge>
                               {job.isFromCMS && (
                                 <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-400/30">
@@ -876,40 +892,152 @@ export default function CareersPage() {
                 ))
               )}
             </div>
+          </div>
+        </section>
 
-            {/* Load More Button */}
-            {hasMoreJobs && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-center mt-12"
-              >
-                <Button
-                  onClick={handleLoadMore}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-8 py-3 text-lg font-semibold"
-                  size="lg"
-                >
-                  Load More Jobs ({filteredCareers.length - displayedJobsCount} remaining)
-                </Button>
-              </motion.div>
-            )}
+        {/* Internships Section */}
+        <section className="py-20 px-6 bg-black/10 backdrop-blur-sm">
+          <div className="max-w-[120rem] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold text-white mb-4 font-heading">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                  Internship Programs
+                </span>
+              </h2>
+              <p className="text-xl text-white/70 max-w-3xl mx-auto font-paragraph">
+                Gain hands-on experience and build your skills with leading companies
+              </p>
+            </motion.div>
 
-            {filteredCareers.length === 0 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-center py-20"
-              >
-                <Search className="h-24 w-24 text-white/30 mx-auto mb-6" />
-                <h3 className="text-2xl font-semibold text-white/80 mb-4">
-                  No jobs found
-                </h3>
-                <p className="text-white/60">
-                  Try adjusting your search terms or filters.
-                </p>
-              </motion.div>
-            )}
+            <div className="grid gap-6">
+              {allJobs.filter(job => job.type === 'internship' && (
+                job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+              )).length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-white/60">No internships found matching your criteria.</div>
+                </div>
+              ) : (
+                allJobs.filter(job => job.type === 'internship' && (
+                  job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+                )).slice(0, 6).map((job, index) => (
+                  <motion.div
+                    key={job.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300">
+                      <CardHeader>
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              {job.logo && (
+                                <Image 
+                                  src={job.logo} 
+                                  alt={`${job.company} logo`}
+                                  width={40}
+                                  className="h-10 w-10 rounded-lg object-cover"
+                                />
+                              )}
+                              <CardTitle className="text-2xl text-white">{job.title}</CardTitle>
+                              <Badge className="bg-blue-500 text-white">
+                                Internship
+                              </Badge>
+                              {job.isFromCMS && (
+                                <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-400/30">
+                                  New
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2 text-cyan-400 mb-2">
+                              <Building className="h-4 w-4" />
+                              <span className="font-medium">{job.company}</span>
+                            </div>
+                            <CardDescription className="text-white/70 text-base">
+                              {job.description}
+                            </CardDescription>
+                          </div>
+                          <div className="flex flex-col items-end gap-2">
+                            {job.applicationUrl ? (
+                              <Button 
+                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                onClick={() => window.open(job.applicationUrl, '_blank')}
+                              >
+                                Apply Now
+                              </Button>
+                            ) : job.contactEmail ? (
+                              <Button 
+                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                onClick={() => window.open(`mailto:${job.contactEmail}`, '_blank')}
+                              >
+                                Contact HR
+                              </Button>
+                            ) : (
+                              <Button 
+                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                onClick={() => handleApplyNow(job)}
+                              >
+                                Apply Now
+                              </Button>
+                            )}
+                            {job.deadline && (
+                              <div className="text-sm text-yellow-400">
+                                Deadline: {new Date(job.deadline).toLocaleDateString()}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </CardHeader>
+                      
+                      <CardContent>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                          <div className="flex items-center gap-2 text-white/80">
+                            <MapPin className="h-4 w-4 text-cyan-400" />
+                            <span className="text-sm">{job.location}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-white/80">
+                            <DollarSign className="h-4 w-4 text-green-400" />
+                            <span className="text-sm">{job.salary}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-white/80">
+                            <Briefcase className="h-4 w-4 text-blue-400" />
+                            <span className="text-sm">{job.experience}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-white/80">
+                            <Clock className="h-4 w-4 text-yellow-400" />
+                            <span className="text-sm">{job.posted || 'Recently posted'}</span>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="text-sm text-white/60 mb-2">Required Skills:</div>
+                          <div className="flex flex-wrap gap-2">
+                            {job.skills.map((skill, skillIndex) => (
+                              <Badge 
+                                key={skillIndex} 
+                                className="bg-white/10 text-white border-white/20"
+                              >
+                                {skill}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))
+              )}
+            </div>
           </div>
         </section>
 
@@ -1245,7 +1373,7 @@ export default function CareersPage() {
               className="text-center mb-16"
             >
               <h2 className="text-4xl font-bold text-white mb-4 font-heading">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
                   Recommended Courses
                 </span>
                 {" "}for Tech Skills
