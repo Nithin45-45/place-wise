@@ -511,7 +511,7 @@ export default function CareersPage() {
 
   // Combine static careers with dynamic job postings
   const allJobs: UnifiedJob[] = [
-    ...careers.map(career => ({
+    ...careers.map((career): UnifiedJob => ({
       id: career.id,
       title: career.title,
       company: career.company,
@@ -530,8 +530,8 @@ export default function CareersPage() {
       deadline: undefined,
       isFromCMS: false
     })),
-    ...jobPostings.map(job => ({
-      id: job._id,
+    ...jobPostings.map((job): UnifiedJob => ({
+      id: job._id || `cms-${Date.now()}-${Math.random()}`,
       title: job.jobTitle || 'Untitled Position',
       company: job.companyName || 'Company',
       location: job.jobLocation || 'Location TBD',
@@ -546,7 +546,7 @@ export default function CareersPage() {
       logo: job.companyLogo,
       contactEmail: job.contactEmail,
       applicationUrl: job.applicationUrl,
-      deadline: job.applicationDeadline,
+      deadline: job.applicationDeadline ? new Date(job.applicationDeadline) : undefined,
       isFromCMS: true
     }))
   ];

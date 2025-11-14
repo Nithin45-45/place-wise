@@ -247,6 +247,172 @@ export default function ProfilePage() {
       const baseSalary = 400000; // 4 LPA base
       const expectedSalary = Math.round(baseSalary * (branchMultiplier[profileData.branch] || 1) * (placementChance / 100) * (1 + Math.random() * 0.5));
       
+      // Generate personalized skill recommendations based on user's profile
+      const userSkills = profileData.skills.toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
+      const branch = profileData.branch;
+      const interests = profileData.interests;
+      
+      // Define skill recommendations based on branch and current skills
+      const getPersonalizedSkillRecommendations = () => {
+        const recommendations = [];
+        
+        // Branch-specific recommendations
+        if (branch === 'Computer Science' || branch === 'Information Technology') {
+          if (!userSkills.some(skill => skill.includes('react') || skill.includes('angular') || skill.includes('vue'))) {
+            recommendations.push({
+              category: 'Frontend Development',
+              skills: ['React.js', 'TypeScript', 'Next.js'],
+              priority: 'High',
+              reason: 'Essential for modern web development roles'
+            });
+          }
+          if (!userSkills.some(skill => skill.includes('node') || skill.includes('express') || skill.includes('spring'))) {
+            recommendations.push({
+              category: 'Backend Development',
+              skills: ['Node.js', 'Express.js', 'RESTful APIs'],
+              priority: 'High',
+              reason: 'Critical for full-stack development positions'
+            });
+          }
+          if (!userSkills.some(skill => skill.includes('aws') || skill.includes('azure') || skill.includes('cloud'))) {
+            recommendations.push({
+              category: 'Cloud Computing',
+              skills: ['AWS', 'Docker', 'Kubernetes'],
+              priority: 'Medium',
+              reason: 'High demand in current job market'
+            });
+          }
+        }
+        
+        if (branch === 'Data Science' || interests === 'Data Science' || interests === 'Machine Learning') {
+          if (!userSkills.some(skill => skill.includes('python') || skill.includes('pandas') || skill.includes('numpy'))) {
+            recommendations.push({
+              category: 'Data Science Fundamentals',
+              skills: ['Python', 'Pandas', 'NumPy', 'Matplotlib'],
+              priority: 'High',
+              reason: 'Foundation for data science careers'
+            });
+          }
+          if (!userSkills.some(skill => skill.includes('machine learning') || skill.includes('tensorflow') || skill.includes('pytorch'))) {
+            recommendations.push({
+              category: 'Machine Learning',
+              skills: ['TensorFlow', 'PyTorch', 'Scikit-learn'],
+              priority: 'High',
+              reason: 'Essential for AI/ML roles'
+            });
+          }
+        }
+        
+        if (interests === 'Cybersecurity') {
+          recommendations.push({
+            category: 'Cybersecurity',
+            skills: ['Network Security', 'Penetration Testing', 'CISSP'],
+            priority: 'High',
+            reason: 'Growing field with excellent opportunities'
+          });
+        }
+        
+        if (interests === 'DevOps') {
+          recommendations.push({
+            category: 'DevOps & Infrastructure',
+            skills: ['Jenkins', 'Terraform', 'Ansible'],
+            priority: 'Medium',
+            reason: 'High-paying DevOps roles available'
+          });
+        }
+        
+        // General recommendations based on gaps
+        if (skillsCount < 5) {
+          recommendations.push({
+            category: 'Programming Languages',
+            skills: ['Java', 'JavaScript', 'Python'],
+            priority: 'High',
+            reason: 'Expand your programming foundation'
+          });
+        }
+        
+        if (!userSkills.some(skill => skill.includes('git') || skill.includes('github'))) {
+          recommendations.push({
+            category: 'Version Control',
+            skills: ['Git', 'GitHub', 'GitLab'],
+            priority: 'High',
+            reason: 'Essential for any development role'
+          });
+        }
+        
+        return recommendations.slice(0, 4); // Limit to 4 recommendations
+      };
+      
+      // Generate personalized learning paths
+      const getPersonalizedLearningPaths = () => {
+        const paths = [];
+        
+        if (branch === 'Computer Science' || branch === 'Information Technology') {
+          if (interests === 'Web Development' || interests === 'Software Development') {
+            paths.push({
+              title: 'Full-Stack Web Developer',
+              duration: '6-8 months',
+              steps: [
+                'Master HTML, CSS, JavaScript fundamentals',
+                'Learn React.js for frontend development',
+                'Study Node.js and Express.js for backend',
+                'Practice with databases (MongoDB/PostgreSQL)',
+                'Build 3-5 full-stack projects for portfolio'
+              ],
+              outcome: 'Ready for junior full-stack developer roles (₹4-8L)'
+            });
+          }
+          
+          if (interests === 'Data Science' || interests === 'Machine Learning') {
+            paths.push({
+              title: 'Data Scientist',
+              duration: '8-10 months',
+              steps: [
+                'Learn Python programming and statistics',
+                'Master data manipulation with Pandas',
+                'Study machine learning algorithms',
+                'Practice with real datasets on Kaggle',
+                'Complete 2-3 data science projects'
+              ],
+              outcome: 'Qualified for data analyst/scientist roles (₹6-12L)'
+            });
+          }
+          
+          if (interests === 'DevOps') {
+            paths.push({
+              title: 'DevOps Engineer',
+              duration: '5-7 months',
+              steps: [
+                'Learn Linux fundamentals and scripting',
+                'Get AWS/Azure cloud certifications',
+                'Master containerization with Docker',
+                'Study CI/CD pipelines and automation',
+                'Practice infrastructure as code'
+              ],
+              outcome: 'Ready for DevOps engineer positions (₹8-15L)'
+            });
+          }
+        }
+        
+        // Default path based on branch
+        if (paths.length === 0) {
+          paths.push({
+            title: 'Software Developer',
+            duration: '4-6 months',
+            steps: [
+              'Strengthen programming fundamentals',
+              'Learn popular frameworks in your field',
+              'Build practical projects',
+              'Contribute to open source projects',
+              'Prepare for technical interviews'
+            ],
+            outcome: 'Ready for entry-level developer roles (₹3-6L)'
+          });
+        }
+        
+        return paths.slice(0, 2); // Limit to 2 learning paths
+      };
+      
       setPrediction({
         placementChance: Math.round(placementChance),
         expectedSalary,
@@ -258,7 +424,9 @@ export default function ProfilePage() {
           !hasInternship ? 'Consider pursuing internship opportunities' : 'Highlight internship experience in interviews',
           skillsCount < 5 ? 'Expand technical skill set' : 'Showcase diverse technical expertise',
           majorProjectsCount < 2 ? 'Work on more substantial projects' : 'Document project achievements effectively'
-        ].slice(0, 4)
+        ].slice(0, 4),
+        skillRecommendations: getPersonalizedSkillRecommendations(),
+        learningPaths: getPersonalizedLearningPaths()
       });
       setIsLoading(false);
     }, 2500);
@@ -1112,6 +1280,105 @@ export default function ProfilePage() {
                             </div>
                           </CardContent>
                         </Card>
+
+                        {/* Personalized Skill Recommendations */}
+                        {prediction.skillRecommendations && prediction.skillRecommendations.length > 0 && (
+                          <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-400/30 text-white">
+                            <CardHeader>
+                              <CardTitle className="text-xl flex items-center gap-2">
+                                <Code className="h-5 w-5 text-purple-400" />
+                                Personalized Skill Recommendations
+                              </CardTitle>
+                              <CardDescription className="text-white/70">
+                                Skills to focus on based on your profile and career goals
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="space-y-4">
+                                {prediction.skillRecommendations.map((skillRec, index) => (
+                                  <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="p-4 rounded-lg bg-white/10 border border-purple-400/30"
+                                  >
+                                    <div className="flex items-center justify-between mb-2">
+                                      <h4 className="font-semibold text-purple-300">{skillRec.category}</h4>
+                                      <Badge className={`${
+                                        skillRec.priority === 'High' ? 'bg-red-500/30 text-red-300 border-red-400/30' :
+                                        skillRec.priority === 'Medium' ? 'bg-yellow-500/30 text-yellow-300 border-yellow-400/30' :
+                                        'bg-green-500/30 text-green-300 border-green-400/30'
+                                      }`}>
+                                        {skillRec.priority} Priority
+                                      </Badge>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2 mb-2">
+                                      {skillRec.skills.map((skill, skillIndex) => (
+                                        <Badge key={skillIndex} className="bg-purple-500/20 text-purple-200 border-purple-400/30">
+                                          {skill}
+                                        </Badge>
+                                      ))}
+                                    </div>
+                                    <p className="text-sm text-white/70">{skillRec.reason}</p>
+                                  </motion.div>
+                                ))}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        )}
+
+                        {/* Personalized Learning Paths */}
+                        {prediction.learningPaths && prediction.learningPaths.length > 0 && (
+                          <Card className="bg-gradient-to-br from-cyan-500/20 to-blue-500/20 backdrop-blur-md border-cyan-400/30 text-white">
+                            <CardHeader>
+                              <CardTitle className="text-xl flex items-center gap-2">
+                                <TrendingUp className="h-5 w-5 text-cyan-400" />
+                                Personalized Learning Paths
+                              </CardTitle>
+                              <CardDescription className="text-white/70">
+                                Structured roadmaps to achieve your career goals
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="space-y-6">
+                                {prediction.learningPaths.map((path, index) => (
+                                  <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.2 }}
+                                    className="p-4 rounded-lg bg-white/10 border border-cyan-400/30"
+                                  >
+                                    <div className="flex items-center justify-between mb-3">
+                                      <h4 className="font-semibold text-cyan-300 text-lg">{path.title}</h4>
+                                      <Badge className="bg-cyan-500/30 text-cyan-200 border-cyan-400/30">
+                                        {path.duration}
+                                      </Badge>
+                                    </div>
+                                    <div className="space-y-2 mb-4">
+                                      {path.steps.map((step, stepIndex) => (
+                                        <div key={stepIndex} className="flex items-start gap-3">
+                                          <div className="w-6 h-6 rounded-full bg-cyan-500/30 border border-cyan-400/50 flex items-center justify-center text-xs font-bold text-cyan-300 mt-0.5 flex-shrink-0">
+                                            {stepIndex + 1}
+                                          </div>
+                                          <span className="text-white/80 text-sm">{step}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                    <div className="p-3 rounded-lg bg-green-500/20 border border-green-400/30">
+                                      <div className="flex items-center gap-2 mb-1">
+                                        <Trophy className="h-4 w-4 text-green-400" />
+                                        <span className="font-semibold text-green-300">Expected Outcome</span>
+                                      </div>
+                                      <p className="text-sm text-green-200">{path.outcome}</p>
+                                    </div>
+                                  </motion.div>
+                                ))}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        )}
                       </motion.div>
                     ) : (
                       <motion.div
