@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useMember } from '@/integrations';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { BackButton } from '@/components/ui/back-button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
 import { 
   Brain, 
@@ -17,13 +22,47 @@ import {
   Users,
   TrendingUp,
   Filter,
-  Building
+  Building,
+  LogOut,
+  Github
 } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 
 export default function CareersPage() {
+  const { member, isAuthenticated, actions } = useMember();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState('login');
+  const [authForm, setAuthForm] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    fullName: ''
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
+
+  const handleAuthInputChange = (field, value) => {
+    setAuthForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleAuthSubmit = async (e) => {
+    e.preventDefault();
+    if (authMode === 'signup') {
+      if (authForm.password !== authForm.confirmPassword) {
+        return;
+      }
+      if (!authForm.fullName || !authForm.email || !authForm.password) {
+        return;
+      }
+    } else {
+      if (!authForm.email || !authForm.password) {
+        return;
+      }
+    }
+    
+    setShowAuthModal(false);
+    actions.login();
+  };
 
   const jobTypes = [
     { id: 'all', name: 'All Jobs', count: 45 },
@@ -158,7 +197,12 @@ export default function CareersPage() {
       {/* Content */}
       <div className="relative z-10">
         {/* Navigation */}
-        <nav className="bg-black/20 backdrop-blur-md border-b border-white/10">
+        <motion.nav 
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="bg-black/20 backdrop-blur-md border-b border-white/10"
+        >
           <div className="max-w-[120rem] mx-auto px-6 py-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
@@ -169,31 +213,66 @@ export default function CareersPage() {
                 <span className="text-2xl font-bold text-white">AI PlacementPredictor</span>
               </div>
               <div className="hidden lg:flex items-center space-x-8">
-                <Link to="/" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
-                  Home
-                </Link>
-                <Link to="/about" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
-                  About
-                </Link>
-                <Link to="/gallery" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
-                  Gallery
-                </Link>
-                <Link to="/careers" className="text-cyan-400 font-medium">
-                  Careers
-                </Link>
-                <Link to="/ratings" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
-                  Ratings
-                </Link>
-                <Link to="/profile" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
-                  Profile
-                </Link>
-                <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
-                  Login / Register
-                </Button>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link to="/" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
+                    Home
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link to="/about" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
+                    About
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link to="/gallery" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
+                    Gallery
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link to="/careers" className="text-cyan-400 font-medium">
+                    Careers
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link to="/ratings" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
+                    Ratings
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link to="/profile" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
+                    Profile
+                  </Link>
+                </motion.div>
+                {isAuthenticated ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
+                          Account
+                        </Button>
+                      </motion.div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem onClick={actions.logout} className="text-red-600 focus:text-red-600">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button 
+                      className="bg-cyan-500 hover:bg-cyan-600 text-white"
+                      onClick={() => setShowAuthModal(true)}
+                    >
+                      Login / Register
+                    </Button>
+                  </motion.div>
+                )}
               </div>
             </div>
           </div>
-        </nav>
+        </motion.nav>
 
         {/* Hero Section */}
         <section className="py-20 px-6">
