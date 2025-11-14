@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { motion } from 'framer-motion';
 import { 
   Brain, 
@@ -40,9 +41,61 @@ export default function CareersPage() {
   });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
+  const [showApplicationModal, setShowApplicationModal] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [applicationForm, setApplicationForm] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    resume: null,
+    coverLetter: '',
+    experience: '',
+    expectedSalary: '',
+    availableFrom: ''
+  });
 
   const handleAuthInputChange = (field, value) => {
     setAuthForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleApplicationInputChange = (field, value) => {
+    setApplicationForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleApplyNow = (job) => {
+    setSelectedJob(job);
+    setShowApplicationModal(true);
+  };
+
+  const handleApplicationSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!applicationForm.fullName || !applicationForm.email || !applicationForm.phone) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    // Simulate application submission
+    console.log('Application submitted for:', selectedJob.title);
+    console.log('Application data:', applicationForm);
+    
+    // Show success message
+    alert(`Application submitted successfully for ${selectedJob.title} at ${selectedJob.company}! You will receive a confirmation email shortly.`);
+    
+    // Reset form and close modal
+    setApplicationForm({
+      fullName: '',
+      email: '',
+      phone: '',
+      resume: null,
+      coverLetter: '',
+      experience: '',
+      expectedSalary: '',
+      availableFrom: ''
+    });
+    setShowApplicationModal(false);
+    setSelectedJob(null);
   };
 
   const handleAuthSubmit = async (e) => {
@@ -457,7 +510,10 @@ export default function CareersPage() {
                           </CardDescription>
                         </div>
                         <div className="flex flex-col items-end gap-2">
-                          <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white">
+                          <Button 
+                            className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                            onClick={() => handleApplyNow(job)}
+                          >
                             Apply Now
                           </Button>
                           <div className="text-sm text-white/60">
@@ -941,6 +997,156 @@ export default function CareersPage() {
           </div>
         </footer>
       </div>
+
+      {/* Job Application Modal */}
+      <Dialog open={showApplicationModal} onOpenChange={setShowApplicationModal}>
+        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-cyan-400">
+              Apply for {selectedJob?.title}
+            </DialogTitle>
+            <p className="text-slate-300">
+              {selectedJob?.company} • {selectedJob?.location}
+            </p>
+          </DialogHeader>
+          
+          <form onSubmit={handleApplicationSubmit} className="space-y-6 mt-6">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="fullName" className="text-white">Full Name *</Label>
+                <Input
+                  id="fullName"
+                  type="text"
+                  value={applicationForm.fullName}
+                  onChange={(e) => handleApplicationInputChange('fullName', e.target.value)}
+                  className="bg-slate-800 border-slate-600 text-white"
+                  placeholder="Enter your full name"
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="email" className="text-white">Email Address *</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={applicationForm.email}
+                  onChange={(e) => handleApplicationInputChange('email', e.target.value)}
+                  className="bg-slate-800 border-slate-600 text-white"
+                  placeholder="your.email@example.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="phone" className="text-white">Phone Number *</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  value={applicationForm.phone}
+                  onChange={(e) => handleApplicationInputChange('phone', e.target.value)}
+                  className="bg-slate-800 border-slate-600 text-white"
+                  placeholder="+91 9876543210"
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="experience" className="text-white">Years of Experience</Label>
+                <Input
+                  id="experience"
+                  type="text"
+                  value={applicationForm.experience}
+                  onChange={(e) => handleApplicationInputChange('experience', e.target.value)}
+                  className="bg-slate-800 border-slate-600 text-white"
+                  placeholder="e.g., 2 years, Fresh Graduate"
+                />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="expectedSalary" className="text-white">Expected Salary</Label>
+                <Input
+                  id="expectedSalary"
+                  type="text"
+                  value={applicationForm.expectedSalary}
+                  onChange={(e) => handleApplicationInputChange('expectedSalary', e.target.value)}
+                  className="bg-slate-800 border-slate-600 text-white"
+                  placeholder="e.g., ₹5,00,000 per annum"
+                />
+              </div>
+              <div>
+                <Label htmlFor="availableFrom" className="text-white">Available From</Label>
+                <Input
+                  id="availableFrom"
+                  type="date"
+                  value={applicationForm.availableFrom}
+                  onChange={(e) => handleApplicationInputChange('availableFrom', e.target.value)}
+                  className="bg-slate-800 border-slate-600 text-white"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="coverLetter" className="text-white">Cover Letter</Label>
+              <Textarea
+                id="coverLetter"
+                value={applicationForm.coverLetter}
+                onChange={(e) => handleApplicationInputChange('coverLetter', e.target.value)}
+                className="bg-slate-800 border-slate-600 text-white min-h-[120px]"
+                placeholder="Tell us why you're interested in this position and what makes you a great fit..."
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="resume" className="text-white">Resume/CV</Label>
+              <Input
+                id="resume"
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={(e) => handleApplicationInputChange('resume', e.target.files?.[0] || null)}
+                className="bg-slate-800 border-slate-600 text-white"
+              />
+              <p className="text-sm text-slate-400 mt-1">
+                Upload your resume in PDF, DOC, or DOCX format (Max 5MB)
+              </p>
+            </div>
+
+            <div className="bg-slate-800 p-4 rounded-lg">
+              <h4 className="font-semibold text-cyan-400 mb-2">Job Requirements:</h4>
+              <div className="flex flex-wrap gap-2 mb-3">
+                {selectedJob?.skills.map((skill, index) => (
+                  <Badge key={index} className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30">
+                    {skill}
+                  </Badge>
+                ))}
+              </div>
+              <p className="text-sm text-slate-300">
+                <strong>Experience:</strong> {selectedJob?.experience} | 
+                <strong> Salary:</strong> {selectedJob?.salary}
+              </p>
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowApplicationModal(false)}
+                className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-800"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+              >
+                Submit Application
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
