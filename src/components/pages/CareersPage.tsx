@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMember } from '@/integrations';
+import { BaseCrudService } from '@/integrations';
+import { JobPostings } from '@/entities';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -28,7 +30,8 @@ import {
   Github,
   BookOpen,
   Award,
-  ExternalLink
+  ExternalLink,
+  Plus
 } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 
@@ -57,6 +60,24 @@ export default function CareersPage() {
     expectedSalary: '',
     availableFrom: ''
   });
+  const [jobPostings, setJobPostings] = useState<JobPostings[]>([]);
+  const [isLoadingJobs, setIsLoadingJobs] = useState(true);
+
+  // Fetch job postings from CMS
+  useEffect(() => {
+    const fetchJobPostings = async () => {
+      try {
+        const { items } = await BaseCrudService.getAll<JobPostings>('jobpostings');
+        setJobPostings(items);
+      } catch (error) {
+        console.error('Error fetching job postings:', error);
+      } finally {
+        setIsLoadingJobs(false);
+      }
+    };
+
+    fetchJobPostings();
+  }, []);
 
   const handleAuthInputChange = (field, value) => {
     setAuthForm(prev => ({ ...prev, [field]: value }));
@@ -467,7 +488,56 @@ export default function CareersPage() {
     }
   ];
 
-  const filteredCareers = careers.filter(career => {
+  // Define a unified job type that includes all possible properties
+  type UnifiedJob = {
+    id: string | number;
+    title: string;
+    company: string;
+    location: string;
+    type: string;
+    salary: string;
+    experience: string;
+    skills: string[];
+    description: string;
+    posted?: string;
+    applicants?: number;
+    remote?: boolean;
+    logo?: string;
+    contactEmail?: string;
+    applicationUrl?: string;
+    deadline?: Date;
+    isFromCMS?: boolean;
+  };
+
+  // Combine static careers with dynamic job postings
+  const allJobs: UnifiedJob[] = [
+    ...careers.map(career => ({
+      ...career,
+      logo: undefined,
+      contactEmail: undefined,
+      applicationUrl: undefined,
+      deadline: undefined,
+      isFromCMS: false
+    })),
+    ...jobPostings.map(job => ({
+      id: job._id,
+      title: job.jobTitle || 'Untitled Position',
+      company: job.companyName || 'Company',
+      location: job.jobLocation || 'Location TBD',
+      type: job.employmentType?.toLowerCase().replace('-', '') || 'fulltime',
+      salary: job.salaryRange || 'Salary not specified',
+      experience: job.experienceLevel || 'Experience level not specified',
+      skills: job.requiredSkills ? job.requiredSkills.split(',').map(s => s.trim()) : [],
+      description: job.jobDescription || 'No description available',
+      logo: job.companyLogo,
+      contactEmail: job.contactEmail,
+      applicationUrl: job.applicationUrl,
+      deadline: job.applicationDeadline,
+      isFromCMS: true
+    }))
+  ];
+
+  const filteredCareers = allJobs.filter(career => {
     const matchesSearch = career.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          career.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          career.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -629,24 +699,34 @@ export default function CareersPage() {
                 />
               </div>
 
-              {/* Job Type Filters */}
-              <div className="flex flex-wrap gap-3">
-                {jobTypes.map((type) => (
-                  <Button
-                    key={type.id}
-                    variant={selectedType === type.id ? "default" : "outline"}
-                    onClick={() => setSelectedType(type.id)}
-                    className={`${
-                      selectedType === type.id
-                        ? "bg-cyan-500 text-white"
-                        : "bg-white/10 text-white border-white/20 hover:bg-white/20"
-                    }`}
-                  >
+              {/* Post Job Button */}
+              <Link to="/post-job">
+                <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Post a Job
+                </Button>
+              </Link>
+
+              {/* Filter Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
                     <Filter className="h-4 w-4 mr-2" />
-                    {type.name} ({type.count})
+                    {jobTypes.find(type => type.id === selectedType)?.name || 'Filter'}
                   </Button>
-                ))}
-              </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-slate-800 border-slate-700">
+                  {jobTypes.map((type) => (
+                    <DropdownMenuItem
+                      key={type.id}
+                      onClick={() => setSelectedType(type.id)}
+                      className="text-white hover:bg-slate-700"
+                    >
+                      {type.name} ({type.count})
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </section>
@@ -655,90 +735,132 @@ export default function CareersPage() {
         <section className="py-20 px-6">
           <div className="max-w-[120rem] mx-auto">
             <div className="grid gap-6">
-              {displayedCareers.map((job, index) => (
-                <motion.div
-                  key={job.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300">
-                    <CardHeader>
-                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <CardTitle className="text-2xl text-white">{job.title}</CardTitle>
-                            <Badge className={`${
-                              job.type === 'fulltime' ? 'bg-green-500' :
-                              job.type === 'internship' ? 'bg-blue-500' :
-                              'bg-purple-500'
-                            } text-white`}>
-                              {job.type === 'fulltime' ? 'Full-time' : 
-                               job.type === 'internship' ? 'Internship' : 'Remote'}
-                            </Badge>
-                            {job.remote && (
-                              <Badge className="bg-cyan-500 text-white">Remote</Badge>
+              {isLoadingJobs ? (
+                <div className="text-center py-12">
+                  <div className="text-white/60">Loading job opportunities...</div>
+                </div>
+              ) : displayedCareers.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-white/60">No jobs found matching your criteria.</div>
+                </div>
+              ) : (
+                displayedCareers.map((job, index) => (
+                  <motion.div
+                    key={job.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300">
+                      <CardHeader>
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              {job.logo && (
+                                <Image 
+                                  src={job.logo} 
+                                  alt={`${job.company} logo`}
+                                  width={40}
+                                  className="h-10 w-10 rounded-lg object-cover"
+                                />
+                              )}
+                              <CardTitle className="text-2xl text-white">{job.title}</CardTitle>
+                              <Badge className={`${
+                                job.type === 'fulltime' ? 'bg-green-500' :
+                                job.type === 'internship' ? 'bg-blue-500' :
+                                job.type === 'parttime' ? 'bg-orange-500' :
+                                job.type === 'contract' ? 'bg-purple-500' :
+                                'bg-cyan-500'
+                              } text-white`}>
+                                {job.type === 'fulltime' ? 'Full-time' : 
+                                 job.type === 'parttime' ? 'Part-time' :
+                                 job.type === 'internship' ? 'Internship' : 
+                                 job.type === 'contract' ? 'Contract' : 'Remote'}
+                              </Badge>
+                              {job.isFromCMS && (
+                                <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-400/30">
+                                  New
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2 text-cyan-400 mb-2">
+                              <Building className="h-4 w-4" />
+                              <span className="font-medium">{job.company}</span>
+                            </div>
+                            <CardDescription className="text-white/70 text-base">
+                              {job.description}
+                            </CardDescription>
+                          </div>
+                          <div className="flex flex-col items-end gap-2">
+                            {job.applicationUrl ? (
+                              <Button 
+                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                onClick={() => window.open(job.applicationUrl, '_blank')}
+                              >
+                                Apply Now
+                              </Button>
+                            ) : job.contactEmail ? (
+                              <Button 
+                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                onClick={() => window.open(`mailto:${job.contactEmail}`, '_blank')}
+                              >
+                                Contact HR
+                              </Button>
+                            ) : (
+                              <Button 
+                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                onClick={() => handleApplyNow(job)}
+                              >
+                                Apply Now
+                              </Button>
+                            )}
+                            {job.deadline && (
+                              <div className="text-sm text-yellow-400">
+                                Deadline: {new Date(job.deadline).toLocaleDateString()}
+                              </div>
                             )}
                           </div>
-                          <div className="flex items-center gap-2 text-cyan-400 mb-2">
-                            <Building className="h-4 w-4" />
-                            <span className="font-medium">{job.company}</span>
-                          </div>
-                          <CardDescription className="text-white/70 text-base">
-                            {job.description}
-                          </CardDescription>
                         </div>
-                        <div className="flex flex-col items-end gap-2">
-                          <Button 
-                            className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
-                            onClick={() => handleApplyNow(job)}
-                          >
-                            Apply Now
-                          </Button>
-                          <div className="text-sm text-white/60">
-                            {job.applicants} applicants
-                          </div>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    
-                    <CardContent>
-                      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                        <div className="flex items-center gap-2 text-white/80">
-                          <MapPin className="h-4 w-4 text-cyan-400" />
-                          <span className="text-sm">{job.location}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-white/80">
-                          <DollarSign className="h-4 w-4 text-green-400" />
-                          <span className="text-sm">{job.salary}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-white/80">
-                          <Briefcase className="h-4 w-4 text-blue-400" />
-                          <span className="text-sm">{job.experience}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-white/80">
-                          <Clock className="h-4 w-4 text-yellow-400" />
-                          <span className="text-sm">{job.posted}</span>
-                        </div>
-                      </div>
+                      </CardHeader>
                       
-                      <div>
-                        <div className="text-sm text-white/60 mb-2">Required Skills:</div>
-                        <div className="flex flex-wrap gap-2">
-                          {job.skills.map((skill, skillIndex) => (
-                            <Badge 
-                              key={skillIndex} 
-                              className="bg-white/10 text-white border-white/20"
-                            >
-                              {skill}
-                            </Badge>
-                          ))}
+                      <CardContent>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                          <div className="flex items-center gap-2 text-white/80">
+                            <MapPin className="h-4 w-4 text-cyan-400" />
+                            <span className="text-sm">{job.location}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-white/80">
+                            <DollarSign className="h-4 w-4 text-green-400" />
+                            <span className="text-sm">{job.salary}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-white/80">
+                            <Briefcase className="h-4 w-4 text-blue-400" />
+                            <span className="text-sm">{job.experience}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-white/80">
+                            <Clock className="h-4 w-4 text-yellow-400" />
+                            <span className="text-sm">{job.posted || 'Recently posted'}</span>
+                          </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+                        
+                        <div>
+                          <div className="text-sm text-white/60 mb-2">Required Skills:</div>
+                          <div className="flex flex-wrap gap-2">
+                            {job.skills.map((skill, skillIndex) => (
+                              <Badge 
+                                key={skillIndex} 
+                                className="bg-white/10 text-white border-white/20"
+                              >
+                                {skill}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))
+              )}
             </div>
 
             {/* Load More Button */}

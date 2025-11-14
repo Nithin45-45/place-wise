@@ -16,6 +16,7 @@ import StudentFormPage from '@/components/pages/StudentFormPage';
 import PlacementsPage from '@/components/pages/PlacementsPage';
 import PlacementDetailPage from '@/components/pages/PlacementDetailPage';
 import PlacementFormPage from '@/components/pages/PlacementFormPage';
+import JobPostingFormPage from '@/components/pages/JobPostingFormPage';
 
 // Layout component that includes ScrollToTop
 function Layout() {
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
       {
         path: "placements/:id/edit",
         element: <PlacementFormPage />,
+      },
+      {
+        path: "post-job",
+        element: <JobPostingFormPage />,
       },
       {
         path: "*",
