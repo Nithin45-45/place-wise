@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMember } from '@/integrations';
+import { BaseCrudService } from '@/integrations';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -68,15 +69,51 @@ export default function HomePage() {
       if (!authForm.fullName || !authForm.email || !authForm.password) {
         return;
       }
+      
+      try {
+        // Create account immediately - store user data in studentprofiles collection
+        const newStudentProfile = {
+          _id: crypto.randomUUID(),
+          fullName: authForm.fullName,
+          email: authForm.email,
+          studentId: `STU-${Date.now()}`, // Generate a unique student ID
+          major: '', // Will be filled later
+          gpa: 0, // Will be filled later
+          graduationDate: '', // Will be filled later
+          resumeUrl: '', // Will be filled later
+          profilePicture: '' // Will be filled later
+        };
+        
+        await BaseCrudService.create('studentprofiles', newStudentProfile);
+        
+        // Close modal and show success
+        setShowAuthModal(false);
+        
+        // Reset form
+        setAuthForm({
+          email: '',
+          password: '',
+          confirmPassword: '',
+          fullName: ''
+        });
+        
+        // Redirect to Wix auth for actual authentication
+        actions.login();
+        
+      } catch (error) {
+        console.error('Error creating account:', error);
+        // Still redirect to Wix auth even if profile creation fails
+        setShowAuthModal(false);
+        actions.login();
+      }
     } else {
       if (!authForm.email || !authForm.password) {
         return;
       }
+      // For login, just redirect to Wix auth
+      setShowAuthModal(false);
+      actions.login();
     }
-    
-    // For now, just redirect to Wix auth - in a real app you'd handle this differently
-    setShowAuthModal(false);
-    actions.login();
   };
 
   const handlePredict = async () => {
