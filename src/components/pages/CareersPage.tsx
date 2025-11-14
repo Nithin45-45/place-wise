@@ -440,6 +440,327 @@ export default function CareersPage() {
           </div>
         </section>
 
+        {/* Career Learning Suggestions */}
+        <section className="py-20 px-6">
+          <div className="max-w-[120rem] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold text-white mb-4 font-heading">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+                  Skills to Master
+                </span>
+                {" "}for High-Paying Careers
+              </h2>
+              <p className="text-xl text-white/70 max-w-3xl mx-auto font-paragraph">
+                Based on market trends and salary data, here are the most valuable skills to learn for securing top-tier positions
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* AI & Machine Learning */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Brain className="h-8 w-8 text-purple-400" />
+                      <CardTitle className="text-xl text-white">AI & Machine Learning</CardTitle>
+                    </div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">$120k - $200k+</div>
+                    <CardDescription className="text-white/80">
+                      The highest-paying field in tech with explosive growth
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-sm font-semibold text-purple-300 mb-2">Essential Skills:</div>
+                        <div className="flex flex-wrap gap-2">
+                          {['Python', 'TensorFlow', 'PyTorch', 'Deep Learning', 'NLP'].map((skill) => (
+                            <Badge key={skill} className="bg-purple-500/30 text-purple-200 border-purple-400/30">
+                              {skill}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-purple-300 mb-2">Learning Path:</div>
+                        <ul className="text-sm text-white/80 space-y-1">
+                          <li>• Start with Python programming</li>
+                          <li>• Learn statistics & linear algebra</li>
+                          <li>• Master ML frameworks (TensorFlow/PyTorch)</li>
+                          <li>• Build portfolio projects</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Cloud & DevOps */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-md border-blue-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <TrendingUp className="h-8 w-8 text-blue-400" />
+                      <CardTitle className="text-xl text-white">Cloud & DevOps</CardTitle>
+                    </div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">$90k - $160k</div>
+                    <CardDescription className="text-white/80">
+                      High demand with excellent job security
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-sm font-semibold text-blue-300 mb-2">Essential Skills:</div>
+                        <div className="flex flex-wrap gap-2">
+                          {['AWS', 'Docker', 'Kubernetes', 'Terraform', 'CI/CD'].map((skill) => (
+                            <Badge key={skill} className="bg-blue-500/30 text-blue-200 border-blue-400/30">
+                              {skill}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-blue-300 mb-2">Learning Path:</div>
+                        <ul className="text-sm text-white/80 space-y-1">
+                          <li>• Learn Linux fundamentals</li>
+                          <li>• Get AWS/Azure certifications</li>
+                          <li>• Master containerization (Docker)</li>
+                          <li>• Practice infrastructure as code</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Full-Stack Development */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-md border-green-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Github className="h-8 w-8 text-green-400" />
+                      <CardTitle className="text-xl text-white">Full-Stack Development</CardTitle>
+                    </div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">$80k - $140k</div>
+                    <CardDescription className="text-white/80">
+                      Versatile skills with broad opportunities
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-sm font-semibold text-green-300 mb-2">Essential Skills:</div>
+                        <div className="flex flex-wrap gap-2">
+                          {['React', 'Node.js', 'TypeScript', 'PostgreSQL', 'REST APIs'].map((skill) => (
+                            <Badge key={skill} className="bg-green-500/30 text-green-200 border-green-400/30">
+                              {skill}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-green-300 mb-2">Learning Path:</div>
+                        <ul className="text-sm text-white/80 space-y-1">
+                          <li>• Master JavaScript fundamentals</li>
+                          <li>• Learn React for frontend</li>
+                          <li>• Study Node.js for backend</li>
+                          <li>• Build full-stack projects</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Data Science */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-orange-500/20 to-red-500/20 backdrop-blur-md border-orange-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <TrendingUp className="h-8 w-8 text-orange-400" />
+                      <CardTitle className="text-xl text-white">Data Science</CardTitle>
+                    </div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">$95k - $170k</div>
+                    <CardDescription className="text-white/80">
+                      Transform data into business insights
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-sm font-semibold text-orange-300 mb-2">Essential Skills:</div>
+                        <div className="flex flex-wrap gap-2">
+                          {['Python', 'SQL', 'Pandas', 'Tableau', 'Statistics'].map((skill) => (
+                            <Badge key={skill} className="bg-orange-500/30 text-orange-200 border-orange-400/30">
+                              {skill}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-orange-300 mb-2">Learning Path:</div>
+                        <ul className="text-sm text-white/80 space-y-1">
+                          <li>• Learn Python & SQL</li>
+                          <li>• Master data manipulation (Pandas)</li>
+                          <li>• Study statistics & probability</li>
+                          <li>• Create data visualization projects</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Cybersecurity */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-red-500/20 to-pink-500/20 backdrop-blur-md border-red-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Users className="h-8 w-8 text-red-400" />
+                      <CardTitle className="text-xl text-white">Cybersecurity</CardTitle>
+                    </div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">$85k - $150k</div>
+                    <CardDescription className="text-white/80">
+                      Critical field with growing demand
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-sm font-semibold text-red-300 mb-2">Essential Skills:</div>
+                        <div className="flex flex-wrap gap-2">
+                          {['Network Security', 'Penetration Testing', 'CISSP', 'Ethical Hacking', 'Risk Assessment'].map((skill) => (
+                            <Badge key={skill} className="bg-red-500/30 text-red-200 border-red-400/30">
+                              {skill}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-red-300 mb-2">Learning Path:</div>
+                        <ul className="text-sm text-white/80 space-y-1">
+                          <li>• Learn networking fundamentals</li>
+                          <li>• Get security certifications (CISSP, CEH)</li>
+                          <li>• Practice ethical hacking</li>
+                          <li>• Study compliance frameworks</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Product Management */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-md border-yellow-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Briefcase className="h-8 w-8 text-yellow-400" />
+                      <CardTitle className="text-xl text-white">Product Management</CardTitle>
+                    </div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">$110k - $180k</div>
+                    <CardDescription className="text-white/80">
+                      Bridge technology and business strategy
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-sm font-semibold text-yellow-300 mb-2">Essential Skills:</div>
+                        <div className="flex flex-wrap gap-2">
+                          {['Product Strategy', 'Analytics', 'User Research', 'Agile', 'Leadership'].map((skill) => (
+                            <Badge key={skill} className="bg-yellow-500/30 text-yellow-200 border-yellow-400/30">
+                              {skill}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-yellow-300 mb-2">Learning Path:</div>
+                        <ul className="text-sm text-white/80 space-y-1">
+                          <li>• Learn product strategy frameworks</li>
+                          <li>• Master data analytics tools</li>
+                          <li>• Study user experience design</li>
+                          <li>• Develop leadership skills</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+
+            {/* Learning Resources CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="mt-16 text-center"
+            >
+              <Card className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 backdrop-blur-md border-cyan-400/30 text-white max-w-4xl mx-auto">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold text-white mb-4">
+                    💡 Pro Tip: Start Learning Today
+                  </h3>
+                  <p className="text-white/80 mb-6 text-lg">
+                    The best time to start learning these skills was yesterday. The second best time is now. 
+                    Focus on one area, build projects, and create a portfolio that showcases your abilities.
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-4">
+                    <Badge className="bg-green-500 text-white px-4 py-2 text-sm">
+                      📚 Online Courses: Coursera, Udemy, edX
+                    </Badge>
+                    <Badge className="bg-blue-500 text-white px-4 py-2 text-sm">
+                      🛠️ Practice: GitHub, LeetCode, Kaggle
+                    </Badge>
+                    <Badge className="bg-purple-500 text-white px-4 py-2 text-sm">
+                      🏆 Certifications: AWS, Google, Microsoft
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+        </section>
+
         {/* Career Stats */}
         <section className="py-20 px-6 bg-black/20 backdrop-blur-sm">
           <div className="max-w-[120rem] mx-auto">
