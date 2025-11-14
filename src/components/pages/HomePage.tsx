@@ -362,7 +362,7 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="text-5xl font-bold text-cyan-400 mb-2">95%</div>
+                <div className="text-5xl font-bold text-cyan-400 mb-2">0%</div>
                 <div className="text-white/80">Prediction Accuracy</div>
               </motion.div>
               <motion.div
@@ -371,7 +371,7 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <div className="text-5xl font-bold text-green-400 mb-2">10K+</div>
+                <div className="text-5xl font-bold text-green-400 mb-2">0</div>
                 <div className="text-white/80">Students Analyzed</div>
               </motion.div>
               <motion.div
@@ -380,7 +380,7 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 viewport={{ once: true }}
               >
-                <div className="text-5xl font-bold text-blue-400 mb-2">500+</div>
+                <div className="text-5xl font-bold text-blue-400 mb-2">0</div>
                 <div className="text-white/80">Partner Companies</div>
               </motion.div>
               <motion.div
@@ -389,7 +389,7 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 viewport={{ once: true }}
               >
-                <div className="text-5xl font-bold text-yellow-400 mb-2">24/7</div>
+                <div className="text-5xl font-bold text-yellow-400 mb-2">0</div>
                 <div className="text-white/80">AI Availability</div>
               </motion.div>
             </div>

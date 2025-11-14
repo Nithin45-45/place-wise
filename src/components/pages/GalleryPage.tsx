@@ -84,7 +84,7 @@ export default function GalleryPage() {
     {
       id: 4,
       image: 'https://static.wixstatic.com/media/52cebc_b18126af61894c1b94e5437d01f0cbce~mv2.png?originWidth=640&originHeight=448',
-      caption: 'Our Achievers — 95% Placement Rate Through AI Predictions',
+      caption: 'Our Achievers — 0% Placement Rate Through AI Predictions',
       type: 'placement'
     },
     {
@@ -137,7 +137,7 @@ export default function GalleryPage() {
       location: 'University Auditorium',
       attendees: 200,
       image: 'https://static.wixstatic.com/media/52cebc_f24d4adc32864047b522759acb046b13~mv2.png?originWidth=384&originHeight=192',
-      description: 'Celebrating 95% placement success rate with our AI prediction platform.'
+      description: 'Celebrating 0% placement success rate with our AI prediction platform.'
     },
     {
       id: 3,
@@ -560,7 +560,7 @@ export default function GalleryPage() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="text-5xl font-bold text-cyan-400 mb-2">50+</div>
+                <div className="text-5xl font-bold text-cyan-400 mb-2">0</div>
                 <div className="text-white/80">Events Hosted</div>
               </motion.div>
               <motion.div
@@ -569,7 +569,7 @@ export default function GalleryPage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <div className="text-5xl font-bold text-green-400 mb-2">10K+</div>
+                <div className="text-5xl font-bold text-green-400 mb-2">0</div>
                 <div className="text-white/80">Success Stories</div>
               </motion.div>
               <motion.div
@@ -578,7 +578,7 @@ export default function GalleryPage() {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 viewport={{ once: true }}
               >
-                <div className="text-5xl font-bold text-blue-400 mb-2">25+</div>
+                <div className="text-5xl font-bold text-blue-400 mb-2">0</div>
                 <div className="text-white/80">Awards Won</div>
               </motion.div>
               <motion.div
@@ -587,7 +587,7 @@ export default function GalleryPage() {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 viewport={{ once: true }}
               >
-                <div className="text-5xl font-bold text-yellow-400 mb-2">100+</div>
+                <div className="text-5xl font-bold text-yellow-400 mb-2">0</div>
                 <div className="text-white/80">Workshops Conducted</div>
               </motion.div>
             </div>
