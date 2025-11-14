@@ -27,7 +27,7 @@ import { Image } from '@/components/ui/image';
 
 export default function AboutPage() {
   const { member, isAuthenticated, actions } = useMember();
-  const [showAuthModal, setShowAuthModal] = useState(true);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState('login');
   const [authForm, setAuthForm] = useState({
     email: '',

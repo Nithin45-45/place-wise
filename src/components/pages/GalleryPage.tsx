@@ -27,7 +27,7 @@ import {
 
 export default function GalleryPage() {
   const { member, isAuthenticated, actions } = useMember();
-  const [showAuthModal, setShowAuthModal] = useState(true);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState('login');
   const [authForm, setAuthForm] = useState({
     email: '',
