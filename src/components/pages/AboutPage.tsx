@@ -231,7 +231,7 @@ export default function AboutPage() {
                   <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white text-center">
                     <CardHeader>
                       <Target className="h-12 w-12 text-cyan-400 mx-auto mb-2" />
-                      <CardTitle className="text-2xl">95%</CardTitle>
+                      <CardTitle className="text-2xl">0%</CardTitle>
                       <CardDescription className="text-white/70">Accuracy Rate</CardDescription>
                     </CardHeader>
                   </Card>
@@ -241,7 +241,7 @@ export default function AboutPage() {
                   <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white text-center">
                     <CardHeader>
                       <Users className="h-12 w-12 text-green-400 mx-auto mb-2" />
-                      <CardTitle className="text-2xl">10K+</CardTitle>
+                      <CardTitle className="text-2xl">0</CardTitle>
                       <CardDescription className="text-white/70">Students Helped</CardDescription>
                     </CardHeader>
                   </Card>
@@ -251,7 +251,7 @@ export default function AboutPage() {
                   <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white text-center">
                     <CardHeader>
                       <Award className="h-12 w-12 text-yellow-400 mx-auto mb-2" />
-                      <CardTitle className="text-2xl">500+</CardTitle>
+                      <CardTitle className="text-2xl">0</CardTitle>
                       <CardDescription className="text-white/70">Partner Companies</CardDescription>
                     </CardHeader>
                   </Card>
@@ -261,7 +261,7 @@ export default function AboutPage() {
                   <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white text-center">
                     <CardHeader>
                       <TrendingUp className="h-12 w-12 text-blue-400 mx-auto mb-2" />
-                      <CardTitle className="text-2xl">85%</CardTitle>
+                      <CardTitle className="text-2xl">0%</CardTitle>
                       <CardDescription className="text-white/70">Success Rate</CardDescription>
                     </CardHeader>
                   </Card>
