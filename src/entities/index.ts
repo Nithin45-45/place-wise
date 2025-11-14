@@ -37,40 +37,6 @@ export interface JobPostings {
   applicationUrl?: string;
 }
 
-/**
- * Collection ID: jobpostings
- * Interface for JobPostings
- */
-export interface JobPostings {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  jobTitle?: string;
-  /** @wixFieldType text */
-  companyName?: string;
-  /** @wixFieldType image */
-  companyLogo?: string;
-  /** @wixFieldType text */
-  jobDescription?: string;
-  /** @wixFieldType text */
-  jobLocation?: string;
-  /** @wixFieldType text */
-  employmentType?: string;
-  /** @wixFieldType text */
-  salaryRange?: string;
-  /** @wixFieldType date */
-  applicationDeadline?: Date | string;
-  /** @wixFieldType text */
-  requiredSkills?: string;
-  /** @wixFieldType text */
-  experienceLevel?: string;
-  /** @wixFieldType text */
-  contactEmail?: string;
-  /** @wixFieldType url */
-  applicationUrl?: string;
-}
-
 
 /**
  * Collection ID: studentplacements

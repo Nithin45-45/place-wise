@@ -506,17 +506,17 @@ export default function CareersPage() {
     contactEmail?: string;
     applicationUrl?: string;
     deadline?: Date;
-    isFromCMS?: boolean;
+    isFromCMS: boolean;
   };
 
   // Combine static careers with dynamic job postings
   const allJobs: UnifiedJob[] = [
     ...careers.map(career => ({
       ...career,
-      logo: undefined,
-      contactEmail: undefined,
-      applicationUrl: undefined,
-      deadline: undefined,
+      logo: undefined as string | undefined,
+      contactEmail: undefined as string | undefined,
+      applicationUrl: undefined as string | undefined,
+      deadline: undefined as Date | undefined,
       isFromCMS: false
     })),
     ...jobPostings.map(job => ({
@@ -529,6 +529,9 @@ export default function CareersPage() {
       experience: job.experienceLevel || 'Experience level not specified',
       skills: job.requiredSkills ? job.requiredSkills.split(',').map(s => s.trim()) : [],
       description: job.jobDescription || 'No description available',
+      posted: undefined as string | undefined,
+      applicants: undefined as number | undefined,
+      remote: undefined as boolean | undefined,
       logo: job.companyLogo,
       contactEmail: job.contactEmail,
       applicationUrl: job.applicationUrl,

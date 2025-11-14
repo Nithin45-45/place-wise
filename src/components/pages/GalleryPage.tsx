@@ -431,6 +431,267 @@ export default function GalleryPage() {
           </div>
         </section>
 
+        {/* Success Stories - Inspirational Persons Section */}
+        <section className="py-20 px-6">
+          <div className="max-w-[120rem] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-heading">
+                Success
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400"> Stories</span>
+              </h2>
+              <p className="text-lg text-white/80 max-w-3xl mx-auto font-paragraph">
+                Meet the inspiring individuals who have transformed their careers through our AI-powered platform
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Success Story 1 */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10 }}
+              >
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
+                  <div className="relative">
+                    <Image
+                      src="https://static.wixstatic.com/media/52cebc_37acd80775dd46f1bbb7a31062841f57~mv2.png?originWidth=384&originHeight=384"
+                      alt="Priya Sharma"
+                      width={400}
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-green-500 text-white">
+                        Success Story
+                      </Badge>
+                    </div>
+                  </div>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold text-white mb-2">Priya Sharma</h3>
+                    <p className="text-cyan-400 font-medium mb-3">Senior Software Engineer at Google</p>
+                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
+                      From a small town in India to Silicon Valley, Priya used our AI predictions to identify her strengths in machine learning. She secured a ₹45L package at Google within 6 months of graduation.
+                    </p>
+                    <div className="flex items-center gap-2 text-sm text-green-400">
+                      <Award className="h-4 w-4" />
+                      <span>₹45L Package • Google • 2024</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Success Story 2 */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10 }}
+              >
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
+                  <div className="relative">
+                    <Image
+                      src="https://static.wixstatic.com/media/52cebc_e838babce264414e932f22efd13ffe45~mv2.png?originWidth=384&originHeight=384"
+                      alt="Rahul Kumar"
+                      width={400}
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-green-500 text-white">
+                        Success Story
+                      </Badge>
+                    </div>
+                  </div>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold text-white mb-2">Rahul Kumar</h3>
+                    <p className="text-cyan-400 font-medium mb-3">Data Scientist at Microsoft</p>
+                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
+                      Rahul struggled with career direction until our AI platform revealed his potential in data science. He pivoted his focus and landed a dream role at Microsoft with a ₹38L package.
+                    </p>
+                    <div className="flex items-center gap-2 text-sm text-green-400">
+                      <Award className="h-4 w-4" />
+                      <span>₹38L Package • Microsoft • 2024</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Success Story 3 */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10 }}
+              >
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
+                  <div className="relative">
+                    <Image
+                      src="https://static.wixstatic.com/media/52cebc_62750a194ff44a0baeed33595fef3f23~mv2.png?originWidth=384&originHeight=384"
+                      alt="Ananya Patel"
+                      width={400}
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-green-500 text-white">
+                        Success Story
+                      </Badge>
+                    </div>
+                  </div>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold text-white mb-2">Ananya Patel</h3>
+                    <p className="text-cyan-400 font-medium mb-3">Product Manager at Amazon</p>
+                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
+                      Our AI insights helped Ananya discover her leadership potential and transition from engineering to product management. She now leads a team of 15 engineers at Amazon.
+                    </p>
+                    <div className="flex items-center gap-2 text-sm text-green-400">
+                      <Award className="h-4 w-4" />
+                      <span>₹42L Package • Amazon • 2024</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Success Story 4 */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10 }}
+              >
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
+                  <div className="relative">
+                    <Image
+                      src="https://static.wixstatic.com/media/52cebc_a5aca47090174f2aac4d3479eb33b0b6~mv2.png?originWidth=384&originHeight=384"
+                      alt="Vikram Singh"
+                      width={400}
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-green-500 text-white">
+                        Success Story
+                      </Badge>
+                    </div>
+                  </div>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold text-white mb-2">Vikram Singh</h3>
+                    <p className="text-cyan-400 font-medium mb-3">DevOps Engineer at Netflix</p>
+                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
+                      Vikram was unsure about his career path until our platform identified his aptitude for cloud technologies. He specialized in DevOps and joined Netflix's infrastructure team.
+                    </p>
+                    <div className="flex items-center gap-2 text-sm text-green-400">
+                      <Award className="h-4 w-4" />
+                      <span>₹35L Package • Netflix • 2024</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Success Story 5 */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10 }}
+              >
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
+                  <div className="relative">
+                    <Image
+                      src="https://static.wixstatic.com/media/52cebc_e99eb7bb678641629757e64eaf0812af~mv2.png?originWidth=384&originHeight=384"
+                      alt="Sneha Reddy"
+                      width={400}
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-green-500 text-white">
+                        Success Story
+                      </Badge>
+                    </div>
+                  </div>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold text-white mb-2">Sneha Reddy</h3>
+                    <p className="text-cyan-400 font-medium mb-3">AI Research Scientist at Meta</p>
+                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
+                      Sneha's passion for AI was validated by our platform's predictions. She pursued advanced research and now works on cutting-edge AI projects at Meta's Reality Labs division.
+                    </p>
+                    <div className="flex items-center gap-2 text-sm text-green-400">
+                      <Award className="h-4 w-4" />
+                      <span>₹50L Package • Meta • 2024</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Success Story 6 */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10 }}
+              >
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
+                  <div className="relative">
+                    <Image
+                      src="https://static.wixstatic.com/media/52cebc_31f952b4d7284af0885c6bc224bebb0c~mv2.png?originWidth=384&originHeight=384"
+                      alt="Arjun Mehta"
+                      width={400}
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-green-500 text-white">
+                        Success Story
+                      </Badge>
+                    </div>
+                  </div>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold text-white mb-2">Arjun Mehta</h3>
+                    <p className="text-cyan-400 font-medium mb-3">Startup Founder & CEO</p>
+                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
+                      Our platform identified Arjun's entrepreneurial potential and leadership skills. He founded an AI startup that was recently acquired for $50M, creating jobs for 200+ engineers.
+                    </p>
+                    <div className="flex items-center gap-2 text-sm text-green-400">
+                      <Award className="h-4 w-4" />
+                      <span>$50M Exit • Entrepreneur • 2024</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+
+            {/* Call to Action */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              viewport={{ once: true }}
+              className="text-center mt-16"
+            >
+              <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 backdrop-blur-md border border-cyan-400/30 rounded-2xl p-8">
+                <h3 className="text-2xl font-bold text-white mb-4 font-heading">
+                  Ready to Write Your Success Story?
+                </h3>
+                <p className="text-white/80 mb-6 font-paragraph">
+                  Join thousands of students who have transformed their careers with AI-powered insights
+                </p>
+                <Link to="/profile">
+                  <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-8 py-3 text-lg">
+                    Start Your Journey
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
         {/* Filter Section */}
         <section className="py-10 px-6 bg-black/20 backdrop-blur-sm">
           <div className="max-w-[120rem] mx-auto">
