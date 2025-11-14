@@ -22,7 +22,12 @@ import {
   Users,
   Award,
   LogOut,
-  Github
+  Github,
+  Star,
+  Trophy,
+  MessageSquare,
+  Briefcase,
+  Code
 } from 'lucide-react';
 
 export default function GalleryPage() {
@@ -37,6 +42,8 @@ export default function GalleryPage() {
   });
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [showPersonModal, setShowPersonModal] = useState(false);
 
   const handleAuthInputChange = (field, value) => {
     setAuthForm(prev => ({ ...prev, [field]: value }));
@@ -204,6 +211,201 @@ export default function GalleryPage() {
   const filteredItems = selectedCategory === 'all' 
     ? galleryItems 
     : galleryItems.filter(item => item.category === selectedCategory);
+
+  // Success stories data with detailed information
+  const successStories = [
+    {
+      id: 1,
+      name: 'Priya Sharma',
+      position: 'Senior Software Engineer at Google',
+      image: 'https://static.wixstatic.com/media/52cebc_37acd80775dd46f1bbb7a31062841f57~mv2.png?originWidth=384&originHeight=384',
+      package: '₹45L Package',
+      company: 'Google',
+      year: '2024',
+      shortDescription: 'From a small town in India to Silicon Valley, Priya used our AI predictions to identify her strengths in machine learning. She secured a ₹45L package at Google within 6 months of graduation.',
+      detailedStory: {
+        background: 'Priya grew up in a small town in Rajasthan with limited access to technology resources. Despite the challenges, she was passionate about programming and dreamed of working for a top tech company.',
+        challenge: 'Coming from a non-technical family background, Priya struggled to understand which career path would suit her best. She was torn between web development, data science, and machine learning.',
+        solution: 'Our AI platform analyzed her academic performance, coding patterns, and problem-solving approach. It identified her exceptional aptitude for machine learning and recommended a focused learning path.',
+        journey: [
+          'Completed our AI-recommended machine learning specialization',
+          'Built 5 ML projects including a recommendation system and computer vision app',
+          'Participated in 3 hackathons, winning 2nd place in Google\'s ML challenge',
+          'Secured internship at a startup through our placement network',
+          'Received job offer from Google after showcasing her ML portfolio'
+        ],
+        currentRole: 'Currently working on Google\'s Search AI team, developing next-generation search algorithms that serve billions of users worldwide.',
+        advice: 'Trust the process and focus on building real projects. The AI predictions gave me clarity, but consistent effort and practical application of skills made the difference.',
+        skills: ['Python', 'TensorFlow', 'PyTorch', 'Machine Learning', 'Deep Learning', 'Computer Vision', 'NLP'],
+        achievements: [
+          'Published 2 research papers in ML conferences',
+          'Led a team of 8 engineers on a critical search feature',
+          'Mentored 15+ junior developers',
+          'Speaker at 5 international tech conferences'
+        ]
+      }
+    },
+    {
+      id: 2,
+      name: 'Rahul Kumar',
+      position: 'Data Scientist at Microsoft',
+      image: 'https://static.wixstatic.com/media/52cebc_e838babce264414e932f22efd13ffe45~mv2.png?originWidth=384&originHeight=384',
+      package: '₹38L Package',
+      company: 'Microsoft',
+      year: '2024',
+      shortDescription: 'Rahul struggled with career direction until our AI platform revealed his potential in data science. He pivoted his focus and landed a dream role at Microsoft with a ₹38L package.',
+      detailedStory: {
+        background: 'Rahul was a mechanical engineering student who felt disconnected from his field. He had always been good with numbers and enjoyed solving analytical problems but didn\'t know how to channel this into a career.',
+        challenge: 'Despite good grades, Rahul felt lost about his career direction. He was considering traditional mechanical engineering roles but wasn\'t passionate about them.',
+        solution: 'Our AI assessment revealed his strong analytical thinking, pattern recognition abilities, and mathematical aptitude - perfect indicators for a successful data science career.',
+        journey: [
+          'Enrolled in our recommended data science bootcamp',
+          'Completed 10+ data analysis projects using real-world datasets',
+          'Built a predictive model for stock market analysis',
+          'Contributed to 3 open-source data science projects',
+          'Landed Microsoft role through our industry connections'
+        ],
+        currentRole: 'Working on Microsoft Azure\'s machine learning platform, helping enterprise customers build and deploy AI solutions at scale.',
+        advice: 'Don\'t be afraid to pivot your career if you find your true passion. The AI platform helped me discover my hidden potential in data science.',
+        skills: ['Python', 'R', 'SQL', 'Tableau', 'Power BI', 'Azure ML', 'Statistics', 'Data Visualization'],
+        achievements: [
+          'Developed ML models serving 10M+ users',
+          'Reduced customer churn by 25% through predictive analytics',
+          'Certified Microsoft Azure Data Scientist',
+          'Mentored 20+ aspiring data scientists'
+        ]
+      }
+    },
+    {
+      id: 3,
+      name: 'Ananya Patel',
+      position: 'Product Manager at Amazon',
+      image: 'https://static.wixstatic.com/media/52cebc_62750a194ff44a0baeed33595fef3f23~mv2.png?originWidth=384&originHeight=384',
+      package: '₹42L Package',
+      company: 'Amazon',
+      year: '2024',
+      shortDescription: 'Our AI insights helped Ananya discover her leadership potential and transition from engineering to product management. She now leads a team of 15 engineers at Amazon.',
+      detailedStory: {
+        background: 'Ananya was a computer science student with strong technical skills but found herself more interested in the strategic and business aspects of technology rather than pure coding.',
+        challenge: 'While technically competent, Ananya felt unfulfilled with pure software development roles. She wanted to have more impact on product strategy and user experience.',
+        solution: 'Our AI platform identified her exceptional communication skills, strategic thinking, and natural leadership abilities, recommending a transition to product management.',
+        journey: [
+          'Completed product management certification while finishing her degree',
+          'Led 3 cross-functional student projects as product owner',
+          'Interned at a fintech startup as associate product manager',
+          'Built a portfolio of product case studies and user research',
+          'Secured Amazon PM role through our alumni network'
+        ],
+        currentRole: 'Leading Amazon Prime Video\'s recommendation engine team, responsible for features used by 200M+ subscribers worldwide.',
+        advice: 'Product management is perfect for those who love technology but want to focus on solving user problems and driving business impact.',
+        skills: ['Product Strategy', 'User Research', 'Data Analysis', 'A/B Testing', 'Agile', 'SQL', 'Wireframing', 'Stakeholder Management'],
+        achievements: [
+          'Launched 5 major features increasing user engagement by 30%',
+          'Managed $50M product budget',
+          'Led cross-functional team of 15 engineers and designers',
+          'Recognized as "Rising Star PM" at Amazon'
+        ]
+      }
+    },
+    {
+      id: 4,
+      name: 'Vikram Singh',
+      position: 'DevOps Engineer at Netflix',
+      image: 'https://static.wixstatic.com/media/52cebc_a5aca47090174f2aac4d3479eb33b0b6~mv2.png?originWidth=384&originHeight=384',
+      package: '₹35L Package',
+      company: 'Netflix',
+      year: '2024',
+      shortDescription: 'Vikram was unsure about his career path until our platform identified his aptitude for cloud technologies. He specialized in DevOps and joined Netflix\'s infrastructure team.',
+      detailedStory: {
+        background: 'Vikram was an IT student who enjoyed both development and system administration but couldn\'t decide which path to pursue for his career.',
+        challenge: 'Vikram was torn between becoming a software developer or a system administrator. He enjoyed coding but also loved working with servers and infrastructure.',
+        solution: 'Our AI analysis revealed his unique combination of development skills and systems thinking, perfectly suited for the emerging DevOps field.',
+        journey: [
+          'Specialized in cloud technologies and automation tools',
+          'Built CI/CD pipelines for 5 different applications',
+          'Earned AWS and Kubernetes certifications',
+          'Contributed to open-source DevOps tools',
+          'Joined Netflix through their infrastructure hiring program'
+        ],
+        currentRole: 'Managing Netflix\'s global content delivery infrastructure, ensuring 99.99% uptime for 230M+ subscribers across 190 countries.',
+        advice: 'DevOps is the perfect blend of development and operations. If you enjoy both coding and infrastructure, this field offers incredible opportunities.',
+        skills: ['AWS', 'Kubernetes', 'Docker', 'Terraform', 'Jenkins', 'Python', 'Linux', 'Monitoring', 'CI/CD'],
+        achievements: [
+          'Reduced deployment time by 80% through automation',
+          'Managed infrastructure serving 230M+ users',
+          'Led migration of 50+ services to cloud-native architecture',
+          'Saved company $2M annually through infrastructure optimization'
+        ]
+      }
+    },
+    {
+      id: 5,
+      name: 'Sneha Reddy',
+      position: 'AI Research Scientist at Meta',
+      image: 'https://static.wixstatic.com/media/52cebc_e99eb7bb678641629757e64eaf0812af~mv2.png?originWidth=384&originHeight=384',
+      package: '₹50L Package',
+      company: 'Meta',
+      year: '2024',
+      shortDescription: 'Sneha\'s passion for AI was validated by our platform\'s predictions. She pursued advanced research and now works on cutting-edge AI projects at Meta\'s Reality Labs division.',
+      detailedStory: {
+        background: 'Sneha was a computer science student fascinated by artificial intelligence and machine learning, but unsure if she had what it takes to pursue research in this competitive field.',
+        challenge: 'While passionate about AI, Sneha lacked confidence in her research abilities and wasn\'t sure if she should pursue industry roles or continue with advanced research.',
+        solution: 'Our AI platform identified her exceptional research aptitude, mathematical reasoning, and innovative thinking patterns, strongly recommending a research-focused career path.',
+        journey: [
+          'Pursued advanced coursework in AI and machine learning',
+          'Published 3 research papers during undergraduate studies',
+          'Completed research internship at IIT Delhi',
+          'Presented work at 2 international AI conferences',
+          'Recruited by Meta\'s Reality Labs for cutting-edge AR/VR research'
+        ],
+        currentRole: 'Leading research on next-generation AI models for augmented reality, working on technologies that will power the future of human-computer interaction.',
+        advice: 'Research requires patience and persistence, but if you\'re passionate about pushing the boundaries of what\'s possible, it\'s incredibly rewarding.',
+        skills: ['Deep Learning', 'Computer Vision', 'NLP', 'PyTorch', 'Research Methodology', 'Mathematics', 'Statistics', 'Python'],
+        achievements: [
+          'Published 8 papers in top-tier AI conferences',
+          'Holds 3 patents in AR/VR technology',
+          'Led team of 12 researchers on breakthrough AR project',
+          'Keynote speaker at major AI conferences'
+        ]
+      }
+    },
+    {
+      id: 6,
+      name: 'Arjun Mehta',
+      position: 'Startup Founder & CEO',
+      image: 'https://static.wixstatic.com/media/52cebc_31f952b4d7284af0885c6bc224bebb0c~mv2.png?originWidth=384&originHeight=384',
+      package: '$50M Exit',
+      company: 'Entrepreneur',
+      year: '2024',
+      shortDescription: 'Our platform identified Arjun\'s entrepreneurial potential and leadership skills. He founded an AI startup that was recently acquired for $50M, creating jobs for 200+ engineers.',
+      detailedStory: {
+        background: 'Arjun was a computer science student with strong technical skills and innovative ideas, but he wasn\'t sure if he should join a big company or start his own venture.',
+        challenge: 'Despite having several startup ideas, Arjun lacked confidence in his entrepreneurial abilities and was considering safe corporate jobs instead.',
+        solution: 'Our AI assessment identified his exceptional leadership qualities, risk-taking ability, and innovative thinking - clear indicators of entrepreneurial potential.',
+        journey: [
+          'Developed MVP for AI-powered customer service platform',
+          'Raised $2M seed funding from angel investors',
+          'Built team of 25 engineers and grew to 200+ employees',
+          'Secured major enterprise clients including Fortune 500 companies',
+          'Successfully exited through acquisition by major tech company'
+        ],
+        currentRole: 'After the successful exit, Arjun is now an angel investor and startup mentor, helping other entrepreneurs build the next generation of AI companies.',
+        advice: 'Entrepreneurship is challenging but incredibly rewarding. Trust your instincts, build something people need, and don\'t be afraid to take calculated risks.',
+        skills: ['Leadership', 'Product Development', 'Fundraising', 'Team Building', 'Strategic Planning', 'AI/ML', 'Business Development'],
+        achievements: [
+          'Built company from 0 to $50M valuation in 3 years',
+          'Created 200+ high-paying tech jobs',
+          'Served 500+ enterprise customers',
+          'Mentored 50+ startup founders as angel investor'
+        ]
+      }
+    }
+  ];
+
+  const handlePersonClick = (person) => {
+    setSelectedPerson(person);
+    setShowPersonModal(true);
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -450,221 +652,49 @@ export default function GalleryPage() {
             </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Success Story 1 */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-              >
-                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
-                  <div className="relative">
-                    <Image
-                      src="https://static.wixstatic.com/media/52cebc_37acd80775dd46f1bbb7a31062841f57~mv2.png?originWidth=384&originHeight=384"
-                      alt="Priya Sharma"
-                      width={400}
-                      className="w-full h-64 object-cover"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-green-500 text-white">
-                        Success Story
-                      </Badge>
+              {/* Success Story Cards */}
+              {successStories.map((person, index) => (
+                <motion.div
+                  key={person.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -10 }}
+                  onClick={() => handlePersonClick(person)}
+                  className="cursor-pointer"
+                >
+                  <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full hover:border-cyan-400/50 transition-all duration-300">
+                    <div className="relative">
+                      <Image
+                        src={person.image}
+                        alt={person.name}
+                        width={400}
+                        className="w-full h-64 object-cover"
+                      />
+                      <div className="absolute top-4 right-4">
+                        <Badge className="bg-green-500 text-white">
+                          Success Story
+                        </Badge>
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+                        <span className="text-white text-sm font-medium">Click to read full story</span>
+                      </div>
                     </div>
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold text-white mb-2">Priya Sharma</h3>
-                    <p className="text-cyan-400 font-medium mb-3">Senior Software Engineer at Google</p>
-                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
-                      From a small town in India to Silicon Valley, Priya used our AI predictions to identify her strengths in machine learning. She secured a ₹45L package at Google within 6 months of graduation.
-                    </p>
-                    <div className="flex items-center gap-2 text-sm text-green-400">
-                      <Award className="h-4 w-4" />
-                      <span>₹45L Package • Google • 2024</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Success Story 2 */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-              >
-                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
-                  <div className="relative">
-                    <Image
-                      src="https://static.wixstatic.com/media/52cebc_e838babce264414e932f22efd13ffe45~mv2.png?originWidth=384&originHeight=384"
-                      alt="Rahul Kumar"
-                      width={400}
-                      className="w-full h-64 object-cover"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-green-500 text-white">
-                        Success Story
-                      </Badge>
-                    </div>
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold text-white mb-2">Rahul Kumar</h3>
-                    <p className="text-cyan-400 font-medium mb-3">Data Scientist at Microsoft</p>
-                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
-                      Rahul struggled with career direction until our AI platform revealed his potential in data science. He pivoted his focus and landed a dream role at Microsoft with a ₹38L package.
-                    </p>
-                    <div className="flex items-center gap-2 text-sm text-green-400">
-                      <Award className="h-4 w-4" />
-                      <span>₹38L Package • Microsoft • 2024</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Success Story 3 */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-              >
-                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
-                  <div className="relative">
-                    <Image
-                      src="https://static.wixstatic.com/media/52cebc_62750a194ff44a0baeed33595fef3f23~mv2.png?originWidth=384&originHeight=384"
-                      alt="Ananya Patel"
-                      width={400}
-                      className="w-full h-64 object-cover"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-green-500 text-white">
-                        Success Story
-                      </Badge>
-                    </div>
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold text-white mb-2">Ananya Patel</h3>
-                    <p className="text-cyan-400 font-medium mb-3">Product Manager at Amazon</p>
-                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
-                      Our AI insights helped Ananya discover her leadership potential and transition from engineering to product management. She now leads a team of 15 engineers at Amazon.
-                    </p>
-                    <div className="flex items-center gap-2 text-sm text-green-400">
-                      <Award className="h-4 w-4" />
-                      <span>₹42L Package • Amazon • 2024</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Success Story 4 */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-              >
-                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
-                  <div className="relative">
-                    <Image
-                      src="https://static.wixstatic.com/media/52cebc_a5aca47090174f2aac4d3479eb33b0b6~mv2.png?originWidth=384&originHeight=384"
-                      alt="Vikram Singh"
-                      width={400}
-                      className="w-full h-64 object-cover"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-green-500 text-white">
-                        Success Story
-                      </Badge>
-                    </div>
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold text-white mb-2">Vikram Singh</h3>
-                    <p className="text-cyan-400 font-medium mb-3">DevOps Engineer at Netflix</p>
-                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
-                      Vikram was unsure about his career path until our platform identified his aptitude for cloud technologies. He specialized in DevOps and joined Netflix's infrastructure team.
-                    </p>
-                    <div className="flex items-center gap-2 text-sm text-green-400">
-                      <Award className="h-4 w-4" />
-                      <span>₹35L Package • Netflix • 2024</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Success Story 5 */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-              >
-                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
-                  <div className="relative">
-                    <Image
-                      src="https://static.wixstatic.com/media/52cebc_e99eb7bb678641629757e64eaf0812af~mv2.png?originWidth=384&originHeight=384"
-                      alt="Sneha Reddy"
-                      width={400}
-                      className="w-full h-64 object-cover"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-green-500 text-white">
-                        Success Story
-                      </Badge>
-                    </div>
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold text-white mb-2">Sneha Reddy</h3>
-                    <p className="text-cyan-400 font-medium mb-3">AI Research Scientist at Meta</p>
-                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
-                      Sneha's passion for AI was validated by our platform's predictions. She pursued advanced research and now works on cutting-edge AI projects at Meta's Reality Labs division.
-                    </p>
-                    <div className="flex items-center gap-2 text-sm text-green-400">
-                      <Award className="h-4 w-4" />
-                      <span>₹50L Package • Meta • 2024</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Success Story 6 */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-              >
-                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white overflow-hidden h-full">
-                  <div className="relative">
-                    <Image
-                      src="https://static.wixstatic.com/media/52cebc_31f952b4d7284af0885c6bc224bebb0c~mv2.png?originWidth=384&originHeight=384"
-                      alt="Arjun Mehta"
-                      width={400}
-                      className="w-full h-64 object-cover"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-green-500 text-white">
-                        Success Story
-                      </Badge>
-                    </div>
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold text-white mb-2">Arjun Mehta</h3>
-                    <p className="text-cyan-400 font-medium mb-3">Startup Founder & CEO</p>
-                    <p className="text-white/70 mb-4 text-sm leading-relaxed">
-                      Our platform identified Arjun's entrepreneurial potential and leadership skills. He founded an AI startup that was recently acquired for $50M, creating jobs for 200+ engineers.
-                    </p>
-                    <div className="flex items-center gap-2 text-sm text-green-400">
-                      <Award className="h-4 w-4" />
-                      <span>$50M Exit • Entrepreneur • 2024</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-semibold text-white mb-2">{person.name}</h3>
+                      <p className="text-cyan-400 font-medium mb-3">{person.position}</p>
+                      <p className="text-white/70 mb-4 text-sm leading-relaxed line-clamp-3">
+                        {person.shortDescription}
+                      </p>
+                      <div className="flex items-center gap-2 text-sm text-green-400">
+                        <Award className="h-4 w-4" />
+                        <span>{person.package} • {person.company} • {person.year}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
 
             {/* Call to Action */}
@@ -869,6 +899,138 @@ export default function GalleryPage() {
             </div>
           </div>
         </footer>
+
+        {/* Success Story Detail Modal */}
+        <Dialog open={showPersonModal} onOpenChange={setShowPersonModal}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 border-slate-700 text-white">
+            {selectedPerson && (
+              <>
+                <DialogHeader className="space-y-4 pb-6">
+                  <div className="flex items-start gap-6">
+                    <div className="relative">
+                      <Image
+                        src={selectedPerson.image}
+                        alt={selectedPerson.name}
+                        width={120}
+                        className="w-24 h-24 rounded-full object-cover border-2 border-cyan-400"
+                      />
+                      <Badge className="absolute -bottom-2 -right-2 bg-green-500 text-white">
+                        Success Story
+                      </Badge>
+                    </div>
+                    <div className="flex-1">
+                      <DialogTitle className="text-3xl font-bold text-white mb-2">
+                        {selectedPerson.name}
+                      </DialogTitle>
+                      <p className="text-cyan-400 font-medium text-lg mb-2">{selectedPerson.position}</p>
+                      <div className="flex items-center gap-2 text-green-400">
+                        <Award className="h-5 w-5" />
+                        <span className="font-medium">{selectedPerson.package} • {selectedPerson.company} • {selectedPerson.year}</span>
+                      </div>
+                    </div>
+                  </div>
+                </DialogHeader>
+
+                <div className="space-y-8">
+                  {/* Background */}
+                  <div>
+                    <h3 className="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+                      <Users className="h-5 w-5" />
+                      Background
+                    </h3>
+                    <p className="text-white/80 leading-relaxed">{selectedPerson.detailedStory.background}</p>
+                  </div>
+
+                  {/* Challenge */}
+                  <div>
+                    <h3 className="text-xl font-semibold text-yellow-400 mb-3 flex items-center gap-2">
+                      <Search className="h-5 w-5" />
+                      The Challenge
+                    </h3>
+                    <p className="text-white/80 leading-relaxed">{selectedPerson.detailedStory.challenge}</p>
+                  </div>
+
+                  {/* AI Solution */}
+                  <div>
+                    <h3 className="text-xl font-semibold text-purple-400 mb-3 flex items-center gap-2">
+                      <Brain className="h-5 w-5" />
+                      AI-Powered Solution
+                    </h3>
+                    <p className="text-white/80 leading-relaxed">{selectedPerson.detailedStory.solution}</p>
+                  </div>
+
+                  {/* Journey */}
+                  <div>
+                    <h3 className="text-xl font-semibold text-blue-400 mb-3 flex items-center gap-2">
+                      <MapPin className="h-5 w-5" />
+                      The Journey
+                    </h3>
+                    <div className="space-y-3">
+                      {selectedPerson.detailedStory.journey.map((step, index) => (
+                        <div key={index} className="flex items-start gap-3">
+                          <div className="w-6 h-6 rounded-full bg-blue-500/30 border border-blue-400 flex items-center justify-center text-xs font-bold text-blue-300 mt-1 flex-shrink-0">
+                            {index + 1}
+                          </div>
+                          <p className="text-white/80">{step}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Current Role */}
+                  <div>
+                    <h3 className="text-xl font-semibold text-green-400 mb-3 flex items-center gap-2">
+                      <Briefcase className="h-5 w-5" />
+                      Current Role
+                    </h3>
+                    <p className="text-white/80 leading-relaxed">{selectedPerson.detailedStory.currentRole}</p>
+                  </div>
+
+                  {/* Skills */}
+                  <div>
+                    <h3 className="text-xl font-semibold text-orange-400 mb-3 flex items-center gap-2">
+                      <Code className="h-5 w-5" />
+                      Key Skills
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedPerson.detailedStory.skills.map((skill, index) => (
+                        <Badge key={index} className="bg-orange-500/20 text-orange-300 border-orange-400/30">
+                          {skill}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Achievements */}
+                  <div>
+                    <h3 className="text-xl font-semibold text-yellow-400 mb-3 flex items-center gap-2">
+                      <Trophy className="h-5 w-5" />
+                      Key Achievements
+                    </h3>
+                    <div className="space-y-2">
+                      {selectedPerson.detailedStory.achievements.map((achievement, index) => (
+                        <div key={index} className="flex items-start gap-3">
+                          <Star className="h-4 w-4 text-yellow-400 mt-1 flex-shrink-0" />
+                          <p className="text-white/80">{achievement}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Advice */}
+                  <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 backdrop-blur-md border border-cyan-400/30 rounded-lg p-6">
+                    <h3 className="text-xl font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+                      <MessageSquare className="h-5 w-5" />
+                      Advice for Aspiring Students
+                    </h3>
+                    <p className="text-white/90 leading-relaxed italic">"{selectedPerson.detailedStory.advice}"</p>
+                    <p className="text-cyan-300 mt-2 font-medium">- {selectedPerson.name}</p>
+                  </div>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
 
         {/* Professional Auth Modal */}
         <Dialog open={showAuthModal} onOpenChange={setShowAuthModal}>
