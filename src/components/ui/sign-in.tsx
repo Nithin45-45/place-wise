@@ -1,9 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Image } from '@/components/ui/image';
 import { useMember } from '@/integrations';
 import { Link } from 'react-router-dom';
-import { Brain, Sparkles } from 'lucide-react';
+import { Brain, Sparkles, Mail, Lock, User, Phone } from 'lucide-react';
+import { useState } from 'react';
 
 interface SignInProps {
   title?: string;
@@ -23,6 +26,36 @@ export function SignIn({
   buttonText = "Sign In"
 }: SignInProps) {
   const { actions } = useMember();
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    phone: ''
+  });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    try {
+      // Simulate form submission - in a real app, this would call your authentication API
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // For now, redirect to the Wix login since we need to integrate with Wix Members
+      actions.login();
+    } catch (error) {
+      console.error('Authentication error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -74,32 +107,163 @@ export function SignIn({
           {/* Sign In Card */}
           <div className={className}>
             <Card className={`${cardClassName} bg-white/95 backdrop-blur-sm border-2 border-gray-100 shadow-2xl`}>
-              <CardHeader className="text-center space-y-6 py-12 px-10">
+              <CardHeader className="text-center space-y-6 py-8 px-10">
                 {/* Professional Brain Icon */}
-                <div className="flex justify-center mb-6">
+                <div className="flex justify-center mb-4">
                   <div className="relative">
-                    <Brain className="h-16 w-16 text-primary" />
-                    <Sparkles className="h-8 w-8 text-brandaccent absolute -top-2 -right-2" />
+                    <Brain className="h-12 w-12 text-primary" />
+                    <Sparkles className="h-6 w-6 text-brandaccent absolute -top-1 -right-1" />
                   </div>
                 </div>
-                <CardTitle className="text-3xl font-bold text-foreground font-heading">
-                  {title}
+                <CardTitle className="text-2xl font-bold text-foreground font-heading">
+                  {isLogin ? 'Welcome Back' : 'Create Account'}
                 </CardTitle>
-                <CardDescription className="text-lg text-muted-foreground font-paragraph">
-                  {message}
+                <CardDescription className="text-base text-muted-foreground font-paragraph">
+                  {isLogin ? 'Sign in to access your placement predictions' : 'Join us to get AI-powered placement insights'}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="text-center px-10 pb-12 space-y-6">
-                <Button onClick={actions.login} className={buttonClassName}>
-                  {buttonText}
-                </Button>
-                <div>
-                  <Link 
-                    to="/" 
-                    className="text-muted-foreground hover:text-foreground transition-colors underline text-sm font-medium"
+              <CardContent className="px-10 pb-8 space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {!isLogin && (
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName" className="text-sm font-medium text-foreground">
+                          First Name
+                        </Label>
+                        <div className="relative">
+                          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="firstName"
+                            type="text"
+                            placeholder="John"
+                            value={formData.firstName}
+                            onChange={(e) => handleInputChange('firstName', e.target.value)}
+                            className="pl-10 h-11"
+                            required={!isLogin}
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName" className="text-sm font-medium text-foreground">
+                          Last Name
+                        </Label>
+                        <div className="relative">
+                          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="lastName"
+                            type="text"
+                            placeholder="Doe"
+                            value={formData.lastName}
+                            onChange={(e) => handleInputChange('lastName', e.target.value)}
+                            className="pl-10 h-11"
+                            required={!isLogin}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-sm font-medium text-foreground">
+                      Email Address
+                    </Label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="john.doe@example.com"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        className="pl-10 h-11"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {!isLogin && (
+                    <div className="space-y-2">
+                      <Label htmlFor="phone" className="text-sm font-medium text-foreground">
+                        Phone Number
+                      </Label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="phone"
+                          type="tel"
+                          placeholder="+1 (555) 123-4567"
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                          className="pl-10 h-11"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-sm font-medium text-foreground">
+                      Password
+                    </Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="Enter your password"
+                        value={formData.password}
+                        onChange={(e) => handleInputChange('password', e.target.value)}
+                        className="pl-10 h-11"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <Button 
+                    type="submit" 
+                    className={`${buttonClassName} mt-6`}
+                    disabled={isLoading}
                   >
-                    Return to Home
-                  </Link>
+                    {isLoading ? 'Processing...' : (isLogin ? 'Sign In' : 'Create Account')}
+                  </Button>
+                </form>
+
+                <div className="text-center space-y-4">
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-gray-200" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-white px-2 text-muted-foreground">Or</span>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    type="button"
+                    variant="outline" 
+                    onClick={actions.login} 
+                    className="w-full h-11 border-gray-200 hover:bg-gray-50"
+                  >
+                    Continue with Social Login
+                  </Button>
+
+                  <div className="text-center">
+                    <button
+                      type="button"
+                      onClick={() => setIsLogin(!isLogin)}
+                      className="text-sm text-primary hover:text-primary/80 transition-colors font-medium"
+                    >
+                      {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+                    </button>
+                  </div>
+
+                  <div>
+                    <Link 
+                      to="/" 
+                      className="text-muted-foreground hover:text-foreground transition-colors underline text-sm font-medium"
+                    >
+                      Return to Home
+                    </Link>
+                  </div>
                 </div>
               </CardContent>
             </Card>
