@@ -78,7 +78,7 @@ export default function CareersPage() {
       company: 'TechCorp Solutions',
       location: 'San Francisco, CA',
       type: 'fulltime',
-      salary: '$120,000 - $180,000',
+      salary: '₹99,60,000 - ₹1,49,40,000',
       experience: '3-5 years',
       skills: ['Python', 'TensorFlow', 'Machine Learning', 'Deep Learning'],
       description: 'Lead the development of AI-powered placement prediction algorithms and machine learning models.',
@@ -92,7 +92,7 @@ export default function CareersPage() {
       company: 'Innovation Labs',
       location: 'New York, NY',
       type: 'internship',
-      salary: '$25 - $35/hour',
+      salary: '₹2,075 - ₹2,905/hour',
       experience: '0-1 years',
       skills: ['Python', 'SQL', 'Data Analysis', 'Statistics'],
       description: 'Work on data analysis projects to improve career prediction accuracy and student outcomes.',
@@ -106,7 +106,7 @@ export default function CareersPage() {
       company: 'AI Research Institute',
       location: 'Boston, MA',
       type: 'fulltime',
-      salary: '$140,000 - $200,000',
+      salary: '₹1,16,20,000 - ₹1,66,00,000',
       experience: '5+ years',
       skills: ['Research', 'PyTorch', 'NLP', 'Computer Vision'],
       description: 'Conduct cutting-edge research in machine learning applications for career guidance and prediction.',
@@ -120,7 +120,7 @@ export default function CareersPage() {
       company: 'UX Design Studio',
       location: 'Austin, TX',
       type: 'fulltime',
-      salary: '$80,000 - $120,000',
+      salary: '₹66,40,000 - ₹99,60,000',
       experience: '2-4 years',
       skills: ['React', 'TypeScript', 'UI/UX', 'Tailwind CSS'],
       description: 'Build intuitive user interfaces for AI-powered career guidance platforms.',
@@ -134,7 +134,7 @@ export default function CareersPage() {
       company: 'Career Tech Inc',
       location: 'Seattle, WA',
       type: 'fulltime',
-      salary: '$130,000 - $170,000',
+      salary: '₹1,07,90,000 - ₹1,41,10,000',
       experience: '4-6 years',
       skills: ['Product Strategy', 'AI/ML', 'Analytics', 'Leadership'],
       description: 'Drive product strategy for AI-powered career prediction and guidance solutions.',
@@ -148,7 +148,7 @@ export default function CareersPage() {
       company: 'Cloud Solutions Ltd',
       location: 'Denver, CO',
       type: 'fulltime',
-      salary: '$100,000 - $140,000',
+      salary: '₹83,00,000 - ₹1,16,20,000',
       experience: '3-5 years',
       skills: ['AWS', 'Docker', 'Kubernetes', 'CI/CD'],
       description: 'Manage cloud infrastructure and deployment pipelines for AI prediction services.',
@@ -475,7 +475,7 @@ export default function CareersPage() {
                       <Brain className="h-8 w-8 text-purple-400" />
                       <CardTitle className="text-xl text-white">AI & Machine Learning</CardTitle>
                     </div>
-                    <div className="text-2xl font-bold text-green-400 mb-2">$120k - $200k+</div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">₹99L - ₹1.66Cr+</div>
                     <CardDescription className="text-white/80">
                       The highest-paying field in tech with explosive growth
                     </CardDescription>
@@ -519,7 +519,7 @@ export default function CareersPage() {
                       <TrendingUp className="h-8 w-8 text-blue-400" />
                       <CardTitle className="text-xl text-white">Cloud & DevOps</CardTitle>
                     </div>
-                    <div className="text-2xl font-bold text-green-400 mb-2">$90k - $160k</div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">₹75L - ₹1.33Cr</div>
                     <CardDescription className="text-white/80">
                       High demand with excellent job security
                     </CardDescription>
@@ -563,7 +563,7 @@ export default function CareersPage() {
                       <Github className="h-8 w-8 text-green-400" />
                       <CardTitle className="text-xl text-white">Full-Stack Development</CardTitle>
                     </div>
-                    <div className="text-2xl font-bold text-green-400 mb-2">$80k - $140k</div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">₹66L - ₹1.16Cr</div>
                     <CardDescription className="text-white/80">
                       Versatile skills with broad opportunities
                     </CardDescription>
@@ -607,7 +607,7 @@ export default function CareersPage() {
                       <TrendingUp className="h-8 w-8 text-orange-400" />
                       <CardTitle className="text-xl text-white">Data Science</CardTitle>
                     </div>
-                    <div className="text-2xl font-bold text-green-400 mb-2">$95k - $170k</div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">₹79L - ₹1.41Cr</div>
                     <CardDescription className="text-white/80">
                       Transform data into business insights
                     </CardDescription>
@@ -651,7 +651,7 @@ export default function CareersPage() {
                       <Users className="h-8 w-8 text-red-400" />
                       <CardTitle className="text-xl text-white">Cybersecurity</CardTitle>
                     </div>
-                    <div className="text-2xl font-bold text-green-400 mb-2">$85k - $150k</div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">₹71L - ₹1.25Cr</div>
                     <CardDescription className="text-white/80">
                       Critical field with growing demand
                     </CardDescription>
@@ -695,7 +695,7 @@ export default function CareersPage() {
                       <Briefcase className="h-8 w-8 text-yellow-400" />
                       <CardTitle className="text-xl text-white">Product Management</CardTitle>
                     </div>
-                    <div className="text-2xl font-bold text-green-400 mb-2">$110k - $180k</div>
+                    <div className="text-2xl font-bold text-green-400 mb-2">₹91L - ₹1.49Cr</div>
                     <CardDescription className="text-white/80">
                       Bridge technology and business strategy
                     </CardDescription>
@@ -795,7 +795,7 @@ export default function CareersPage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <div className="text-5xl font-bold text-green-400 mb-2">$0</div>
+                <div className="text-5xl font-bold text-green-400 mb-2">₹0</div>
                 <div className="text-white/80">Average Starting Salary</div>
               </motion.div>
               <motion.div
