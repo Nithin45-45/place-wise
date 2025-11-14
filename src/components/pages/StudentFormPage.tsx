@@ -39,9 +39,22 @@ export default function StudentFormPage() {
     profilePicture: ''
   });
 
+  // Generate unique student ID for new students
+  const generateStudentId = () => {
+    const currentYear = new Date().getFullYear();
+    const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    return `STU${currentYear}${randomNum}`;
+  };
+
   useEffect(() => {
     if (isEditing && id) {
       loadStudent();
+    } else if (!isEditing) {
+      // Auto-generate student ID for new students
+      setFormData(prev => ({
+        ...prev,
+        studentId: generateStudentId()
+      }));
     }
   }, [id, isEditing]);
 
@@ -217,9 +230,16 @@ export default function StudentFormPage() {
                       id="studentId"
                       value={formData.studentId || ''}
                       onChange={(e) => handleInputChange('studentId', e.target.value)}
-                      placeholder="Enter student ID"
+                      placeholder="Auto-generated student ID"
                       required
+                      readOnly={!isEditing}
+                      className={!isEditing ? "bg-gray-50 cursor-not-allowed" : ""}
                     />
+                    {!isEditing && (
+                      <p className="font-paragraph text-xs text-secondary/60">
+                        Student ID is automatically generated upon registration
+                      </p>
+                    )}
                   </div>
                 </div>
 
