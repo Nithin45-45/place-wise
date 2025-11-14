@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useMember } from '@/integrations';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { BackButton } from '@/components/ui/back-button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Brain, 
@@ -36,11 +38,13 @@ import {
   FileText,
   Download,
   X,
-  Camera
+  Camera,
+  LogOut
 } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 
 export default function ProfilePage() {
+  const { member, isAuthenticated, actions } = useMember();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
     firstName: '',
@@ -492,9 +496,26 @@ export default function ProfilePage() {
                 <Link to="/profile" className="text-cyan-400 font-medium">
                   Profile
                 </Link>
-                <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
-                  Login / Register
-                </Button>
+                {isAuthenticated ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
+                        <User className="h-4 w-4 mr-2" />
+                        {member?.profile?.nickname || 'Profile'}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem onClick={actions.logout} className="text-red-600 focus:text-red-600">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Button className="bg-cyan-500 hover:bg-cyan-600 text-white" onClick={actions.login}>
+                    Login / Register
+                  </Button>
+                )}
               </div>
             </div>
           </div>
