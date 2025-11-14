@@ -46,7 +46,7 @@ export default function CareersPage() {
     fullName: ''
   });
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedType, setSelectedType] = useState('all');
+  const [activeTab, setActiveTab] = useState('jobs');
   const [showApplicationModal, setShowApplicationModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const [displayedJobsCount, setDisplayedJobsCount] = useState(12);
@@ -555,11 +555,9 @@ export default function CareersPage() {
     const matchesSearch = career.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          career.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          career.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesType = selectedType === 'all' || career.type === selectedType;
-    return matchesSearch && matchesType;
+    return matchesSearch;
   });
 
-  const displayedCareers = filteredCareers.slice(0, displayedJobsCount);
   const hasMoreJobs = displayedJobsCount < filteredCareers.length;
 
   const handleLoadMore = () => {
@@ -720,347 +718,351 @@ export default function CareersPage() {
                   Post a Job
                 </Button>
               </Link>
+            </div>
 
-              {/* Filter Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
-                    <Filter className="h-4 w-4 mr-2" />
-                    {jobTypes.find(type => type.id === selectedType)?.name || 'Filter'}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-slate-800 border-slate-700">
-                  {jobTypes.map((type) => (
-                    <DropdownMenuItem
-                      key={type.id}
-                      onClick={() => setSelectedType(type.id)}
-                      className="text-white hover:bg-slate-700"
-                    >
-                      {type.name} ({type.count})
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+            {/* Tabs Navigation */}
+            <div className="mt-8">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid w-full grid-cols-3 bg-white/10 backdrop-blur-md border-white/20">
+                  <TabsTrigger 
+                    value="jobs" 
+                    className="text-white data-[state=active]:bg-green-500 data-[state=active]:text-white"
+                  >
+                    Full-Time Jobs
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="internships" 
+                    className="text-white data-[state=active]:bg-blue-500 data-[state=active]:text-white"
+                  >
+                    Internships
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="courses" 
+                    className="text-white data-[state=active]:bg-purple-500 data-[state=active]:text-white"
+                  >
+                    Courses
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
             </div>
           </div>
         </section>
 
-        {/* Full-Time Jobs Section */}
+        {/* Content Sections with Tabs */}
         <section className="py-20 px-6">
           <div className="max-w-[120rem] mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-white mb-4 font-heading">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">
-                  Full-Time Jobs
-                </span>
-              </h2>
-              <p className="text-xl text-white/70 max-w-3xl mx-auto font-paragraph">
-                Permanent positions with comprehensive benefits and career growth opportunities
-              </p>
-            </motion.div>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              {/* Full-Time Jobs Tab Content */}
+              <TabsContent value="jobs" className="mt-0">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                  viewport={{ once: true }}
+                  className="text-center mb-16"
+                >
+                  <h2 className="text-4xl font-bold text-white mb-4 font-heading">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">
+                      Full-Time Jobs
+                    </span>
+                  </h2>
+                  <p className="text-xl text-white/70 max-w-3xl mx-auto font-paragraph">
+                    Permanent positions with comprehensive benefits and career growth opportunities
+                  </p>
+                </motion.div>
 
-            <div className="grid gap-6">
-              {isLoadingJobs ? (
-                <div className="text-center py-12">
-                  <div className="text-white/60">Loading job opportunities...</div>
-                </div>
-              ) : allJobs.filter(job => job.type === 'fulltime' && (
-                  job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
-                )).length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="text-white/60">No full-time jobs found matching your criteria.</div>
-                </div>
-              ) : (
-                allJobs.filter(job => job.type === 'fulltime' && (
-                  job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
-                )).slice(0, 6).map((job, index) => (
-                  <motion.div
-                    key={job.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                  >
-                    <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300">
-                      <CardHeader>
-                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
-                              {job.logo && (
-                                <Image 
-                                  src={job.logo} 
-                                  alt={`${job.company} logo`}
-                                  width={40}
-                                  className="h-10 w-10 rounded-lg object-cover"
-                                />
-                              )}
-                              <CardTitle className="text-2xl text-white">{job.title}</CardTitle>
-                              <Badge className="bg-green-500 text-white">
-                                Full-time
-                              </Badge>
-                              {job.isFromCMS && (
-                                <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-400/30">
-                                  New
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2 text-cyan-400 mb-2">
-                              <Building className="h-4 w-4" />
-                              <span className="font-medium">{job.company}</span>
-                            </div>
-                            <CardDescription className="text-white/70 text-base">
-                              {job.description}
-                            </CardDescription>
-                          </div>
-                          <div className="flex flex-col items-end gap-2">
-                            {job.applicationUrl ? (
-                              <Button 
-                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
-                                onClick={() => window.open(job.applicationUrl, '_blank')}
-                              >
-                                Apply Now
-                              </Button>
-                            ) : job.contactEmail ? (
-                              <Button 
-                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
-                                onClick={() => window.open(`mailto:${job.contactEmail}`, '_blank')}
-                              >
-                                Contact HR
-                              </Button>
-                            ) : (
-                              <Button 
-                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
-                                onClick={() => handleApplyNow(job)}
-                              >
-                                Apply Now
-                              </Button>
-                            )}
-                            {job.deadline && (
-                              <div className="text-sm text-yellow-400">
-                                Deadline: {new Date(job.deadline).toLocaleDateString()}
+                <div className="grid gap-6">
+                  {isLoadingJobs ? (
+                    <div className="text-center py-12">
+                      <div className="text-white/60">Loading job opportunities...</div>
+                    </div>
+                  ) : allJobs.filter(job => job.type === 'fulltime' && (
+                      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+                    )).length === 0 ? (
+                    <div className="text-center py-12">
+                      <div className="text-white/60">No full-time jobs found matching your criteria.</div>
+                    </div>
+                  ) : (
+                    allJobs.filter(job => job.type === 'fulltime' && (
+                      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+                    )).slice(0, 6).map((job, index) => (
+                      <motion.div
+                        key={job.id}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                      >
+                        <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300">
+                          <CardHeader>
+                            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-3 mb-2">
+                                  {job.logo && (
+                                    <Image 
+                                      src={job.logo} 
+                                      alt={`${job.company} logo`}
+                                      width={40}
+                                      className="h-10 w-10 rounded-lg object-cover"
+                                    />
+                                  )}
+                                  <CardTitle className="text-2xl text-white">{job.title}</CardTitle>
+                                  <Badge className="bg-green-500 text-white">
+                                    Full-time
+                                  </Badge>
+                                  {job.isFromCMS && (
+                                    <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-400/30">
+                                      New
+                                    </Badge>
+                                  )}
+                                </div>
+                                <div className="flex items-center gap-2 text-cyan-400 mb-2">
+                                  <Building className="h-4 w-4" />
+                                  <span className="font-medium">{job.company}</span>
+                                </div>
+                                <CardDescription className="text-white/70 text-base">
+                                  {job.description}
+                                </CardDescription>
                               </div>
-                            )}
-                          </div>
-                        </div>
-                      </CardHeader>
-                      
-                      <CardContent>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                          <div className="flex items-center gap-2 text-white/80">
-                            <MapPin className="h-4 w-4 text-cyan-400" />
-                            <span className="text-sm">{job.location}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-white/80">
-                            <DollarSign className="h-4 w-4 text-green-400" />
-                            <span className="text-sm">{job.salary}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-white/80">
-                            <Briefcase className="h-4 w-4 text-blue-400" />
-                            <span className="text-sm">{job.experience}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-white/80">
-                            <Clock className="h-4 w-4 text-yellow-400" />
-                            <span className="text-sm">{job.posted || 'Recently posted'}</span>
-                          </div>
-                        </div>
-                        
-                        <div>
-                          <div className="text-sm text-white/60 mb-2">Required Skills:</div>
-                          <div className="flex flex-wrap gap-2">
-                            {job.skills.map((skill, skillIndex) => (
-                              <Badge 
-                                key={skillIndex} 
-                                className="bg-white/10 text-white border-white/20"
-                              >
-                                {skill}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* Internships Section */}
-        <section className="py-20 px-6 bg-black/10 backdrop-blur-sm">
-          <div className="max-w-[120rem] mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-white mb-4 font-heading">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-                  Internship Programs
-                </span>
-              </h2>
-              <p className="text-xl text-white/70 max-w-3xl mx-auto font-paragraph">
-                Gain hands-on experience and build your skills with leading companies
-              </p>
-            </motion.div>
-
-            <div className="grid gap-6">
-              {allJobs.filter(job => job.type === 'internship' && (
-                job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
-              )).length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="text-white/60">No internships found matching your criteria.</div>
-                </div>
-              ) : (
-                allJobs.filter(job => job.type === 'internship' && (
-                  job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
-                )).slice(0, 6).map((job, index) => (
-                  <motion.div
-                    key={job.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                  >
-                    <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300">
-                      <CardHeader>
-                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
-                              {job.logo && (
-                                <Image 
-                                  src={job.logo} 
-                                  alt={`${job.company} logo`}
-                                  width={40}
-                                  className="h-10 w-10 rounded-lg object-cover"
-                                />
-                              )}
-                              <CardTitle className="text-2xl text-white">{job.title}</CardTitle>
-                              <Badge className="bg-blue-500 text-white">
-                                Internship
-                              </Badge>
-                              {job.isFromCMS && (
-                                <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-400/30">
-                                  New
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2 text-cyan-400 mb-2">
-                              <Building className="h-4 w-4" />
-                              <span className="font-medium">{job.company}</span>
-                            </div>
-                            <CardDescription className="text-white/70 text-base">
-                              {job.description}
-                            </CardDescription>
-                          </div>
-                          <div className="flex flex-col items-end gap-2">
-                            {job.applicationUrl ? (
-                              <Button 
-                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
-                                onClick={() => window.open(job.applicationUrl, '_blank')}
-                              >
-                                Apply Now
-                              </Button>
-                            ) : job.contactEmail ? (
-                              <Button 
-                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
-                                onClick={() => window.open(`mailto:${job.contactEmail}`, '_blank')}
-                              >
-                                Contact HR
-                              </Button>
-                            ) : (
-                              <Button 
-                                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
-                                onClick={() => handleApplyNow(job)}
-                              >
-                                Apply Now
-                              </Button>
-                            )}
-                            {job.deadline && (
-                              <div className="text-sm text-yellow-400">
-                                Deadline: {new Date(job.deadline).toLocaleDateString()}
+                              <div className="flex flex-col items-end gap-2">
+                                {job.applicationUrl ? (
+                                  <Button 
+                                    className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                    onClick={() => window.open(job.applicationUrl, '_blank')}
+                                  >
+                                    Apply Now
+                                  </Button>
+                                ) : job.contactEmail ? (
+                                  <Button 
+                                    className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                    onClick={() => window.open(`mailto:${job.contactEmail}`, '_blank')}
+                                  >
+                                    Contact HR
+                                  </Button>
+                                ) : (
+                                  <Button 
+                                    className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                    onClick={() => handleApplyNow(job)}
+                                  >
+                                    Apply Now
+                                  </Button>
+                                )}
+                                {job.deadline && (
+                                  <div className="text-sm text-yellow-400">
+                                    Deadline: {new Date(job.deadline).toLocaleDateString()}
+                                  </div>
+                                )}
                               </div>
-                            )}
-                          </div>
-                        </div>
-                      </CardHeader>
-                      
-                      <CardContent>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                          <div className="flex items-center gap-2 text-white/80">
-                            <MapPin className="h-4 w-4 text-cyan-400" />
-                            <span className="text-sm">{job.location}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-white/80">
-                            <DollarSign className="h-4 w-4 text-green-400" />
-                            <span className="text-sm">{job.salary}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-white/80">
-                            <Briefcase className="h-4 w-4 text-blue-400" />
-                            <span className="text-sm">{job.experience}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-white/80">
-                            <Clock className="h-4 w-4 text-yellow-400" />
-                            <span className="text-sm">{job.posted || 'Recently posted'}</span>
-                          </div>
-                        </div>
-                        
-                        <div>
-                          <div className="text-sm text-white/60 mb-2">Required Skills:</div>
-                          <div className="flex flex-wrap gap-2">
-                            {job.skills.map((skill, skillIndex) => (
-                              <Badge 
-                                key={skillIndex} 
-                                className="bg-white/10 text-white border-white/20"
-                              >
-                                {skill}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))
-              )}
-            </div>
-          </div>
-        </section>
+                            </div>
+                          </CardHeader>
+                          
+                          <CardContent>
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                              <div className="flex items-center gap-2 text-white/80">
+                                <MapPin className="h-4 w-4 text-cyan-400" />
+                                <span className="text-sm">{job.location}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-white/80">
+                                <DollarSign className="h-4 w-4 text-green-400" />
+                                <span className="text-sm">{job.salary}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-white/80">
+                                <Briefcase className="h-4 w-4 text-blue-400" />
+                                <span className="text-sm">{job.experience}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-white/80">
+                                <Clock className="h-4 w-4 text-yellow-400" />
+                                <span className="text-sm">{job.posted || 'Recently posted'}</span>
+                              </div>
+                            </div>
+                            
+                            <div>
+                              <div className="text-sm text-white/60 mb-2">Required Skills:</div>
+                              <div className="flex flex-wrap gap-2">
+                                {job.skills.map((skill, skillIndex) => (
+                                  <Badge 
+                                    key={skillIndex} 
+                                    className="bg-white/10 text-white border-white/20"
+                                  >
+                                    {skill}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))
+                  )}
+                </div>
+              </TabsContent>
 
-        {/* Career Learning Suggestions */}
-        <section className="py-20 px-6">
-          <div className="max-w-[120rem] mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-white mb-4 font-heading">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
-                  Skills to Master
-                </span>
-                {" "}for High-Paying Careers
-              </h2>
-              <p className="text-xl text-white/70 max-w-3xl mx-auto font-paragraph">
-                Based on market trends and salary data, here are the most valuable skills to learn for securing top-tier positions
-              </p>
-            </motion.div>
+              {/* Internships Tab Content */}
+              <TabsContent value="internships" className="mt-0">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                  viewport={{ once: true }}
+                  className="text-center mb-16"
+                >
+                  <h2 className="text-4xl font-bold text-white mb-4 font-heading">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                      Internship Programs
+                    </span>
+                  </h2>
+                  <p className="text-xl text-white/70 max-w-3xl mx-auto font-paragraph">
+                    Gain hands-on experience and build your skills with leading companies
+                  </p>
+                </motion.div>
+
+                <div className="grid gap-6">
+                  {allJobs.filter(job => job.type === 'internship' && (
+                    job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+                  )).length === 0 ? (
+                    <div className="text-center py-12">
+                      <div className="text-white/60">No internships found matching your criteria.</div>
+                    </div>
+                  ) : (
+                    allJobs.filter(job => job.type === 'internship' && (
+                      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+                    )).slice(0, 6).map((job, index) => (
+                      <motion.div
+                        key={job.id}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                      >
+                        <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300">
+                          <CardHeader>
+                            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-3 mb-2">
+                                  {job.logo && (
+                                    <Image 
+                                      src={job.logo} 
+                                      alt={`${job.company} logo`}
+                                      width={40}
+                                      className="h-10 w-10 rounded-lg object-cover"
+                                    />
+                                  )}
+                                  <CardTitle className="text-2xl text-white">{job.title}</CardTitle>
+                                  <Badge className="bg-blue-500 text-white">
+                                    Internship
+                                  </Badge>
+                                  {job.isFromCMS && (
+                                    <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-400/30">
+                                      New
+                                    </Badge>
+                                  )}
+                                </div>
+                                <div className="flex items-center gap-2 text-cyan-400 mb-2">
+                                  <Building className="h-4 w-4" />
+                                  <span className="font-medium">{job.company}</span>
+                                </div>
+                                <CardDescription className="text-white/70 text-base">
+                                  {job.description}
+                                </CardDescription>
+                              </div>
+                              <div className="flex flex-col items-end gap-2">
+                                {job.applicationUrl ? (
+                                  <Button 
+                                    className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                    onClick={() => window.open(job.applicationUrl, '_blank')}
+                                  >
+                                    Apply Now
+                                  </Button>
+                                ) : job.contactEmail ? (
+                                  <Button 
+                                    className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                    onClick={() => window.open(`mailto:${job.contactEmail}`, '_blank')}
+                                  >
+                                    Contact HR
+                                  </Button>
+                                ) : (
+                                  <Button 
+                                    className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                                    onClick={() => handleApplyNow(job)}
+                                  >
+                                    Apply Now
+                                  </Button>
+                                )}
+                                {job.deadline && (
+                                  <div className="text-sm text-yellow-400">
+                                    Deadline: {new Date(job.deadline).toLocaleDateString()}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </CardHeader>
+                          
+                          <CardContent>
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                              <div className="flex items-center gap-2 text-white/80">
+                                <MapPin className="h-4 w-4 text-cyan-400" />
+                                <span className="text-sm">{job.location}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-white/80">
+                                <DollarSign className="h-4 w-4 text-green-400" />
+                                <span className="text-sm">{job.salary}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-white/80">
+                                <Briefcase className="h-4 w-4 text-blue-400" />
+                                <span className="text-sm">{job.experience}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-white/80">
+                                <Clock className="h-4 w-4 text-yellow-400" />
+                                <span className="text-sm">{job.posted || 'Recently posted'}</span>
+                              </div>
+                            </div>
+                            
+                            <div>
+                              <div className="text-sm text-white/60 mb-2">Required Skills:</div>
+                              <div className="flex flex-wrap gap-2">
+                                {job.skills.map((skill, skillIndex) => (
+                                  <Badge 
+                                    key={skillIndex} 
+                                    className="bg-white/10 text-white border-white/20"
+                                  >
+                                    {skill}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))
+                  )}
+                </div>
+              </TabsContent>
+
+              {/* Courses Tab Content */}
+              <TabsContent value="courses" className="mt-0">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                  viewport={{ once: true }}
+                  className="text-center mb-16"
+                >
+                  <h2 className="text-4xl font-bold text-white mb-4 font-heading">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                      Recommended Courses
+                    </span>
+                    {" "}for Tech Skills
+                  </h2>
+                  <p className="text-xl text-white/70 max-w-3xl mx-auto font-paragraph">
+                    Get certified in the most in-demand tech skills with these curated courses from top platforms
+                  </p>
+                </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* AI & Machine Learning */}
@@ -1359,6 +1361,8 @@ export default function CareersPage() {
                 </CardContent>
               </Card>
             </motion.div>
+              </TabsContent>
+            </Tabs>
           </div>
         </section>
 
