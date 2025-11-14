@@ -25,7 +25,10 @@ import {
   Filter,
   Building,
   LogOut,
-  Github
+  Github,
+  BookOpen,
+  Award,
+  ExternalLink
 } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 
@@ -1091,6 +1094,392 @@ export default function CareersPage() {
                   </div>
                 </CardContent>
               </Card>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Recommended Courses Section */}
+        <section className="py-20 px-6 bg-black/20 backdrop-blur-sm">
+          <div className="max-w-[120rem] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold text-white mb-4 font-heading">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+                  Recommended Courses
+                </span>
+                {" "}for Tech Skills
+              </h2>
+              <p className="text-xl text-white/70 max-w-3xl mx-auto font-paragraph">
+                Get certified in the most in-demand tech skills with these curated courses from top platforms
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Programming Fundamentals */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-md border-green-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <BookOpen className="h-8 w-8 text-green-400" />
+                      <CardTitle className="text-xl text-white">Programming Fundamentals</CardTitle>
+                    </div>
+                    <CardDescription className="text-white/80">
+                      Master the basics of programming with Python and Java
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-3">
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-green-300 mb-2">Python for Everybody Specialization</h4>
+                          <p className="text-sm text-white/70 mb-3">University of Michigan • Coursera</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.8★ • 890k+ enrolled</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-green-500 hover:bg-green-600 text-white"
+                              onClick={() => window.open('https://www.coursera.org/specializations/python', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Enroll
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-green-300 mb-2">Java Programming Masterclass</h4>
+                          <p className="text-sm text-white/70 mb-3">Tim Buchalka • Udemy</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.6★ • 850k+ students</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-green-500 hover:bg-green-600 text-white"
+                              onClick={() => window.open('https://www.udemy.com/course/java-the-complete-java-developer-course/', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Enroll
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Web Development */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-md border-blue-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Sparkles className="h-8 w-8 text-blue-400" />
+                      <CardTitle className="text-xl text-white">Web Development</CardTitle>
+                    </div>
+                    <CardDescription className="text-white/80">
+                      Build modern web applications with React and Node.js
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-3">
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-blue-300 mb-2">The Complete Web Developer Bootcamp</h4>
+                          <p className="text-sm text-white/70 mb-3">Angela Yu • Udemy</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.7★ • 900k+ students</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-blue-500 hover:bg-blue-600 text-white"
+                              onClick={() => window.open('https://www.udemy.com/course/the-complete-web-development-bootcamp/', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Enroll
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-blue-300 mb-2">React - The Complete Guide</h4>
+                          <p className="text-sm text-white/70 mb-3">Maximilian Schwarzmüller • Udemy</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.6★ • 750k+ students</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-blue-500 hover:bg-blue-600 text-white"
+                              onClick={() => window.open('https://www.udemy.com/course/react-the-complete-guide-incl-redux/', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Enroll
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Data Science & Analytics */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <TrendingUp className="h-8 w-8 text-purple-400" />
+                      <CardTitle className="text-xl text-white">Data Science & Analytics</CardTitle>
+                    </div>
+                    <CardDescription className="text-white/80">
+                      Master data analysis, visualization, and machine learning
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-3">
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-purple-300 mb-2">IBM Data Science Professional Certificate</h4>
+                          <p className="text-sm text-white/70 mb-3">IBM • Coursera</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.6★ • 450k+ enrolled</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-purple-500 hover:bg-purple-600 text-white"
+                              onClick={() => window.open('https://www.coursera.org/professional-certificates/ibm-data-science', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Enroll
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-purple-300 mb-2">Machine Learning Specialization</h4>
+                          <p className="text-sm text-white/70 mb-3">Andrew Ng • Coursera</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.9★ • 320k+ enrolled</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-purple-500 hover:bg-purple-600 text-white"
+                              onClick={() => window.open('https://www.coursera.org/specializations/machine-learning-introduction', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Enroll
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Cloud Computing */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-orange-500/20 to-red-500/20 backdrop-blur-md border-orange-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Building className="h-8 w-8 text-orange-400" />
+                      <CardTitle className="text-xl text-white">Cloud Computing</CardTitle>
+                    </div>
+                    <CardDescription className="text-white/80">
+                      Learn AWS, Azure, and cloud architecture fundamentals
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-3">
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-orange-300 mb-2">AWS Certified Solutions Architect</h4>
+                          <p className="text-sm text-white/70 mb-3">Stephane Maarek • Udemy</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.7★ • 650k+ students</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-orange-500 hover:bg-orange-600 text-white"
+                              onClick={() => window.open('https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Enroll
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-orange-300 mb-2">Microsoft Azure Fundamentals</h4>
+                          <p className="text-sm text-white/70 mb-3">Microsoft • Microsoft Learn</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.5★ • Free Course</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-orange-500 hover:bg-orange-600 text-white"
+                              onClick={() => window.open('https://docs.microsoft.com/en-us/learn/paths/azure-fundamentals/', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Start
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Cybersecurity */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-red-500/20 to-pink-500/20 backdrop-blur-md border-red-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Award className="h-8 w-8 text-red-400" />
+                      <CardTitle className="text-xl text-white">Cybersecurity</CardTitle>
+                    </div>
+                    <CardDescription className="text-white/80">
+                      Protect systems and networks from cyber threats
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-3">
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-red-300 mb-2">Google Cybersecurity Professional Certificate</h4>
+                          <p className="text-sm text-white/70 mb-3">Google • Coursera</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.8★ • 280k+ enrolled</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-red-500 hover:bg-red-600 text-white"
+                              onClick={() => window.open('https://www.coursera.org/professional-certificates/google-cybersecurity', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Enroll
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-red-300 mb-2">Ethical Hacking Bootcamp</h4>
+                          <p className="text-sm text-white/70 mb-3">Zaid Sabih • Udemy</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.5★ • 420k+ students</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-red-500 hover:bg-red-600 text-white"
+                              onClick={() => window.open('https://www.udemy.com/course/learn-ethical-hacking-from-scratch/', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Enroll
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Mobile Development */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-gradient-to-br from-teal-500/20 to-cyan-500/20 backdrop-blur-md border-teal-400/30 text-white h-full">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <Briefcase className="h-8 w-8 text-teal-400" />
+                      <CardTitle className="text-xl text-white">Mobile Development</CardTitle>
+                    </div>
+                    <CardDescription className="text-white/80">
+                      Build iOS and Android apps with React Native and Flutter
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-3">
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-teal-300 mb-2">React Native - The Practical Guide</h4>
+                          <p className="text-sm text-white/70 mb-3">Maximilian Schwarzmüller • Udemy</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.6★ • 180k+ students</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-teal-500 hover:bg-teal-600 text-white"
+                              onClick={() => window.open('https://www.udemy.com/course/react-native-the-practical-guide/', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Enroll
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold text-teal-300 mb-2">Flutter & Dart Complete Development Course</h4>
+                          <p className="text-sm text-white/70 mb-3">Angela Yu • Udemy</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white/60">4.6★ • 250k+ students</span>
+                            <Button 
+                              size="sm" 
+                              className="bg-teal-500 hover:bg-teal-600 text-white"
+                              onClick={() => window.open('https://www.udemy.com/course/flutter-bootcamp-with-dart/', '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              Enroll
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+
+            {/* Course Platform Badges */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              viewport={{ once: true }}
+              className="mt-16 text-center"
+            >
+              <p className="text-white/60 mb-6 font-paragraph">Trusted learning platforms:</p>
+              <div className="flex flex-wrap justify-center gap-6 items-center">
+                <Badge className="bg-white/10 text-white/80 border-white/20 px-4 py-2 text-sm">
+                  Coursera • University Partnerships
+                </Badge>
+                <Badge className="bg-white/10 text-white/80 border-white/20 px-4 py-2 text-sm">
+                  Udemy • Expert Instructors
+                </Badge>
+                <Badge className="bg-white/10 text-white/80 border-white/20 px-4 py-2 text-sm">
+                  Microsoft Learn • Official Certification
+                </Badge>
+                <Badge className="bg-white/10 text-white/80 border-white/20 px-4 py-2 text-sm">
+                  Google • Industry Recognition
+                </Badge>
+              </div>
             </motion.div>
           </div>
         </section>
