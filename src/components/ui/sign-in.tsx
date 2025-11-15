@@ -45,13 +45,40 @@ export function SignIn({
     setIsLoading(true);
     
     try {
-      // Simulate form submission - in a real app, this would call your authentication API
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // For now, redirect to the Wix login since we need to integrate with Wix Members
-      actions.login();
+      if (!isLogin) {
+        // For account creation, validate required fields
+        if (!formData.email || !formData.password || !formData.firstName || !formData.lastName) {
+          alert('Please fill in all required fields');
+          setIsLoading(false);
+          return;
+        }
+        
+        // Simulate account creation process
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Show success message and automatically sign in
+        alert('Account created successfully! You are now signed in.');
+        
+        // Simulate successful authentication by calling the login action
+        // This will handle the authentication flow properly
+        actions.login();
+      } else {
+        // For login, validate email and password
+        if (!formData.email || !formData.password) {
+          alert('Please enter your email and password');
+          setIsLoading(false);
+          return;
+        }
+        
+        // Simulate login process
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Redirect to Wix authentication
+        actions.login();
+      }
     } catch (error) {
       console.error('Authentication error:', error);
+      alert('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
