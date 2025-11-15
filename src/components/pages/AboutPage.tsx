@@ -35,6 +35,7 @@ export default function AboutPage() {
     confirmPassword: '',
     fullName: ''
   });
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleAuthInputChange = (field, value) => {
     setAuthForm(prev => ({ ...prev, [field]: value }));

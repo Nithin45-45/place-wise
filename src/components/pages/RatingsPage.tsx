@@ -48,10 +48,12 @@ export default function RatingsPage() {
   const [ratingForm, setRatingForm] = useState({
     title: '',
     content: '',
+    rating: 0,
     name: '',
     role: '',
     company: ''
   });
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -106,6 +108,7 @@ export default function RatingsPage() {
       setRatingForm({
         title: '',
         content: '',
+        rating: 0,
         name: '',
         role: '',
         company: ''

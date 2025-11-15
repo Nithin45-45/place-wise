@@ -48,6 +48,7 @@ export default function CareersPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('jobs');
   const [showApplicationModal, setShowApplicationModal] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const [displayedJobsCount, setDisplayedJobsCount] = useState(12);
   const [applicationForm, setApplicationForm] = useState({

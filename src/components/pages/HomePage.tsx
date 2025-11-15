@@ -51,6 +51,7 @@ export default function HomePage() {
   });
   const [prediction, setPrediction] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -205,7 +206,7 @@ export default function HomePage() {
                 <span className="text-2xl font-bold text-white">AI PlacementPredictor</span>
               </div>
               <div className="hidden lg:flex items-center space-x-8">
-                <Link to="/" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
+                <Link to="/" className="text-cyan-400 font-medium">
                   Home
                 </Link>
                 <Link to="/about" className="text-white/90 hover:text-cyan-400 transition-colors font-medium">
@@ -249,13 +250,94 @@ export default function HomePage() {
               
               {/* Mobile Menu Button */}
               <div className="lg:hidden">
-                <Button variant="ghost" className="text-white">
+                <Button 
+                  variant="ghost" 
+                  className="text-white"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
                   <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                 </Button>
               </div>
             </div>
+            
+            {/* Mobile Menu */}
+            {isMobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="lg:hidden mt-4 pb-4 border-t border-white/10"
+              >
+                <div className="flex flex-col space-y-4 pt-4">
+                  <Link 
+                    to="/" 
+                    className="text-cyan-400 font-medium px-2 py-1"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Home
+                  </Link>
+                  <Link 
+                    to="/about" 
+                    className="text-white/90 hover:text-cyan-400 transition-colors font-medium px-2 py-1"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    About
+                  </Link>
+                  <Link 
+                    to="/gallery" 
+                    className="text-white/90 hover:text-cyan-400 transition-colors font-medium px-2 py-1"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Gallery
+                  </Link>
+                  <Link 
+                    to="/careers" 
+                    className="text-white/90 hover:text-cyan-400 transition-colors font-medium px-2 py-1"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Careers
+                  </Link>
+                  <Link 
+                    to="/ratings" 
+                    className="text-white/90 hover:text-cyan-400 transition-colors font-medium px-2 py-1"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Ratings
+                  </Link>
+                  <Link 
+                    to="/profile" 
+                    className="text-white/90 hover:text-cyan-400 transition-colors font-medium px-2 py-1"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                  {isAuthenticated ? (
+                    <Button 
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        actions.logout();
+                      }}
+                      className="bg-red-500 hover:bg-red-600 text-white w-full mt-2"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </Button>
+                  ) : (
+                    <Button 
+                      className="bg-cyan-500 hover:bg-cyan-600 text-white w-full mt-2"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        setShowAuthModal(true);
+                      }}
+                    >
+                      Login / Register
+                    </Button>
+                  )}
+                </div>
+              </motion.div>
+            )}
           </div>
         </nav>
 

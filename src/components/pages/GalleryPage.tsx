@@ -44,6 +44,7 @@ export default function GalleryPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [showPersonModal, setShowPersonModal] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleAuthInputChange = (field, value) => {
     setAuthForm(prev => ({ ...prev, [field]: value }));
