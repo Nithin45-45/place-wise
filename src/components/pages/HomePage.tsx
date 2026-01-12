@@ -43,6 +43,14 @@ export default function HomePage() {
     confirmPassword: '',
     fullName: ''
   });
+  const [authErrors, setAuthErrors] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    fullName: '',
+    general: ''
+  });
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
   const [formData, setFormData] = useState({
     cgpa: '',
     skills: '',
@@ -59,20 +67,81 @@ export default function HomePage() {
 
   const handleAuthInputChange = (field, value) => {
     setAuthForm(prev => ({ ...prev, [field]: value }));
+    // Clear error for this field when user starts typing
+    setAuthErrors(prev => ({ ...prev, [field]: '' }));
+  };
+
+  const validateAuthForm = () => {
+    const errors = {
+      email: '',
+      password: '',
+      confirmPassword: '',
+      fullName: '',
+      general: ''
+    };
+
+    if (authMode === 'signup') {
+      if (!authForm.fullName.trim()) {
+        errors.fullName = 'Full name is required';
+      }
+      if (!authForm.email.trim()) {
+        errors.email = 'Email is required';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(authForm.email)) {
+        errors.email = 'Please enter a valid email address';
+      }
+      if (!authForm.password) {
+        errors.password = 'Password is required';
+      } else if (authForm.password.length < 6) {
+        errors.password = 'Password must be at least 6 characters';
+      }
+      if (!authForm.confirmPassword) {
+        errors.confirmPassword = 'Please confirm your password';
+      } else if (authForm.password !== authForm.confirmPassword) {
+        errors.confirmPassword = 'Passwords do not match';
+      }
+    } else {
+      if (!authForm.email.trim()) {
+        errors.email = 'Email is required';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(authForm.email)) {
+        errors.email = 'Please enter a valid email address';
+      }
+      if (!authForm.password) {
+        errors.password = 'Password is required';
+      }
+    }
+
+    setAuthErrors(errors);
+    return Object.values(errors).every(error => error === '');
+  };
+
+  const resetAuthForm = () => {
+    setAuthForm({
+      email: '',
+      password: '',
+      confirmPassword: '',
+      fullName: ''
+    });
+    setAuthErrors({
+      email: '',
+      password: '',
+      confirmPassword: '',
+      fullName: '',
+      general: ''
+    });
   };
 
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
-    if (authMode === 'signup') {
-      if (authForm.password !== authForm.confirmPassword) {
-        return;
-      }
-      if (!authForm.fullName || !authForm.email || !authForm.password) {
-        return;
-      }
-      
-      try {
-        // Create account immediately - store user data in studentprofiles collection
+    
+    if (!validateAuthForm()) {
+      return;
+    }
+
+    setIsAuthLoading(true);
+    
+    try {
+      if (authMode === 'signup') {
+        // Create account - store user data in studentprofiles collection
         const newStudentProfile = {
           _id: crypto.randomUUID(),
           fullName: authForm.fullName,
@@ -86,34 +155,34 @@ export default function HomePage() {
         };
         
         await BaseCrudService.create('studentprofiles', newStudentProfile);
-        
-        // Close modal and show success
-        setShowAuthModal(false);
-        
-        // Reset form
-        setAuthForm({
-          email: '',
-          password: '',
-          confirmPassword: '',
-          fullName: ''
-        });
-        
-        // Redirect to Wix auth for actual authentication
-        actions.login();
-        
-      } catch (error) {
-        console.error('Error creating account:', error);
-        // Still redirect to Wix auth even if profile creation fails
-        setShowAuthModal(false);
-        actions.login();
       }
-    } else {
-      if (!authForm.email || !authForm.password) {
-        return;
-      }
-      // For login, just redirect to Wix auth
+      
+      // Reset form and close modal
+      resetAuthForm();
       setShowAuthModal(false);
+      
+      // Redirect to Wix auth for actual authentication
       actions.login();
+        
+    } catch (error) {
+      console.error('Error during authentication:', error);
+      setAuthErrors(prev => ({
+        ...prev,
+        general: authMode === 'signup' 
+          ? 'Failed to create account. Please try again.' 
+          : 'Login failed. Please try again.'
+      }));
+    } finally {
+      setIsAuthLoading(false);
+    }
+  };
+
+  const handleAuthModalChange = (open) => {
+    setShowAuthModal(open);
+    if (!open) {
+      // Reset form when modal closes
+      resetAuthForm();
+      setAuthMode('login');
     }
   };
 
@@ -531,7 +600,7 @@ export default function HomePage() {
         </footer>
 
         {/* Professional Auth Modal */}
-        <Dialog open={showAuthModal} onOpenChange={setShowAuthModal}>
+        <Dialog open={showAuthModal} onOpenChange={handleAuthModalChange}>
           <DialogContent className="sm:max-w-lg bg-white border-0 text-foreground shadow-2xl">
             <DialogHeader className="space-y-4 pb-6">
               <div className="flex justify-center">
@@ -540,13 +609,19 @@ export default function HomePage() {
                   <Sparkles className="h-6 w-6 text-brandaccent absolute -top-1 -right-1" />
                 </div>
               </div>
-              <DialogTitle className="text-3xl font-bold text-center font-heading text-white">
+              <DialogTitle className="text-3xl font-bold text-center font-heading text-foreground">
                 Welcome to AI PlacementPredictor
               </DialogTitle>
               <p className="text-center text-muted-foreground font-paragraph">
                 Sign in to access your personalized placement predictions
               </p>
             </DialogHeader>
+            
+            {authErrors.general && (
+              <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3 text-destructive text-sm">
+                {authErrors.general}
+              </div>
+            )}
             
             <Tabs value={authMode} onValueChange={setAuthMode} className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-subtlebackground/50 h-12">
@@ -576,9 +651,16 @@ export default function HomePage() {
                       placeholder="Enter your email address"
                       value={authForm.email}
                       onChange={(e) => handleAuthInputChange('email', e.target.value)}
-                      className="h-12 border-2 border-gray-200 focus:border-primary transition-colors"
-                      required
+                      className={`h-12 border-2 transition-colors ${
+                        authErrors.email 
+                          ? 'border-destructive focus:border-destructive' 
+                          : 'border-gray-200 focus:border-primary'
+                      }`}
+                      disabled={isAuthLoading}
                     />
+                    {authErrors.email && (
+                      <p className="text-sm text-destructive">{authErrors.email}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="login-password" className="text-sm font-medium">
@@ -590,19 +672,28 @@ export default function HomePage() {
                       placeholder="Enter your password"
                       value={authForm.password}
                       onChange={(e) => handleAuthInputChange('password', e.target.value)}
-                      className="h-12 border-2 border-gray-200 focus:border-primary transition-colors"
-                      required
+                      className={`h-12 border-2 transition-colors ${
+                        authErrors.password 
+                          ? 'border-destructive focus:border-destructive' 
+                          : 'border-gray-200 focus:border-primary'
+                      }`}
+                      disabled={isAuthLoading}
                     />
+                    {authErrors.password && (
+                      <p className="text-sm text-destructive">{authErrors.password}</p>
+                    )}
                   </div>
                   <div className="flex justify-end">
                     <button
                       type="button"
                       onClick={() => {
                         // Simplified forgot password - just redirect to Wix auth for now
+                        resetAuthForm();
                         setShowAuthModal(false);
                         actions.login();
                       }}
                       className="text-sm text-primary hover:text-primary/80 font-medium transition-colors"
+                      disabled={isAuthLoading}
                     >
                       Forgot your password?
                     </button>
@@ -610,8 +701,9 @@ export default function HomePage() {
                   <Button 
                     type="submit" 
                     className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-base"
+                    disabled={isAuthLoading}
                   >
-                    Sign In to Your Account
+                    {isAuthLoading ? 'Signing In...' : 'Sign In to Your Account'}
                   </Button>
                 </form>
                 
@@ -683,9 +775,16 @@ export default function HomePage() {
                       placeholder="Enter your full name"
                       value={authForm.fullName}
                       onChange={(e) => handleAuthInputChange('fullName', e.target.value)}
-                      className="h-12 border-2 border-gray-200 focus:border-primary transition-colors"
-                      required
+                      className={`h-12 border-2 transition-colors ${
+                        authErrors.fullName 
+                          ? 'border-destructive focus:border-destructive' 
+                          : 'border-gray-200 focus:border-primary'
+                      }`}
+                      disabled={isAuthLoading}
                     />
+                    {authErrors.fullName && (
+                      <p className="text-sm text-destructive">{authErrors.fullName}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="signup-email" className="text-sm font-medium">
@@ -697,9 +796,16 @@ export default function HomePage() {
                       placeholder="Enter your email address"
                       value={authForm.email}
                       onChange={(e) => handleAuthInputChange('email', e.target.value)}
-                      className="h-12 border-2 border-gray-200 focus:border-primary transition-colors"
-                      required
+                      className={`h-12 border-2 transition-colors ${
+                        authErrors.email 
+                          ? 'border-destructive focus:border-destructive' 
+                          : 'border-gray-200 focus:border-primary'
+                      }`}
+                      disabled={isAuthLoading}
                     />
+                    {authErrors.email && (
+                      <p className="text-sm text-destructive">{authErrors.email}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="signup-password" className="text-sm font-medium">
@@ -711,9 +817,16 @@ export default function HomePage() {
                       placeholder="Create a secure password"
                       value={authForm.password}
                       onChange={(e) => handleAuthInputChange('password', e.target.value)}
-                      className="h-12 border-2 border-gray-200 focus:border-primary transition-colors"
-                      required
+                      className={`h-12 border-2 transition-colors ${
+                        authErrors.password 
+                          ? 'border-destructive focus:border-destructive' 
+                          : 'border-gray-200 focus:border-primary'
+                      }`}
+                      disabled={isAuthLoading}
                     />
+                    {authErrors.password && (
+                      <p className="text-sm text-destructive">{authErrors.password}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="signup-confirm" className="text-sm font-medium">
@@ -725,19 +838,23 @@ export default function HomePage() {
                       placeholder="Confirm your password"
                       value={authForm.confirmPassword}
                       onChange={(e) => handleAuthInputChange('confirmPassword', e.target.value)}
-                      className="h-12 border-2 border-gray-200 focus:border-primary transition-colors"
-                      required
+                      className={`h-12 border-2 transition-colors ${
+                        authErrors.confirmPassword 
+                          ? 'border-destructive focus:border-destructive' 
+                          : 'border-gray-200 focus:border-primary'
+                      }`}
+                      disabled={isAuthLoading}
                     />
+                    {authErrors.confirmPassword && (
+                      <p className="text-sm text-destructive">{authErrors.confirmPassword}</p>
+                    )}
                   </div>
-                  {authForm.password !== authForm.confirmPassword && authForm.confirmPassword && (
-                    <p className="text-sm text-destructive">Passwords do not match</p>
-                  )}
                   <Button 
                     type="submit" 
                     className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-base"
-                    disabled={authForm.password !== authForm.confirmPassword}
+                    disabled={isAuthLoading}
                   >
-                    Create Your Account
+                    {isAuthLoading ? 'Creating Account...' : 'Create Your Account'}
                   </Button>
                 </form>
                 
