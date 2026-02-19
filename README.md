@@ -134,11 +134,4 @@ npm run build
 
 ## 🆘 Support
 
-For support and questions:
-
-- Review the [Astro Documentation](https://docs.astro.build/)
-
-
----
-
 Built with ❤️ using modern web technologies.
